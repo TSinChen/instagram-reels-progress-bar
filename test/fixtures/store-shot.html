@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>商店截圖版面</title>
+<!--
+  Chrome 線上應用程式商店的截圖規格是 1280x800。
+  這一頁把模擬的 Reels 版面排成那個尺寸，截出來就能直接上傳。
+  文案由 ?copy= 決定語系。
+-->
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1280px;
+    height: 800px;
+    overflow: hidden;
+    background: radial-gradient(120% 120% at 20% 0%, #1d1b2e 0%, #08080b 60%);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    align-items: center;
+    gap: 48px;
+    padding: 0 72px;
+  }
+
+  .stage { display: flex; justify-content: center; }
+
+  .phone {
+    position: relative;
+    width: 372px;
+    height: 662px;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, .65);
+  }
+
+  .phone video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    background: linear-gradient(165deg, #3a1c71 0%, #d76d77 52%, #ffaf7b 100%);
+  }
+
+  /* 模擬 Instagram 疊在影片上的 UI，讓截圖看起來像真的場景 */
+  .overlay {
+    position: absolute;
+    left: 16px;
+    bottom: 56px;
+    right: 76px;
+    font-size: 13px;
+    line-height: 1.5;
+    text-shadow: 0 1px 3px rgba(0,0,0,.6);
+    pointer-events: none;
+  }
+  .overlay strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .overlay span { opacity: .85; }
+
+  .rail {
+    position: absolute;
+    right: 14px;
+    bottom: 56px;
+    display: grid;
+    gap: 20px;
+    justify-items: center;
+    pointer-events: none;
+  }
+  .rail i {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    display: block;
+  }
+
+  .copy h1 {
+    margin: 0 0 18px;
+    font-size: 46px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  .copy p {
+    margin: 0 0 28px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #b9b9c4;
+  }
+  .points { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+  .points li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 16px; line-height: 1.5; color: #e6e6ec;
+  }
+  .points b {
+    flex: none;
+    width: 7px; height: 7px; margin-top: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7b2ff7, #f7b733);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <video id="reel" data-duration="32" data-start="19" muted playsinline></video>
+    <div class="overlay">
+      <strong>traveldiary</strong>
+      <span>Sunset from the rooftop 🌅 #reels</span>
+    </div>
+    <div class="rail"><i></i><i></i><i></i></div>
+  </div>
+</div>
+
+<div class="copy" id="copy"></div>
+
+<script src="./stub-videos.js"></script>
+<script>
+  const COPY = {
+    en: {
+      h1: 'Drag to any point in a Reel.',
+      p: 'Instagram has no seek bar on the web. This adds one.',
+      points: [
+        'Drag or click the bar to jump anywhere',
+        'Time and buffered range always visible',
+        'Works on Reels, feed, posts and Explore',
+      ],
+    },
+    zh_TW: {
+      h1: '把 Reels 拖到你要的地方。',
+      p: 'Instagram 網頁版沒有進度條，這個擴充功能補上了。',
+      points: [
+        '拖曳或點擊即可跳到任意位置',
+        '隨時看得到目前時間與已緩衝範圍',
+        'Reels、首頁、貼文、探索頁都能用',
+      ],
+    },
+  };
+  const locale = new URLSearchParams(location.search).get('copy') || 'en';
+  const c = COPY[locale] || COPY.en;
+  document.getElementById('copy').innerHTML =
+    '<h1>' + c.h1 + '</h1><p>' + c.p + '</p><ul class="points">' +
+    c.points.map((t) => '<li><b></b><span>' + t + '</span></li>').join('') +
+    '</ul>';
+</script>
+<script type="module">
+  // 建置產物是 WXT 的 content script 包裝，在一般網頁沒有 chrome 可用，
+  // 所以這裡直接載入模組原始碼。畫出來的東西完全一樣。
+  import { init } from '../../lib/main.js';
+  init();
+  window.__shotReady = true;
+</script>
+</body>
+</html>

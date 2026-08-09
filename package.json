@@ -1,5 +1,5 @@
 {
-  "name": "instagram-reels-scrubber",
+  "name": "reels-scrubber",
   "version": "1.0.0",
   "scripts": {
     "test": "vitest run",
@@ -8,7 +8,8 @@
     "dev": "wxt",
     "build": "wxt build",
     "zip": "wxt zip",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "rename": "node tools/rename.mjs"
   },
   "keywords": [],
   "author": "",

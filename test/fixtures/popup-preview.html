@@ -17,6 +17,9 @@
     border-radius: 10px;
     overflow: hidden;
   }
+  /* ?bare=1：給商店截圖用 iframe 嵌入時，去掉外框與背景 */
+  body.bare { background: transparent; }
+  body.bare #frame { margin: 0; box-shadow: none; border-radius: 0; }
 </style>
 </head>
 <body>
@@ -52,7 +55,9 @@
 </script>
 
 <script type="module">
-  const locale = new URLSearchParams(location.search).get('locale') || 'en';
+  const params = new URLSearchParams(location.search);
+  if (params.get('bare') === '1') document.body.classList.add('bare');
+  const locale = params.get('locale') || 'en';
   window.__messages = await (await fetch(`/public/_locales/${locale}/messages.json`)).json();
 
   const html = await (await fetch('/entrypoints/popup/index.html')).text();

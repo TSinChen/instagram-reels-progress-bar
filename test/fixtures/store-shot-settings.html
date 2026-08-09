@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>商店截圖版面 — 設定頁</title>
+<!-- 1280x800 的第二張商店截圖，展示 popup 設定頁。popup 用 iframe 嵌入預覽頁。 -->
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1280px;
+    height: 800px;
+    overflow: hidden;
+    background: radial-gradient(120% 120% at 80% 0%, #1d1b2e 0%, #08080b 60%);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    align-items: center;
+    gap: 64px;
+    padding: 0 72px;
+  }
+
+  .copy h1 {
+    margin: 0 0 18px;
+    font-size: 44px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  .copy p {
+    margin: 0 0 28px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #b9b9c4;
+  }
+  .points { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+  .points li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 16px; line-height: 1.5; color: #e6e6ec;
+  }
+  .points b {
+    flex: none;
+    width: 7px; height: 7px; margin-top: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7b2ff7, #f7b733);
+  }
+
+  .panel { display: flex; justify-content: center; }
+  iframe {
+    width: 300px;
+    height: 446px;
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 36px 80px rgba(0, 0, 0, .7);
+  }
+</style>
+</head>
+<body>
+
+<div class="copy" id="copy"></div>
+
+<div class="panel">
+  <iframe id="popup" title="settings"></iframe>
+</div>
+
+<script>
+  const COPY = {
+    en: {
+      h1: 'Make it yours.',
+      p: 'Three colors, an adjustable hover area, and a time label you can switch off.',
+      points: [
+        'Changes apply to open tabs instantly',
+        'Shrink the hover area if it covers Instagram’s buttons',
+        'Settings sync across your Chrome profile',
+      ],
+    },
+    zh_TW: {
+      h1: '調成你喜歡的樣子。',
+      p: '三種顏色、可調的感應區高度，時間標籤也能關掉。',
+      points: [
+        '改完立刻套用到所有開著的分頁',
+        '會擋到 Instagram 按鈕就把感應區調小',
+        '設定跟著 Chrome 帳號同步',
+      ],
+    },
+  };
+  const locale = new URLSearchParams(location.search).get('copy') || 'en';
+  const c = COPY[locale] || COPY.en;
+  document.getElementById('copy').innerHTML =
+    '<h1>' + c.h1 + '</h1><p>' + c.p + '</p><ul class="points">' +
+    c.points.map((t) => '<li><b></b><span>' + t + '</span></li>').join('') +
+    '</ul>';
+  document.getElementById('popup').src = './popup-preview.html?locale=' + locale + '&bare=1';
+</script>
+</body>
+</html>

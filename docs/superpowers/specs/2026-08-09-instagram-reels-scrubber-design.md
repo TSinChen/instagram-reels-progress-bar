@@ -247,3 +247,40 @@ README.md                      安裝與驗收步驟
 4. 上下滑切換 Reels，進度條應跟著切到新影片。
 5. 回首頁捲動 feed，進度條應跟著畫面中央的影片走。
 6. 點開任一貼文燈箱與探索頁影片，同樣可用。
+
+---
+
+## 後續變更（2026-08-10）：改為上架
+
+使用者決定把這個擴充功能上架到 Chrome 線上應用程式商店。這個決定推翻了原始 spec 裡的三項內容，記錄如下。
+
+### 1. 改用 WXT 框架
+
+原本是手寫 manifest 加自製的攤平腳本。上架需要打包、跨瀏覽器輸出與提交流程，WXT 全部內建，所以搬過去。
+
+- `src/content/` → `lib/`，由 `entrypoints/content.js` 當 entrypoint
+- `manifest.json` 改由 `wxt.config.ts` 產生
+- 移除 `tools/build.mjs` 與 `dist/`，改用 `wxt build` / `wxt zip`
+- 安裝目標從專案根目錄改為 `.output/chrome-mv3`
+
+前一節「為什麼要攤平，而不是動態 import」的推論仍然成立，只是攤平的工作改由 WXT 負責。
+
+### 2. 「不做設定頁」這條 YAGNI 失效
+
+原始 spec 把設定頁列在不做的項目，理由是使用者可以自己改 `config.js`。上架之後這個前提消失了：從商店安裝的人拿不到原始碼。原本文件裡寫的自訂能力等於不存在。
+
+所以加了 popup 設定頁，範圍限定三項：進度條顏色（白／紅／藍三個色票）、感應區高度（8–32px）、時間標籤開關。存在 `chrome.storage.sync`。
+
+連帶的架構調整：這三項不能再是編譯進 CSS 字串的常數，改成 CSS 自訂屬性，由 `ProgressBar.applySettings` 設在 Shadow host 上。自訂屬性會穿透 shadow 邊界繼承，所以設定一改整條進度條就跟著變，不需要重建 DOM——拖曳到一半改設定也不會中斷。`lib/` 仍然不相依 chrome API，storage area 由 entrypoint 注入。
+
+新增 `lib/settings.js` 負責色票、正規化與 storage 包裝。正規化那層不信任 storage 的內容（可能來自舊版或被手動改壞），所有欄位都夾在合法範圍內。
+
+### 3. 加入中英雙語
+
+`public/_locales/en` 與 `zh_TW`，manifest 的 `name` 與 `description` 走 `__MSG__`，popup 的文字全部經過 `chrome.i18n.getMessage`。
+
+### 實作期修掉的一個 bug
+
+popup 的預覽區刻意掛真正的 `ProgressBar` 元件而非靜態示意圖，結果立刻暴露一個原本沒發現的問題：放開拖曳之後，時間標籤會顯示拖曳開始前的舊位置，要再動一下滑鼠才會更新。原因是 `hoverTime` 只在「沒有按下的移動」時更新，整段拖曳都沒碰到它。放開時指標就停在該位置，所以 `pointerup` 現在會同步更新 `hoverTime`，並補上回歸測試。
+
+用真元件當預覽的決定因此有了實證的價值，不只是省工。
