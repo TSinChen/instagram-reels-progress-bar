@@ -3122,3 +3122,22 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 - `render(state)` 的七個欄位 — Task 5 定義，Task 7 `buildRenderState` 回傳完全相同的七個欄位。一致。
 - `VideoTracker(onChange, { doc, win })` — Task 4 定義，Task 7 以相同形式呼叫。一致。
 - `HOST_HEIGHT` 用於 Task 5 `syncTo` 與 Task 9 Step 10 的預期值（48）。一致。
+
+---
+
+## 實作期變更紀錄
+
+**Task 8 的載入方式改了。** 計畫原本是 `loader.js` 用 `import(chrome.runtime.getURL('src/content/main.js'))` 動態載入 ES module，manifest 搭配 `web_accessible_resources`，換取零建置步驟。
+
+實作時試圖驗證這條路，發現這台機器上的 Chrome 151 已移除 `--load-extension` 命令列開關（`--disable-features=DisableLoadExtensionCommandLineSwitch` 這個逃生口也一併拿掉了），`chrome://extensions` 完全空白，無法用自動化方式把擴充功能載進瀏覽器實測。也就是說「動態 import 會不會被 Instagram 的嚴格 CSP 擋掉」只能靠推論，而這個環節一旦失敗，使用者只會看到「裝了但沒反應」。
+
+改為新增 `tools/build.mjs`（只用 Node 內建模組，無 bundler 依賴），把 `src/content/` 攤平成單一 classic script `dist/content.js`，manifest 直接載入它。沒有動態載入環節，也不需要 `web_accessible_resources`，該失敗模式消失；而且攤平後的產出可以當成一般 `<script>` 載入來實測，已在真實 Chrome 的嚴格 CSP 頁面（`test/fixtures/mock-instagram-bundle.html`）驗證通過。
+
+代價是多一個建置步驟，但 `dist/content.js` 進版控，使用者安裝時不需要跑任何指令，只有改動 `src/` 之後才需要重新產生。
+
+連帶變更：
+- 刪除 `src/content/loader.js`
+- manifest 移除 `web_accessible_resources`，`content_scripts.js` 改為 `["dist/content.js"]`
+- 新增 `tools/build.mjs`、`test/fixtures/mock-instagram-bundle.html`、`test/fixtures/stub-videos.js`
+- `package.json` 新增 `build` 與 `icons` script
+- Spec 的「技術形式」章節已同步更新

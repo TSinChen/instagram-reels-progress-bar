@@ -7,7 +7,9 @@
   },
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build": "node tools/build.mjs",
+    "icons": "node tools/make-icons.mjs"
   },
   "keywords": [],
   "author": "",

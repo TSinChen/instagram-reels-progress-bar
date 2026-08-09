@@ -178,25 +178,42 @@ Instagram 使用 MSE 串流播放，seek 到尚未下載的區段是否成功取
 ## 技術形式
 
 - Manifest V3。
-- **零建置步驟**。`loader.js` 用 `import(chrome.runtime.getURL('src/content/main.js'))` 動態載入 ES module，模組檔案放進 `web_accessible_resources`。這樣既保有真正的模組邊界與 `import`/`export` 語法，使用者也能直接「載入未封裝項目」指向專案資料夾就跑，修改後重新載入擴充功能即可，不需要 npm 或打包。
-- 執行期零依賴。`vitest` 與 `jsdom` 僅為 devDependency，不影響擴充功能安裝。
+- 原始碼是 ES modules，manifest 載入的是把它們攤平後的單一 classic script `dist/content.js`。
+- 執行期零依賴。`vitest` 與 `jsdom` 僅為 devDependency，不影響擴充功能安裝。攤平用的 `tools/build.mjs` 只用 Node 內建模組，沒有 bundler 依賴。
+
+### 為什麼要攤平，而不是動態 import
+
+MV3 的 content script 是 classic script，不支援 `import`。業界常見解法是讓 manifest 載入一支 classic 的 `loader.js`，裡面用 `import(chrome.runtime.getURL('src/content/main.js'))` 動態載入 ES module，並把模組列進 `web_accessible_resources`。這條路的好處是完全不用建置步驟。
+
+原本採用的就是這個方案，實作後改掉，原因是**無法驗證**：這台機器上的 Chrome 151 已經移除 `--load-extension` 命令列開關（連 `--disable-features=DisableLoadExtensionCommandLineSwitch` 這個逃生口也一併拿掉），沒辦法用自動化方式把擴充功能載進瀏覽器實測。「動態 import 在 Instagram 的嚴格 CSP 下會不會被擋」因此只能靠推論，而這個環節一旦失敗，整個功能會靜默失效、使用者只會看到「沒反應」。
+
+攤平成單一 classic script 之後，沒有動態載入環節、不需要 `web_accessible_resources`，這個失敗模式直接消失，而且攤平後的產出可以直接當成一般 `<script>` 載入來驗證——這件事已經在真實 Chrome 的嚴格 CSP 頁面上實測通過。
+
+代價是多了一個建置步驟。實務上影響很小：`dist/content.js` 會一起進版控，使用者「載入未封裝項目」即可，完全不需要 npm；只有在改動 `src/` 之後才需要執行 `node tools/build.mjs`。
+
+`src/` 仍然是唯一的原始碼真相，所有單元測試直接測它；攤平只是機械式的串接，`tools/build.mjs` 會在偵測到頂層宣告重名時直接失敗，避免串接後互相覆蓋。
 
 ### 檔案結構
 
 ```
 manifest.json
-src/content/loader.js          classic script，動態 import main.js
+dist/content.js                由 tools/build.mjs 產生，manifest 實際載入的檔案
 src/content/main.js            生命週期接線
 src/content/config.js          可調常數
 src/content/time-format.js
 src/content/geometry.js
+src/content/media-state.js
 src/content/video-tracker.js
 src/content/progress-bar.js
 src/content/styles.js          Shadow root 的 CSS 字串
 src/content/seek-controller.js
+tools/build.mjs                攤平成單一 classic script
+tools/make-icons.mjs           產生圖示
+tools/serve.mjs                驗證頁用的靜態伺服器
 icons/icon16.png icon48.png icon128.png
 test/*.test.js                 vitest 單元測試
-test/fixtures/mock-instagram.html   模擬版面的手動／自動驗證頁
+test/fixtures/mock-instagram.html          模擬版面的驗證頁（載入 src/ 模組）
+test/fixtures/mock-instagram-bundle.html   同上，但載入 dist/content.js 並套用嚴格 CSP
 README.md                      安裝與驗收步驟
 ```
 
@@ -213,6 +230,10 @@ README.md                      安裝與驗收步驟
 **版面驗證（真實瀏覽器 + 模擬頁）**
 
 `test/fixtures/mock-instagram.html` 重現三種版面：全螢幕直式 Reels、首頁 feed 三支影片可捲動、燈箱視窗。頁面使用真實的 `<video>` 元素，但以 `Object.defineProperty` 覆寫 `duration`、`currentTime`、`buffered`、`paused`，讓行為完全確定、不依賴任何影片檔案。這驗證了真實 DOM 下的定位、hover 轉場、拖曳互動與作用中影片切換。
+
+**攤平產出的驗證**
+
+`test/fixtures/mock-instagram-bundle.html` 載入的是 `dist/content.js`（實際會被注入的那支 classic script），而非 `src/` 模組，並在頁面上套用與 Instagram 相近的嚴格 CSP。這確認了攤平後的產出行為與模組版一致，且不會被 CSP 擋掉。
 
 **明確的驗證邊界**
 

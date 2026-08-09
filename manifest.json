@@ -14,18 +14,9 @@
         "https://www.instagram.com/*",
         "https://instagram.com/*"
       ],
-      "js": ["src/content/loader.js"],
+      "js": ["dist/content.js"],
       "run_at": "document_idle",
       "all_frames": false
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["src/content/*.js"],
-      "matches": [
-        "https://www.instagram.com/*",
-        "https://instagram.com/*"
-      ]
     }
   ]
 }
