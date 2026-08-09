@@ -240,3 +240,61 @@ describe('ProgressBar.applySettings', () => {
     expect(bar.hitElement).toBe(before);
   });
 });
+
+describe('ProgressBar.applyCorners', () => {
+  let bar;
+
+  beforeEach(() => {
+    document.body.innerHTML = '';
+    bar = new ProgressBar(document);
+  });
+
+  afterEach(() => {
+    bar.destroy();
+    document.body.innerHTML = '';
+  });
+
+  const host = () => document.querySelector('[data-igrc="host"]');
+
+  it('有圓角時裁切浮層，避免進度條凸出圓角外', () => {
+    bar.mount();
+    bar.applyCorners({ left: 22, right: 22 });
+    expect(host().style.borderBottomLeftRadius).toBe('22px');
+    expect(host().style.borderBottomRightRadius).toBe('22px');
+    expect(host().style.overflow).toBe('hidden');
+  });
+
+  it('左右半徑不同時分別套用', () => {
+    bar.mount();
+    bar.applyCorners({ left: 4, right: 16 });
+    expect(host().style.borderBottomLeftRadius).toBe('4px');
+    expect(host().style.borderBottomRightRadius).toBe('16px');
+  });
+
+  it('沒有圓角時不裁切，否則圓點在兩端會被切掉一半', () => {
+    bar.mount();
+    bar.applyCorners({ left: 0, right: 0 });
+    expect(host().style.overflow).toBe('visible');
+  });
+
+  it('從有圓角切回無圓角時會解除裁切', () => {
+    bar.mount();
+    bar.applyCorners({ left: 22, right: 22 });
+    bar.applyCorners({ left: 0, right: 0 });
+    expect(host().style.overflow).toBe('visible');
+    expect(host().style.borderBottomLeftRadius).toBe('0px');
+  });
+
+  it('不帶參數呼叫視為沒有圓角', () => {
+    bar.mount();
+    bar.applyCorners();
+    expect(host().style.overflow).toBe('visible');
+  });
+
+  it('mount 之前呼叫不會拋錯，mount 之後會補上', () => {
+    expect(() => bar.applyCorners({ left: 12, right: 12 })).not.toThrow();
+    bar.mount();
+    expect(host().style.borderBottomLeftRadius).toBe('12px');
+    expect(host().style.overflow).toBe('hidden');
+  });
+});

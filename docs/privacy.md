@@ -1,3 +1,8 @@
+---
+layout: default
+title: Privacy Policy
+---
+
 # Privacy Policy — Instagram Reels Progress Bar
 
 _Last updated: 2026-08-10_

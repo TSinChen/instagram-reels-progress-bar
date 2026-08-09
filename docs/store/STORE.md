@@ -9,8 +9,8 @@
 
 | 項目 | 說明 |
 |---|---|
-| 開發人員帳號 | 到 [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) 註冊，一次性費用 5 美元，需要 Google 帳號。 |
-| 隱私權政策網址 | 把 `docs/store/PRIVACY.md` 貼成公開的 GitHub Gist，網址填進第 6 節。步驟見那一節。 |
+| 開發人員帳號 | 已完成。 |
+| GitHub repo 與 Pages | 隱私權政策、首頁、支援連結三個欄位都靠它。步驟見第 9 節。 |
 
 名稱、類別、顯示設定都已定案，其餘欄位照抄本文件即可。
 
@@ -252,14 +252,11 @@ site the feature applies to.
 
 ### 隱私權政策網址
 
-**[待填]** — 用公開的 GitHub Gist：
+**[待填]** — 用 GitHub Pages。設定步驟見第 9 節，設好之後網址是：
 
-1. 到 [gist.github.com](https://gist.github.com) 新增一個 Gist
-2. 檔名填 `PRIVACY.md`，內容整份貼上 `docs/store/PRIVACY.md`
-3. 按 **Create public gist**（不能選 secret，商店要能公開存取）
-4. 複製網址列的網址填進這一欄
-
-Gist 的網址長這樣：`https://gist.github.com/<你的帳號>/<一串英數>`
+```
+https://<你的帳號>.github.io/<repo 名稱>/privacy
+```
 
 ---
 

@@ -15,7 +15,9 @@ const TARGETS = [
   'entrypoints/popup/index.html',
   'README.md',
   'docs/store/STORE.md',
-  'docs/store/PRIVACY.md',
+  'docs/privacy.md',
+  'docs/index.md',
+  'docs/_config.yml',
 ];
 
 /** 目前的顯示名稱以 en 語系的 extName 為準。 */

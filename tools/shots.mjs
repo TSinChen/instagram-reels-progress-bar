@@ -12,7 +12,7 @@
 // 指定 Chrome：CHROME_PATH="C:\\path\\to\\chrome.exe" node tools/shots.mjs
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createStaticServer } from './serve.mjs';
 
@@ -66,7 +66,17 @@ const HOVER_BAR = `(async () => {
   if (getComputedStyle(host.shadowRoot.querySelector('.handle')).transform === 'matrix(0, 0, 0, 0, 0, 0)') {
     return { ok: false, why: '拖曳圓點還沒放大' };
   }
-  return { ok: true, note: label.textContent };
+
+  // 浮層是 fixed 掛在 body 上，不會被影片容器的 overflow: hidden 裁到，
+  // 得自己套上圓角，否則進度條兩端會凸出圓角外面
+  const frame = video.closest('.phone');
+  const want = frame ? parseFloat(getComputedStyle(frame).borderBottomLeftRadius) || 0 : 0;
+  const got = parseFloat(getComputedStyle(host).borderBottomLeftRadius) || 0;
+  if (Math.abs(want - got) > 0.5) {
+    return { ok: false, why: '進度條沒有跟著影片容器的圓角裁切（容器 ' + want + 'px，浮層 ' + got + 'px）' };
+  }
+
+  return { ok: true, note: label.textContent + '  圓角 ' + got + 'px' };
 })()`;
 
 /** 設定頁那張是用 iframe 嵌 popup，最容易踩到高度不夠而出現捲軸。 */
@@ -93,7 +103,14 @@ const CHECK_POPUP = `(async () => {
 })()`;
 
 const SHOTS = [
-  { file: 'screenshot-1-en.png', path: '/test/fixtures/store-shot.html?copy=en', prepare: HOVER_BAR },
+  {
+    file: 'screenshot-1-en.png',
+    path: '/test/fixtures/store-shot.html?copy=en',
+    prepare: HOVER_BAR,
+    // GitHub Pages 首頁的主視覺就是這一張。一起產出而不是事後複製，
+    // 否則改了 UI 之後商店截圖更新了、首頁那張還停在舊畫面。
+    alsoWrite: ['docs/assets/hero.png'],
+  },
   { file: 'screenshot-1-zh.png', path: '/test/fixtures/store-shot.html?copy=zh_TW', prepare: HOVER_BAR },
   { file: 'screenshot-2-en.png', path: '/test/fixtures/store-shot-settings.html?copy=en', prepare: CHECK_POPUP },
   { file: 'screenshot-2-zh.png', path: '/test/fixtures/store-shot-settings.html?copy=zh_TW', prepare: CHECK_POPUP },
@@ -253,8 +270,13 @@ try {
       continue;
     }
 
-    writeFileSync(join(OUT_DIR, shot.file), buffer);
-    console.log(`✓ ${size.width}x${size.height}  ${(buffer.length / 1024).toFixed(0)} KB  ${check.note}`);
+    const written = [join(OUT_DIR, shot.file), ...(shot.alsoWrite || [])];
+    for (const target of written) {
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, buffer);
+    }
+    const extra = written.length > 1 ? `  → ${written.slice(1).join(', ')}` : '';
+    console.log(`✓ ${size.width}x${size.height}  ${(buffer.length / 1024).toFixed(0)} KB  ${check.note}${extra}`);
   }
 
   page.close();
