@@ -36,7 +36,7 @@ npm run build
 npm run zip     # 產出 .output/instagram-reels-progress-bar-1.0.0-chrome.zip
 ```
 
-上架所需的全部素材與逐欄填寫說明在 `docs/store/STORE.md`。
+商店截圖用 `npm run shots` 產生，輸出在 `docs/store/`。
 
 ## 驗收清單
 

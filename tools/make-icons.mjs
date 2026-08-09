@@ -1,5 +1,4 @@
-// 產生擴充功能圖示。只用 Node 內建模組手寫 PNG，不引入第三方套件。
-// 執行：node tools/make-icons.mjs
+// 產生備用圖示。手寫 PNG，不引入第三方套件。
 import { deflateSync } from 'node:zlib';
 import { writeFileSync, mkdirSync } from 'node:fs';
 
@@ -32,7 +31,7 @@ function chunk(type, data) {
   return Buffer.concat([length, typeAndData, crc]);
 }
 
-/** pixels 是 RGBA 的 Uint8Array，長度為 size * size * 4。 */
+/** pixels 是 RGBA，長度 size * size * 4。 */
 function encodePng(size, pixels) {
   const signature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -45,7 +44,7 @@ function encodePng(size, pixels) {
   ihdr[11] = 0;  // filter
   ihdr[12] = 0;  // interlace
 
-  // 每一列前面要加一個 filter type byte，這裡一律用 0（None）
+  // 每列前面要加 filter type byte，一律用 0（None）
   const stride = size * 4 + 1;
   const raw = Buffer.alloc(size * stride);
   for (let y = 0; y < size; y += 1) {
@@ -63,10 +62,7 @@ function encodePng(size, pixels) {
   ]);
 }
 
-/**
- * 圖示設計：Instagram 風格的紫橘漸層圓角方塊，
- * 底部一條白色進度條加一個白色圓點。
- */
+/** 紫橘漸層圓角方塊，底部一條白色進度條加圓點。 */
 function drawIcon(size) {
   const pixels = new Uint8Array(size * size * 4);
   const radius = size * 0.22;
@@ -87,21 +83,18 @@ function drawIcon(size) {
         continue;
       }
 
-      // 左上偏紫、右下偏橘的對角漸層
       const t = (x / size + y / size) / 2;
       pixels[i] = Math.round(lerp(131, 245, t));
       pixels[i + 1] = Math.round(lerp(58, 133, t));
       pixels[i + 2] = Math.round(lerp(180, 41, t));
       pixels[i + 3] = 255;
 
-      // 進度條軌道（半透明白）與已播放段（實白）
       const onBarRow = y >= barY && y < barY + barHeight;
       if (onBarRow && x >= barLeft && x <= barRight) {
         const played = x <= dotX;
         blend(pixels, i, 255, 255, 255, played ? 1 : 0.45);
       }
 
-      // 拖曳圓點
       const dy = y - (barY + barHeight / 2);
       const dx = x - dotX;
       if (dx * dx + dy * dy <= dotR * dotR) {

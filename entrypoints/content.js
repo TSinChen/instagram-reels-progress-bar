@@ -9,7 +9,7 @@ export default defineContentScript({
   allFrames: false,
 
   main() {
-    // 把 storage area 注入進去，lib/ 才不用直接相依 chrome API（測試也好替換）
+    // 注入 storage area，lib/ 才不相依 chrome API
     init({ storageArea: chrome.storage.sync });
   },
 });

@@ -2,3 +2,7 @@ node_modules/
 .output/
 .wxt/
 stats.html
+
+# 送審用的內部筆記，留在本機不公開。
+# 內容包含商標風險評估與逐欄填寫說明，只有維護者會用到。
+docs/store/STORE.md

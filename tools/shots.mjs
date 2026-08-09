@@ -1,15 +1,12 @@
 // 產生 Chrome 線上應用程式商店的 1280x800 截圖。
 //
-// 為什麼要腳本化：手動截圖在這個專案已經出錯三次——改了名字忘記重拍、
-// iframe 高度不夠跑出捲軸、按鈕被切掉。這些都是「看了才會發現」的錯誤，
-// 而且每次改 UI 都可能再犯一次。腳本可以在截圖前先斷言，錯了直接失敗，
-// 不會安靜地產出一張壞掉的圖。
+// 截圖前會斷言，錯了直接失敗、不覆蓋既有檔案——手動截圖漏掉的都是
+// 「看了才會發現」的錯誤（名字沒更新、iframe 出現捲軸、按鈕被切掉）。
 //
-// 零依賴：起一台自己的靜態伺服器，用 CDP 驅動系統上的 Chrome，
-// Node 22 內建 WebSocket 與 fetch，不需要 puppeteer。
+// 起自己的靜態伺服器，用 CDP 驅動系統上的 Chrome，不需要 puppeteer。
 //
-// 執行：node tools/shots.mjs
-// 指定 Chrome：CHROME_PATH="C:\\path\\to\\chrome.exe" node tools/shots.mjs
+//   node tools/shots.mjs
+//   CHROME_PATH="...\chrome.exe" node tools/shots.mjs
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -25,10 +22,8 @@ const DEBUG_PORT = 9422;
 // ── 要產生哪些圖 ──────────────────────────────────────────
 
 /**
- * 讓進度條停在 hover 狀態，否則截到的是閒置的細線，看不到圓點與時間。
- *
- * 要先等追蹤器真的選到影片才能送指標事件：頁面 readyState 變成 complete 時，
- * SeekController 還沒綁上影片，這時候 pointerenter 會落空。
+ * 讓進度條停在 hover 狀態，否則截到的是閒置的細線。
+ * 要等追蹤器選到影片才能送指標事件——readyState complete 時 SeekController 還沒綁上。
  */
 const HOVER_BAR = `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -43,7 +38,6 @@ const HOVER_BAR = `(async () => {
   const host = document.querySelector('[data-igrc="host"]');
   if (!host) return { ok: false, why: '浮層沒有注入' };
 
-  // 等浮層真的貼上影片為止（display 變 block 且寬度對齊）
   const attached = await wait(() =>
     host.style.display === 'block' &&
     host.style.width === video.getBoundingClientRect().width + 'px');
@@ -58,7 +52,7 @@ const HOVER_BAR = `(async () => {
   if (!await wait(() => root.classList.contains('is-active'), 20)) {
     return { ok: false, why: '進度條沒有進入 hover 狀態' };
   }
-  // 等 120ms 的高度與圓點轉場跑完，不然會截到動畫中間
+  // 等轉場跑完，不然會截到動畫中間
   await sleep(250);
 
   const label = host.shadowRoot.querySelector('.label');
@@ -67,8 +61,7 @@ const HOVER_BAR = `(async () => {
     return { ok: false, why: '拖曳圓點還沒放大' };
   }
 
-  // 浮層是 fixed 掛在 body 上，不會被影片容器的 overflow: hidden 裁到，
-  // 得自己套上圓角，否則進度條兩端會凸出圓角外面
+  // 浮層不會被影片容器的 overflow: hidden 裁到，得自己套圓角
   const frame = video.closest('.phone');
   const want = frame ? parseFloat(getComputedStyle(frame).borderBottomLeftRadius) || 0 : 0;
   const got = parseFloat(getComputedStyle(host).borderBottomLeftRadius) || 0;
@@ -79,7 +72,7 @@ const HOVER_BAR = `(async () => {
   return { ok: true, note: label.textContent + '  圓角 ' + got + 'px' };
 })()`;
 
-/** 設定頁那張是用 iframe 嵌 popup，最容易踩到高度不夠而出現捲軸。 */
+/** iframe 嵌 popup，最容易踩到高度不夠而出現捲軸。 */
 const CHECK_POPUP = `(async () => {
   const iframe = document.getElementById('popup');
   for (let i = 0; i < 40 && !iframe.contentDocument?.getElementById('reset'); i++) {
@@ -107,8 +100,7 @@ const SHOTS = [
     file: 'screenshot-1-en.png',
     path: '/test/fixtures/store-shot.html?copy=en',
     prepare: HOVER_BAR,
-    // GitHub Pages 首頁的主視覺就是這一張。一起產出而不是事後複製，
-    // 否則改了 UI 之後商店截圖更新了、首頁那張還停在舊畫面。
+    // 首頁主視覺。一起產出而不是事後複製，否則會漂移。
     alsoWrite: ['docs/assets/hero.png'],
   },
   { file: 'screenshot-1-zh.png', path: '/test/fixtures/store-shot.html?copy=zh_TW', prepare: HOVER_BAR },
@@ -168,7 +160,7 @@ class Cdp {
     return new Promise((resolve, reject) => this.pending.set(id, { resolve, reject }));
   }
 
-  /** 在頁面裡執行一段會回傳 Promise 的運算式，把結果拿回來。 */
+  /** 執行一段回傳 Promise 的運算式。 */
   async run(expression) {
     const { result, exceptionDetails } = await this.send('Runtime.evaluate', {
       expression,
@@ -190,14 +182,14 @@ async function waitFor(fn, { tries = 60, gap = 250, what = '條件' } = {}) {
       const value = await fn();
       if (value) return value;
     } catch {
-      // 還沒好，繼續等
+      // 還沒好
     }
     await new Promise((r) => setTimeout(r, gap));
   }
   throw new Error(`等不到${what}`);
 }
 
-/** 從 PNG 標頭讀尺寸，確認輸出真的是 1280x800。 */
+/** 從 PNG 標頭讀尺寸。 */
 function pngSize(buffer) {
   if (buffer.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') return null;
   return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
@@ -287,7 +279,7 @@ try {
   try {
     rmSync(profileDir, { recursive: true, force: true });
   } catch {
-    // Chrome 有時還握著檔案，留著不影響下次執行
+    // Chrome 有時還握著檔案
   }
 }
 

@@ -9,10 +9,8 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
   if (text) el.textContent = text;
 }
 
-// ── 預覽：掛真正的元件，配一支假影片 ────────────────────
-//
-// 用真元件而不是靜態示意圖，好處是預覽的手感與實際完全一致，
-// 而且順便驗證了元件本身。假影片只要有這幾個屬性就夠了。
+// ── 預覽 ──────────────────────────────────────────────
+// 掛真元件配假影片，手感與線上一致，也順便驗證元件本身。
 const PREVIEW_DURATION = 32;
 
 const fakeVideo = {
@@ -34,8 +32,7 @@ function frame() {
   requestAnimationFrame(frame);
   bar.syncTo(stage.getBoundingClientRect());
   const state = buildRenderState(fakeVideo, seek, Date.now());
-  // 預覽固定顯示 hover 狀態：使用者在這裡調的就是那個樣子，
-  // 給他看閒置的細線沒有意義。
+  // 固定顯示 hover 狀態：使用者在這裡調的就是那個樣子
   state.active = true;
   bar.render(state);
 }
@@ -54,10 +51,7 @@ const store = createSettingsStore(chrome.storage.sync);
 const savedEl = document.getElementById('saved');
 const showLabelEl = document.getElementById('showlabel');
 
-/**
- * 三個滑桿的共通處理：拖曳時只更新畫面，放開才寫 storage。
- * 每個像素都打一次 storage 會撞到寫入頻率上限。
- */
+/** 拖曳時只更新畫面，放開才寫 storage——每個像素都寫會撞到頻率上限。 */
 const SLIDERS = [
   { key: 'barThickness', input: 'thickness', readout: 'thickness-value' },
   { key: 'handleSize', input: 'handle', readout: 'handle-value' },
@@ -70,7 +64,7 @@ const SLIDERS = [
 
 let current = { ...DEFAULTS };
 
-/** 把設定畫到控制項與預覽上。不寫 storage。 */
+/** 只畫，不寫 storage。 */
 function paint(settings) {
   current = settings;
   for (const { key, inputEl, readoutEl } of SLIDERS) {
@@ -88,7 +82,7 @@ function flashSaved() {
   savedTimer = setTimeout(() => savedEl.classList.remove('is-shown'), 1100);
 }
 
-/** 立刻反映在畫面上，再寫入 storage；內容腳本會透過 watch 收到。 */
+/** 先畫再寫入；內容腳本透過 watch 收到。 */
 async function update(patch) {
   paint({ ...current, ...patch });
   await store.save(current);

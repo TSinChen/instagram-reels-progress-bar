@@ -1,13 +1,8 @@
 // 一次改掉所有出現擴充功能名稱的地方。
 //
-// 名稱本來應該只存在於 _locales 的 extName，但它無可避免會出現在
-// README 標題、商店文案、隱私權政策這些人看的文字裡。與其每次改名
-// 都手動找六個檔案（而且一定會漏），不如把它變成一個指令。
-//
-// 用法：
 //   node tools/rename.mjs "New Name"
-//   node tools/rename.mjs --check        只列出目前名稱出現在哪裡，不修改
-import { readFileSync, writeFileSync } from 'node:fs';
+//   node tools/rename.mjs --check        只列出，不修改
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const TARGETS = [
   'public/_locales/en/messages.json',
@@ -41,6 +36,10 @@ if (!arg || arg === '--check') {
   console.log(`目前名稱：${from}\n`);
   let total = 0;
   for (const file of TARGETS) {
+    if (!existsSync(file)) {
+      console.log(`   -  ${file}（不在這台機器上，略過）`);
+      continue;
+    }
     const hits = readFileSync(file, 'utf8').split(from).length - 1;
     total += hits;
     console.log(`  ${String(hits).padStart(2)}  ${file}`);
@@ -63,6 +62,7 @@ if (to === from) {
 
 let changed = 0;
 for (const file of TARGETS) {
+  if (!existsSync(file)) continue;
   const before = readFileSync(file, 'utf8');
   const after = before.split(from).join(to);
   if (before !== after) {
