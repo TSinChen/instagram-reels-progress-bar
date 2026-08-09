@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Instagram Reels 進度條",
+  "version": "1.0.0",
+  "description": "為 Instagram 的 Reels 與影片加上可拖曳的進度條，可以跳到影片的任意位置。",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
+      ],
+      "js": ["src/content/loader.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/content/*.js"],
+      "matches": [
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
+      ]
+    }
+  ]
+}
