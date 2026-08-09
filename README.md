@@ -81,6 +81,7 @@ npm run dev        # WXT 開發模式，含 HMR
 npm run build
 npm run zip
 npm run icons      # 重新產生程式生成的備用圖示
+npm run shots      # 重新產生四張 1280x800 商店截圖（含正確性檢查）
 ```
 
 不需要登入 Instagram 就能驗證的頁面：
@@ -96,6 +97,10 @@ node tools/serve.mjs
 | `/test/fixtures/popup-preview.html?locale=zh_TW` | popup 設定頁，chrome API 用記憶體版本頂替 |
 | `/test/fixtures/store-shot.html?copy=en` | 1280×800 商店截圖版面 |
 | `/test/fixtures/store-shot-settings.html?copy=en` | 同上，設定頁那張 |
+
+商店截圖不用手動截，跑 `npm run shots`。它會自己開伺服器與 headless Chrome，
+並在截圖前斷言 hover 狀態、浮層對齊、popup 沒有溢出、輸出尺寸；
+有任何一項不過就中止，不覆蓋既有檔案。手動截圖在這個專案已經漏掉過三次。
 
 這些頁面的 `<video>` 都是真實元素，只有媒體屬性（`duration` / `currentTime` / `buffered`）換成可控的假值，所以不需要任何影片檔案，結果完全確定。
 

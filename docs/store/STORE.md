@@ -169,16 +169,18 @@ Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法�
 
 商店至少要 1 張、最多 5 張截圖。中英文版本各上傳到對應語言的商店資訊即可。
 
-截圖是用 `test/fixtures/store-shot.html` 與 `store-shot-settings.html` 產生的，
-畫面裡的 Instagram 版面是自己畫的模擬版面（不是真實的 Instagram 截圖），
-避免使用他人的畫面內容。要重新產生：
+畫面裡的 Instagram 版面是自己畫的模擬版面（不是真實的 Instagram 截圖），避免使用他人的畫面內容。
+
+**改了 UI、文案或名稱之後，四張全部重新產生：**
 
 ```bash
-node tools/serve.mjs
-# 用 1280x800 的視窗開這兩個網址並截圖
-#   http://localhost:8123/test/fixtures/store-shot.html?copy=en
-#   http://localhost:8123/test/fixtures/store-shot-settings.html?copy=en
+npm run shots
 ```
+
+這個指令會自己開伺服器與 headless Chrome，截完關掉。它在截圖前會檢查：
+進度條有沒有進入 hover 狀態、浮層寬度是否貼齊影片、時間標籤與圓點有沒有顯示、
+popup 內容有沒有超出 iframe 而跑出捲軸、輸出是不是 1280×800。
+任何一項不過就中止並回傳非零離開碼，**不會覆蓋既有檔案**。
 
 宣傳大圖（440×280）目前沒做，那是選填欄位，只有要爭取首頁推薦才需要。
 
