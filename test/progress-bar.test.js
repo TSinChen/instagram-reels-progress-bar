@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ProgressBar } from '../lib/progress-bar.js';
 import { HOST_HEIGHT } from '../lib/config.js';
+import { COLOR_PRESETS } from '../lib/settings.js';
 
 function baseState(overrides = {}) {
   return {
@@ -173,5 +174,62 @@ describe('ProgressBar', () => {
     bar.mount();
     expect(bar.hitElement).not.toBe(null);
     expect(bar.trackElement).not.toBe(null);
+  });
+});
+
+describe('ProgressBar.applySettings', () => {
+  let bar;
+
+  beforeEach(() => {
+    document.body.innerHTML = '';
+    bar = new ProgressBar(document);
+  });
+
+  afterEach(() => {
+    bar.destroy();
+    document.body.innerHTML = '';
+  });
+
+  it('把顏色設定寫成 host 上的 CSS 自訂屬性', () => {
+    bar.mount();
+    bar.applySettings({ color: 'red' });
+    const host = document.querySelector('[data-igrc="host"]');
+    expect(host.style.getPropertyValue('--igrc-color-played')).toBe(COLOR_PRESETS.red.played);
+  });
+
+  it('把感應區高度寫成帶單位的自訂屬性', () => {
+    bar.mount();
+    bar.applySettings({ hitZoneHeight: 24 });
+    const host = document.querySelector('[data-igrc="host"]');
+    expect(host.style.getPropertyValue('--igrc-hit-zone')).toBe('24px');
+  });
+
+  it('關閉時間標籤時寫入 display none', () => {
+    bar.mount();
+    bar.applySettings({ showLabel: false });
+    const host = document.querySelector('[data-igrc="host"]');
+    expect(host.style.getPropertyValue('--igrc-label-display')).toBe('none');
+  });
+
+  it('mount 之前套用設定不會拋錯，mount 之後會補上', () => {
+    expect(() => bar.applySettings({ color: 'blue' })).not.toThrow();
+    bar.mount();
+    const host = document.querySelector('[data-igrc="host"]');
+    expect(host.style.getPropertyValue('--igrc-color-played')).toBe(COLOR_PRESETS.blue.played);
+  });
+
+  it('重複套用會覆蓋前一次的值', () => {
+    bar.mount();
+    bar.applySettings({ color: 'red' });
+    bar.applySettings({ color: 'white' });
+    const host = document.querySelector('[data-igrc="host"]');
+    expect(host.style.getPropertyValue('--igrc-color-played')).toBe(COLOR_PRESETS.white.played);
+  });
+
+  it('套用設定不會重建 shadow DOM，正在拖曳的狀態得以保留', () => {
+    bar.mount();
+    const before = bar.hitElement;
+    bar.applySettings({ color: 'red' });
+    expect(bar.hitElement).toBe(before);
   });
 });

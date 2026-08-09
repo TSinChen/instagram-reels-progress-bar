@@ -1,10 +1,6 @@
 {
   "name": "instagram-reels-scrubber",
   "version": "1.0.0",
-  "directories": {
-    "doc": "docs",
-    "example": "examples"
-  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",

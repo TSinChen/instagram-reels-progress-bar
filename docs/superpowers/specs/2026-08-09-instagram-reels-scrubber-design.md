@@ -100,7 +100,7 @@ Shadow host 高 48px（`HOST_HEIGHT`），下緣對齊影片元素下緣，`poin
 
 ## 視覺規格
 
-風格參照 `examples/youtube.png`（YouTube Shorts）。
+風格參照 YouTube Shorts 的進度條。
 
 **閒置狀態**
 - 進度條高 3px，貼齊影片元素底緣，滿版寬度。
