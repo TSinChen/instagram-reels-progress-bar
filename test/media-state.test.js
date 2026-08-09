@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { bufferedEndFor, isStalled } from '../src/content/media-state.js';
+import { bufferedEndFor, isStalled } from '../lib/media-state.js';
 
 /** 做一個假的 TimeRanges。ranges 是 [[start, end], ...]。 */
 function fakeTimeRanges(ranges) {

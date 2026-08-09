@@ -132,8 +132,8 @@ function insideRoundedSquare(x, y, size, radius) {
   return dx * dx + dy * dy <= radius * radius;
 }
 
-mkdirSync('icons', { recursive: true });
+mkdirSync('public/icon', { recursive: true });
 for (const size of [16, 48, 128]) {
-  writeFileSync(`icons/icon${size}.png`, encodePng(size, drawIcon(size)));
-  console.log(`icons/icon${size}.png 已產生`);
+  writeFileSync(`public/icon/${size}.png`, encodePng(size, drawIcon(size)));
+  console.log(`public/icon/${size}.png 已產生`);
 }

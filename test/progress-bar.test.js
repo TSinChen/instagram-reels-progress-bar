@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { ProgressBar } from '../src/content/progress-bar.js';
-import { HOST_HEIGHT } from '../src/content/config.js';
+import { ProgressBar } from '../lib/progress-bar.js';
+import { HOST_HEIGHT } from '../lib/config.js';
 
 function baseState(overrides = {}) {
   return {

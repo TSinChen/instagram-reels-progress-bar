@@ -1,0 +1,20 @@
+{
+  "extName": {
+    "message": "Reels Scrubber",
+    "description": "Extension name shown in the store and the browser."
+  },
+  "extDescription": {
+    "message": "Adds a draggable seek bar to Reels and videos on instagram.com, so you can jump to any point.",
+    "description": "Short description shown in the Chrome Web Store."
+  },
+  "popupTitle": { "message": "Reels Scrubber" },
+  "settingColor": { "message": "Bar color" },
+  "settingColorWhite": { "message": "White" },
+  "settingColorRed": { "message": "Red" },
+  "settingColorBlue": { "message": "Blue" },
+  "settingHitZone": { "message": "Hover area height" },
+  "settingHitZoneHint": { "message": "The strip at the bottom of the video that the scrubber takes over. Lower it if it gets in the way of Instagram's own buttons." },
+  "settingShowLabel": { "message": "Show time label" },
+  "reset": { "message": "Reset to defaults" },
+  "saved": { "message": "Saved" }
+}

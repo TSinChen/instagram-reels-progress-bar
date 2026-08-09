@@ -1,4 +1,4 @@
-import { init } from '../../src/content/main.js';
+import { init } from '../../lib/main.js';
 
 /** 做一個假的 TimeRanges。 */
 function fakeTimeRanges(ranges) {

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { init, buildRenderState } from '../src/content/main.js';
+import { init, buildRenderState } from '../lib/main.js';
 
 function fakeTimeRanges(ranges) {
   return {

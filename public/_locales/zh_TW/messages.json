@@ -1,0 +1,20 @@
+{
+  "extName": {
+    "message": "Reels Scrubber",
+    "description": "擴充功能名稱，商店與瀏覽器都會顯示。"
+  },
+  "extDescription": {
+    "message": "為 instagram.com 的 Reels 與影片加上可拖曳的進度條，讓你跳到影片的任意位置。",
+    "description": "Chrome 線上應用程式商店的簡短說明。"
+  },
+  "popupTitle": { "message": "Reels Scrubber" },
+  "settingColor": { "message": "進度條顏色" },
+  "settingColorWhite": { "message": "白色" },
+  "settingColorRed": { "message": "紅色" },
+  "settingColorBlue": { "message": "藍色" },
+  "settingHitZone": { "message": "感應區高度" },
+  "settingHitZoneHint": { "message": "影片底部由進度條接管的範圍。如果會擋到 Instagram 原本的按鈕，就把它調小。" },
+  "settingShowLabel": { "message": "顯示時間標籤" },
+  "reset": { "message": "恢復預設" },
+  "saved": { "message": "已儲存" }
+}

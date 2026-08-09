@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatTime } from '../src/content/time-format.js';
+import { formatTime } from '../lib/time-format.js';
 
 describe('formatTime', () => {
   it('把 0 秒格式化成 0:00', () => {

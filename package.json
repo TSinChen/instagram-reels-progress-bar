@@ -8,8 +8,11 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "node tools/build.mjs",
-    "icons": "node tools/make-icons.mjs"
+    "icons": "node tools/make-icons.mjs",
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "postinstall": "wxt prepare"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +22,7 @@
   "type": "module",
   "devDependencies": {
     "jsdom": "^29.1.1",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "wxt": "^0.21.3"
   }
 }

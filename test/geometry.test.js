@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { visibleArea, ratioFromPointerX, timeFromRatio } from '../src/content/geometry.js';
+import { visibleArea, ratioFromPointerX, timeFromRatio } from '../lib/geometry.js';
 
 const viewport = { width: 1000, height: 800 };
 

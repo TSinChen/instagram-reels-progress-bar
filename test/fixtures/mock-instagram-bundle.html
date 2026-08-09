@@ -2,10 +2,10 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>Bundle 驗證 — 載入 dist/content.js</title>
+<title>建置產物驗證 — 載入 WXT 打包後的 content script</title>
 <!--
-  這一頁載入的是 dist/content.js（實際會被擴充功能注入的那支 classic script），
-  而不是 src/ 的 ES modules。目的是確認攤平後的產出行為與模組版一致。
+  這一頁載入的是 WXT 建置產物（實際會被擴充功能注入的那支腳本），
+  而不是 lib/ 的 ES modules。目的是確認打包後的產出行為與模組版一致。
   另外刻意加上與 Instagram 相近的嚴格 CSP，確認腳本不會被擋。
 -->
 <meta http-equiv="Content-Security-Policy"
@@ -56,6 +56,6 @@
 
 <!-- 先把影片的媒體屬性換成可控的假值，再載入 bundle（模擬擴充功能注入） -->
 <script src="./stub-videos.js"></script>
-<script src="../../dist/content.js"></script>
+<script src="../../.output/chrome-mv3/content-scripts/content.js"></script>
 </body>
 </html>

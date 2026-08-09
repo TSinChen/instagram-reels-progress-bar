@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { pickActiveVideo, VideoTracker } from '../src/content/video-tracker.js';
+import { pickActiveVideo, VideoTracker } from '../lib/video-tracker.js';
 
 const viewport = { width: 1000, height: 800 };
 

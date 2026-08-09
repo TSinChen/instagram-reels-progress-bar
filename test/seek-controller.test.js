@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { SeekController } from '../src/content/seek-controller.js';
+import { SeekController } from '../lib/seek-controller.js';
 
 /** 收集所有排入的 rAF callback，測試中手動觸發。 */
 function makeFakeWindow() {
