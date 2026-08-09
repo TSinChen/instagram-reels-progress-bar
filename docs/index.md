@@ -27,7 +27,7 @@ Then open `chrome://extensions`, turn on Developer mode, choose **Load unpacked*
 
 ## Something broken?
 
-Instagram changes its site regularly. If the bar stops appearing or behaves oddly, please [open an issue](../../issues) rather than leaving a review — issues can actually be fixed.
+Instagram changes its site regularly. If the bar stops appearing or behaves oddly, please [open an issue](https://github.com/TSinChen/instagram-reels-progress-bar/issues) rather than leaving a review — issues can actually be fixed.
 
 Useful details to include: the page you were on (Reels, feed, a post, Explore), your Chrome version, and whether anything shows up in the console.
 
@@ -57,7 +57,7 @@ Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法�
 
 ## 壞掉了？
 
-Instagram 會不定期改版。如果進度條不見了或行為怪怪的，請[開一個 issue](../../issues)，不要直接留評論 —— issue 才修得到。
+Instagram 會不定期改版。如果進度條不見了或行為怪怪的，請[開一個 issue](https://github.com/TSinChen/instagram-reels-progress-bar/issues)，不要直接留評論 —— issue 才修得到。
 
 附上這些會很有幫助：你在哪個頁面（Reels、首頁、貼文、探索）、Chrome 版本、主控台有沒有訊息。
 

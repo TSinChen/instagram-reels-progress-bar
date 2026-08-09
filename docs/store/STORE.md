@@ -1,7 +1,7 @@
 # Chrome 線上應用程式商店 — 送審素材
 
 這份文件裡的每一段都可以直接複製貼上到開發人員資訊主頁的對應欄位。
-只剩一個 **[待填]**：隱私權政策的網址（第 6 節有步驟）。其餘欄位都已定案。
+所有欄位都已填妥，沒有待決定的項目。
 
 ---
 
@@ -10,7 +10,7 @@
 | 項目 | 說明 |
 |---|---|
 | 開發人員帳號 | 已完成。 |
-| GitHub repo 與 Pages | 隱私權政策、首頁、支援連結三個欄位都靠它。步驟見第 9 節。 |
+| 開啟 GitHub Pages | 隱私權政策、首頁、支援連結三個欄位都靠它。步驟見第 9 節。 |
 
 名稱、類別、顯示設定都已定案，其餘欄位照抄本文件即可。
 
@@ -252,11 +252,11 @@ site the feature applies to.
 
 ### 隱私權政策網址
 
-**[待填]** — 用 GitHub Pages。設定步驟見第 9 節，設好之後網址是：
+```
+https://tsinchen.github.io/instagram-reels-progress-bar/privacy
+```
 
-```
-https://<你的帳號>.github.io/<repo 名稱>/privacy
-```
+（Pages 還沒開的話先照第 9 節設定，設好這個網址就會通。）
 
 ---
 
@@ -290,9 +290,8 @@ npm run build
 ### 建 repo 並推上去
 
 ```bash
-git remote add origin https://github.com/<你的帳號>/<repo 名稱>.git
-git branch -M main
-git push -u origin main
+# remote 已經設好了，直接推
+git push -u origin master
 ```
 
 repo 要設成 **Public**。私有 repo 要開 Pages 需要 GitHub Pro。
@@ -311,9 +310,9 @@ repo 要設成 **Public**。私有 repo 要開 Pages 需要 GitHub Pro。
 
 | 商店欄位 | 填什麼 |
 |---|---|
-| 隱私權政策 | `https://<帳號>.github.io/<repo>/privacy` |
-| 首頁（選填但建議） | `https://<帳號>.github.io/<repo>/` |
-| 支援（選填但建議） | `https://github.com/<帳號>/<repo>/issues` |
+| 隱私權政策 | `https://tsinchen.github.io/instagram-reels-progress-bar/privacy` |
+| 首頁（選填但建議） | `https://tsinchen.github.io/instagram-reels-progress-bar/` |
+| 支援（選填但建議） | `https://github.com/TSinChen/instagram-reels-progress-bar/issues` |
 
 支援連結填 issues 是有意義的：這個擴充功能依賴 Instagram 的 DOM，Instagram 改版就可能壞掉。使用者有地方開 issue，就比較不會直接留一星評論——上架後的評分很難補救。
 
