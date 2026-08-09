@@ -130,6 +130,18 @@ describe('SeekController', () => {
     expect(controller.dragging).toBe(false);
   });
 
+  it('pointerup 後 hoverTime 跟上放開的位置', () => {
+    // 指標停在放開的位置，標籤就必須顯示那裡，
+    // 不能停留在拖曳開始前的舊 hoverTime
+    parts.hit.dispatchEvent(pointerEvent('pointerenter', 0));
+    parts.hit.dispatchEvent(pointerEvent('pointermove', 40));
+    expect(controller.hoverTime).toBe(4);
+    parts.hit.dispatchEvent(pointerEvent('pointerdown', 40));
+    parts.hit.dispatchEvent(pointerEvent('pointermove', 200));
+    parts.hit.dispatchEvent(pointerEvent('pointerup', 320));
+    expect(controller.hoverTime).toBe(32);
+  });
+
   it('pointerup 會釋放指標擷取', () => {
     parts.hit.dispatchEvent(pointerEvent('pointerdown', 100));
     parts.hit.dispatchEvent(pointerEvent('pointerup', 100));

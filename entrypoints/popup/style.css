@@ -1,0 +1,286 @@
+/*
+  深色介面。這個擴充功能活在影片上，播放器 chrome 本來就是深色，
+  popup 跟著走比較不突兀。強調色不是固定值，而是跟著使用者選的
+  進度條顏色（--accent 由 main.js 設定），讓選擇當下就有回饋。
+*/
+:root {
+  --surface: #0d0d10;
+  --panel: #17171c;
+  --line: #26262e;
+  --text: #f2f2f5;
+  --muted: #8a8a93;
+  --accent: #ffffff;
+
+  --pad: 14px;
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 300px;
+  margin: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 頁首與頁尾 ─────────────────────────────── */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px var(--pad);
+  border-bottom: 1px solid var(--line);
+}
+
+.bar-foot {
+  border-bottom: none;
+  border-top: 1px solid var(--line);
+  justify-content: space-between;
+}
+
+.mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #7b2ff7, #f7b733);
+  flex: none;
+}
+
+.wordmark {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── 預覽 ───────────────────────────────────── */
+
+.stage {
+  position: relative;
+  height: 116px;
+  margin: var(--pad);
+  border-radius: var(--radius);
+  overflow: hidden;
+  /* 由暗到亮，讓使用者看得出進度條在亮畫面上的可讀性 */
+  background:
+    radial-gradient(120% 140% at 12% 0%, #2a2140 0%, transparent 60%),
+    linear-gradient(135deg, #1b1b22 0%, #4a3550 45%, #c98a5e 100%);
+}
+
+.stage-hint {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+
+/* ── 設定項 ─────────────────────────────────── */
+
+.settings {
+  padding: 0 var(--pad) 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.field-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  margin: 0 0 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field-head .label,
+.field-row .label {
+  margin-bottom: 0;
+}
+
+.hint {
+  margin: 7px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* 數值讀數做成播放器時間碼的樣子 */
+.readout {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+/* ── 顏色選擇 ───────────────────────────────── */
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+
+.swatch:hover {
+  border-color: #3a3a45;
+}
+
+.swatch[aria-checked="true"] {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.chip {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.chip-white { background: #ffffff; }
+.chip-red { background: #ff0033; }
+.chip-blue { background: #0095f6; }
+
+.swatch-name { white-space: nowrap; }
+
+/* ── 滑桿 ───────────────────────────────────── */
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+}
+
+/* ── 開關 ───────────────────────────────────── */
+
+.switch {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 34px;
+  height: 20px;
+  margin: 0;
+  border-radius: 10px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background 140ms ease;
+  flex: none;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #6d6d78;
+  transition: transform 140ms ease, background 140ms ease;
+}
+
+.switch:checked {
+  background: var(--accent);
+}
+
+.switch:checked::after {
+  transform: translateX(14px);
+  /* 開啟時軌道是強調色，圓鈕改用底色才看得出對比 */
+  background: var(--surface);
+}
+
+/* ── 重設 ───────────────────────────────────── */
+
+.reset {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #3a3a45;
+}
+
+.reset:hover { color: var(--text); }
+
+.saved {
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.saved.is-shown { opacity: 1; }
+
+/* ── 無障礙 ─────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; }
+}

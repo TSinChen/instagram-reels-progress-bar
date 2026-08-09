@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>Popup 預覽</title>
+<!--
+  在一般網頁裡預覽 popup。不複製任何 popup 的標記或樣式，
+  而是抓真正的 entrypoints/popup/index.html 注入，再載入它的 main.js，
+  這樣預覽頁不會跟實際 popup 漂移。chrome API 用記憶體版本頂替。
+-->
+<style>
+  body { margin: 0; background: #3a3a3a; }
+  #frame {
+    width: 300px;
+    margin: 24px auto;
+    box-shadow: 0 12px 40px rgba(0,0,0,.5);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<script>
+  // 記憶體版的 chrome API，只實作 popup 會用到的部分
+  const memory = {};
+  const changeListeners = [];
+  window.chrome = {
+    i18n: {
+      getMessage: (key) => (window.__messages && window.__messages[key]?.message) || '',
+    },
+    storage: {
+      sync: {
+        async get(key) { return key in memory ? { [key]: memory[key] } : {}; },
+        async set(patch) {
+          const changes = {};
+          for (const [k, v] of Object.entries(patch)) {
+            changes[k] = { oldValue: memory[k], newValue: v };
+            memory[k] = v;
+          }
+          changeListeners.forEach((fn) => fn(changes));
+        },
+        onChanged: {
+          addListener: (fn) => changeListeners.push(fn),
+          removeListener: (fn) => {
+            const i = changeListeners.indexOf(fn);
+            if (i >= 0) changeListeners.splice(i, 1);
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<script type="module">
+  const locale = new URLSearchParams(location.search).get('locale') || 'en';
+  window.__messages = await (await fetch(`/public/_locales/${locale}/messages.json`)).json();
+
+  const html = await (await fetch('/entrypoints/popup/index.html')).text();
+  const parsed = new DOMParser().parseFromString(html, 'text/html');
+
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = '/entrypoints/popup/style.css';
+  document.head.appendChild(link);
+  await new Promise((r) => { link.onload = r; link.onerror = r; });
+
+  // popup 的 CSS 對 body 設寬度，這裡改成套在外框上
+  const frame = document.createElement('div');
+  frame.id = 'frame';
+  for (const node of [...parsed.body.children]) {
+    if (node.tagName === 'SCRIPT') continue;
+    frame.appendChild(node);
+  }
+  document.body.appendChild(frame);
+
+  await import('/entrypoints/popup/main.js');
+  window.__popupReady = true;
+</script>
+</body>
+</html>
