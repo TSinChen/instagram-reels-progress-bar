@@ -2,7 +2,7 @@
 
 為 Instagram 網頁版的 Reels 與影片加上一條可以拖曳的進度條。Instagram 原本沒有進度條，只能從頭看到尾；裝上之後可以直接跳到想看的位置。
 
-![進度條的 hover 狀態](docs/screenshots/bundle-hover.png)
+![進度條停在影片底部，顯示已播放時間與拖曳圓點](docs/assets/hero.png)
 
 ## 功能
 

@@ -3,9 +3,8 @@ description: Adds a draggable seek bar to Reels and videos on instagram.com.
 theme: jekyll-theme-cayman
 
 # 只發布首頁與隱私權政策。
-# store/ 是送審用的內部筆記、superpowers/ 是設計與實作文件、
-# screenshots/ 是開發期的驗證存證——都不需要變成公開網頁。
+# store/ 是送審用的內部筆記、superpowers/ 是設計與實作文件，
+# 都不需要變成公開網頁。
 exclude:
   - store/
   - superpowers/
-  - screenshots/

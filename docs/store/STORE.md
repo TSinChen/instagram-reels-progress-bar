@@ -274,9 +274,49 @@ https://<你的帳號>.github.io/<repo 名稱>/privacy
 不可能只存在一個地方。所以改名是一個指令：
 
 ```bash
-node tools/rename.mjs --check          # 先看目前名稱出現在哪 14 處
+node tools/rename.mjs --check          # 先看目前名稱出現在哪幾處
 node tools/rename.mjs "你的新名稱"      # 一次全部改掉，含 package.json 的 slug
 npm run build
 ```
 
 `package.json` 的 `name` 會跟著變成 slug，zip 檔名也會跟著變。
+
+---
+
+## 9. 建立 GitHub repo 與 Pages
+
+隱私權政策、首頁、支援連結三個商店欄位都靠這一步。
+
+### 建 repo 並推上去
+
+```bash
+git remote add origin https://github.com/<你的帳號>/<repo 名稱>.git
+git branch -M main
+git push -u origin main
+```
+
+repo 要設成 **Public**。私有 repo 要開 Pages 需要 GitHub Pro。
+
+### 開啟 Pages
+
+到 repo 的 **Settings → Pages**：
+
+- Source 選 **Deploy from a branch**
+- Branch 選 **main**，資料夾選 **/docs**
+- 按 Save，等一兩分鐘建置完成
+
+`docs/_config.yml` 已經設好，只會發布首頁與隱私權政策；送審筆記（`store/`）與設計文件（`superpowers/`）不會變成公開網頁——雖然它們在 repo 裡本來就看得到，只是不會被當成網站的一部分。
+
+### 三個商店欄位怎麼填
+
+| 商店欄位 | 填什麼 |
+|---|---|
+| 隱私權政策 | `https://<帳號>.github.io/<repo>/privacy` |
+| 首頁（選填但建議） | `https://<帳號>.github.io/<repo>/` |
+| 支援（選填但建議） | `https://github.com/<帳號>/<repo>/issues` |
+
+支援連結填 issues 是有意義的：這個擴充功能依賴 Instagram 的 DOM，Instagram 改版就可能壞掉。使用者有地方開 issue，就比較不會直接留一星評論——上架後的評分很難補救。
+
+### 上架之後
+
+商店網址拿到後，把它加到 `docs/index.md` 的 Install 段落，讓首頁的人可以一鍵安裝，不用自己 build。
