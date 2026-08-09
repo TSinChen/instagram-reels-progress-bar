@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reels Scrubber</title>
+<title>Instagram Reels Progress Bar</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
 <header class="bar">
   <span class="mark" aria-hidden="true"></span>
-  <h1 class="wordmark" data-i18n="popupTitle">Reels Scrubber</h1>
+  <h1 class="wordmark" data-i18n="popupTitle">Instagram Reels Progress Bar</h1>
 </header>
 
 <!--
@@ -24,21 +24,19 @@
 <main class="settings">
 
   <section class="field">
-    <h2 class="label" data-i18n="settingColor">Bar color</h2>
-    <div class="swatches" role="radiogroup" aria-labelledby="color-label" id="colors">
-      <button type="button" class="swatch" data-color="white" role="radio" aria-checked="true">
-        <span class="chip chip-white"></span>
-        <span class="swatch-name" data-i18n="settingColorWhite">White</span>
-      </button>
-      <button type="button" class="swatch" data-color="red" role="radio" aria-checked="false">
-        <span class="chip chip-red"></span>
-        <span class="swatch-name" data-i18n="settingColorRed">Red</span>
-      </button>
-      <button type="button" class="swatch" data-color="blue" role="radio" aria-checked="false">
-        <span class="chip chip-blue"></span>
-        <span class="swatch-name" data-i18n="settingColorBlue">Blue</span>
-      </button>
+    <div class="field-head">
+      <h2 class="label"><label for="thickness" data-i18n="settingThickness">Bar thickness</label></h2>
+      <output class="readout" id="thickness-value" for="thickness">3px</output>
     </div>
+    <input type="range" id="thickness" min="2" max="8" step="1" value="3">
+  </section>
+
+  <section class="field">
+    <div class="field-head">
+      <h2 class="label"><label for="handle" data-i18n="settingHandle">Handle size</label></h2>
+      <output class="readout" id="handle-value" for="handle">12px</output>
+    </div>
+    <input type="range" id="handle" min="8" max="20" step="1" value="12">
   </section>
 
   <section class="field">
@@ -48,7 +46,7 @@
     </div>
     <input type="range" id="hitzone" min="8" max="32" step="1" value="16">
     <p class="hint" data-i18n="settingHitZoneHint">
-      The strip at the bottom of the video that the scrubber takes over.
+      The strip at the bottom of the video that the progress bar takes over.
     </p>
   </section>
 

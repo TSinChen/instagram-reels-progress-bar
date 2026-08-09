@@ -1,11 +1,9 @@
 /*
   深色介面。這個擴充功能活在影片上，播放器 chrome 本來就是深色，
-  popup 跟著走比較不突兀。強調色不是固定值，而是跟著使用者選的
-  進度條顏色（--accent 由 main.js 設定），讓選擇當下就有回饋。
+  popup 跟著走比較不突兀。強調色用白色，跟進度條本身一致。
 */
 :root {
   --surface: #0d0d10;
-  --panel: #17171c;
   --line: #26262e;
   --text: #f2f2f5;
   --muted: #8a8a93;
@@ -135,51 +133,6 @@ body {
   letter-spacing: 0.08em;
   color: var(--text);
 }
-
-/* ── 顏色選擇 ───────────────────────────────── */
-
-.swatches {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-
-.swatch {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 9px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--panel);
-  color: var(--muted);
-  font: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  transition: border-color 120ms ease, color 120ms ease;
-}
-
-.swatch:hover {
-  border-color: #3a3a45;
-}
-
-.swatch[aria-checked="true"] {
-  border-color: var(--accent);
-  color: var(--text);
-}
-
-.chip {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  flex: none;
-}
-
-.chip-white { background: #ffffff; }
-.chip-red { background: #ff0033; }
-.chip-blue { background: #0095f6; }
-
-.swatch-name { white-space: nowrap; }
 
 /* ── 滑桿 ───────────────────────────────────── */
 

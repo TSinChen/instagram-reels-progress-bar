@@ -1,4 +1,4 @@
-# Privacy Policy — Reels Scrubber
+# Privacy Policy — Instagram Reels Progress Bar
 
 _Last updated: 2026-08-10_
 
@@ -8,15 +8,16 @@ This extension does not collect, store, transmit, or sell any personal data. The
 
 ## What the extension does
 
-Reels Scrubber draws a draggable seek bar over videos on `instagram.com` so you can jump to any point in a video. It reads the current playback position and duration of the video element on the page in order to draw the bar, and it writes a new playback position when you drag it. That is the entire interaction with the page.
+Instagram Reels Progress Bar draws a draggable seek bar over videos on `instagram.com` so you can jump to any point in a video. It reads the current playback position and duration of the video element on the page in order to draw the bar, and it writes a new playback position when you drag it. That is the entire interaction with the page.
 
 ## What is stored
 
-The extension stores exactly three appearance preferences using Chrome's `storage.sync` API:
+The extension stores exactly four appearance preferences using Chrome's `storage.sync` API:
 
 | Setting | Values |
 |---|---|
-| Bar color | `white`, `red`, or `blue` |
+| Bar thickness | a number between 2 and 8 |
+| Handle size | a number between 8 and 20 |
 | Hover area height | a number between 8 and 32 |
 | Show time label | `true` or `false` |
 
@@ -34,7 +35,7 @@ These are stored by Chrome in your own browser profile and, if you have Chrome S
 
 | Permission | Why |
 |---|---|
-| `storage` | To remember the three appearance settings above. |
+| `storage` | To remember the four appearance settings above. |
 | Host access to `instagram.com` | The extension needs to run on Instagram pages to find the video element and draw the seek bar over it. It runs on no other website. |
 
 ## Network activity
@@ -51,7 +52,7 @@ Questions about this policy: sinin60076@gmail.com
 
 ---
 
-# 隱私權政策 — Reels Scrubber
+# 隱私權政策 — Instagram Reels Progress Bar
 
 _最後更新：2026-08-10_
 
@@ -61,15 +62,16 @@ _最後更新：2026-08-10_
 
 ## 這個擴充功能做什麼
 
-Reels Scrubber 在 `instagram.com` 的影片上畫一條可拖曳的進度條，讓你跳到影片的任意位置。它會讀取頁面上影片元素的目前播放位置與總長度來畫這條進度條，並在你拖曳時寫入新的播放位置。與頁面的互動僅止於此。
+Instagram Reels Progress Bar 在 `instagram.com` 的影片上畫一條可拖曳的進度條，讓你跳到影片的任意位置。它會讀取頁面上影片元素的目前播放位置與總長度來畫這條進度條，並在你拖曳時寫入新的播放位置。與頁面的互動僅止於此。
 
 ## 儲存了什麼
 
-擴充功能使用 Chrome 的 `storage.sync` 儲存三項外觀設定：
+擴充功能使用 Chrome 的 `storage.sync` 儲存四項外觀設定：
 
 | 設定 | 可能的值 |
 |---|---|
-| 進度條顏色 | `white`、`red` 或 `blue` |
+| 進度條粗細 | 2 到 8 之間的數字 |
+| 拖曳圓點大小 | 8 到 20 之間的數字 |
 | 感應區高度 | 8 到 32 之間的數字 |
 | 顯示時間標籤 | `true` 或 `false` |
 
@@ -87,7 +89,7 @@ Reels Scrubber 在 `instagram.com` 的影片上畫一條可拖曳的進度條，
 
 | 權限 | 用途 |
 |---|---|
-| `storage` | 記住上述三項外觀設定。 |
+| `storage` | 記住上述四項外觀設定。 |
 | `instagram.com` 的網站存取權 | 擴充功能需要在 Instagram 頁面上執行，才能找到影片元素並把進度條畫上去。它不會在其他任何網站執行。 |
 
 ## 網路行為

@@ -1,10 +1,14 @@
 import { describe, it, expect, vi } from 'vitest';
 import {
   DEFAULTS,
-  COLOR_PRESETS,
   STORAGE_KEY,
   HIT_ZONE_MIN,
   HIT_ZONE_MAX,
+  THICKNESS_MIN,
+  THICKNESS_MAX,
+  HANDLE_MIN,
+  HANDLE_MAX,
+  hoverThicknessFor,
   normalizeSettings,
   cssVarsFor,
   createSettingsStore,
@@ -12,7 +16,7 @@ import {
 
 /** 做一個假的 storage area，行為比照 chrome.storage.sync。 */
 function fakeArea(initial = {}) {
-  let data = { ...initial };
+  const data = { ...initial };
   const listeners = [];
   return {
     async get(key) {
@@ -38,6 +42,13 @@ function fakeArea(initial = {}) {
   };
 }
 
+describe('hoverThicknessFor', () => {
+  it('hover 高度是閒置高度的兩倍', () => {
+    expect(hoverThicknessFor(3)).toBe(6);
+    expect(hoverThicknessFor(8)).toBe(16);
+  });
+});
+
 describe('normalizeSettings', () => {
   it('沒有輸入時回傳預設值', () => {
     expect(normalizeSettings(undefined)).toEqual(DEFAULTS);
@@ -49,18 +60,6 @@ describe('normalizeSettings', () => {
 
   it('不是物件的輸入回傳預設值', () => {
     expect(normalizeSettings('壞掉的資料')).toEqual(DEFAULTS);
-  });
-
-  it('保留合法的顏色', () => {
-    expect(normalizeSettings({ color: 'red' }).color).toBe('red');
-  });
-
-  it('不認識的顏色退回預設', () => {
-    expect(normalizeSettings({ color: 'chartreuse' }).color).toBe(DEFAULTS.color);
-  });
-
-  it('不會把 Object.prototype 上的名稱當成合法顏色', () => {
-    expect(normalizeSettings({ color: 'toString' }).color).toBe(DEFAULTS.color);
   });
 
   it('感應區高度低於下限會夾住', () => {
@@ -79,8 +78,20 @@ describe('normalizeSettings', () => {
     expect(normalizeSettings({ hitZoneHeight: '20' }).hitZoneHeight).toBe(20);
   });
 
-  it('感應區高度是 NaN 時退回預設', () => {
+  it('感應區高度不是數字時退回預設', () => {
     expect(normalizeSettings({ hitZoneHeight: 'abc' }).hitZoneHeight).toBe(DEFAULTS.hitZoneHeight);
+  });
+
+  it('進度條粗細會夾在範圍內', () => {
+    expect(normalizeSettings({ barThickness: 0 }).barThickness).toBe(THICKNESS_MIN);
+    expect(normalizeSettings({ barThickness: 99 }).barThickness).toBe(THICKNESS_MAX);
+    expect(normalizeSettings({ barThickness: 5 }).barThickness).toBe(5);
+  });
+
+  it('圓點大小會夾在範圍內', () => {
+    expect(normalizeSettings({ handleSize: 2 }).handleSize).toBe(HANDLE_MIN);
+    expect(normalizeSettings({ handleSize: 99 }).handleSize).toBe(HANDLE_MAX);
+    expect(normalizeSettings({ handleSize: 14 }).handleSize).toBe(14);
   });
 
   it('showLabel 只接受布林值', () => {
@@ -89,21 +100,21 @@ describe('normalizeSettings', () => {
   });
 
   it('多餘的欄位會被丟掉', () => {
-    expect(normalizeSettings({ color: 'blue', 惡意欄位: 1 })).toEqual({
-      color: 'blue',
-      hitZoneHeight: DEFAULTS.hitZoneHeight,
-      showLabel: DEFAULTS.showLabel,
+    const result = normalizeSettings({ barThickness: 4, 惡意欄位: 1, color: 'red' });
+    expect(result).toEqual({ ...DEFAULTS, barThickness: 4 });
+    expect('color' in result).toBe(false);
+  });
+
+  it('舊版存下來的 color 欄位不會造成問題', () => {
+    // 顏色設定已經拿掉，storage 裡可能還留著舊值
+    expect(normalizeSettings({ color: 'blue', hitZoneHeight: 20 })).toEqual({
+      ...DEFAULTS,
+      hitZoneHeight: 20,
     });
   });
 });
 
 describe('cssVarsFor', () => {
-  it('依顏色設定產生對應色票', () => {
-    const vars = cssVarsFor({ color: 'red' });
-    expect(vars['--igrc-color-played']).toBe(COLOR_PRESETS.red.played);
-    expect(vars['--igrc-color-handle']).toBe(COLOR_PRESETS.red.handle);
-  });
-
   it('感應區高度帶上 px 單位', () => {
     expect(cssVarsFor({ hitZoneHeight: 24 })['--igrc-hit-zone']).toBe('24px');
   });
@@ -116,10 +127,29 @@ describe('cssVarsFor', () => {
     expect(cssVarsFor({ showLabel: true })['--igrc-label-display']).toBe('block');
   });
 
+  it('粗細同時產生閒置與 hover 兩個值', () => {
+    const vars = cssVarsFor({ barThickness: 5 });
+    expect(vars['--igrc-bar-idle']).toBe('5px');
+    expect(vars['--igrc-bar-hover']).toBe('10px');
+  });
+
+  it('圓點大小帶上 px 單位', () => {
+    expect(cssVarsFor({ handleSize: 18 })['--igrc-handle']).toBe('18px');
+  });
+
   it('輸入不合法時仍產生一組完整且合法的變數', () => {
-    const vars = cssVarsFor({ color: '???', hitZoneHeight: -5 });
-    expect(vars['--igrc-color-played']).toBe(COLOR_PRESETS.white.played);
+    const vars = cssVarsFor({ hitZoneHeight: -5, barThickness: 'x', handleSize: 999 });
     expect(vars['--igrc-hit-zone']).toBe(`${HIT_ZONE_MIN}px`);
+    expect(vars['--igrc-bar-idle']).toBe(`${DEFAULTS.barThickness}px`);
+    expect(vars['--igrc-handle']).toBe(`${HANDLE_MAX}px`);
+  });
+
+  it('每一個變數都有值，不會漏掉造成沒有樣式', () => {
+    const vars = cssVarsFor({});
+    for (const [name, value] of Object.entries(vars)) {
+      expect(value, name).toBeTruthy();
+    }
+    expect(Object.keys(vars).length).toBe(5);
   });
 });
 
@@ -130,18 +160,18 @@ describe('createSettingsStore', () => {
   });
 
   it('載入已儲存的設定', async () => {
-    const area = fakeArea({ [STORAGE_KEY]: { color: 'blue', hitZoneHeight: 20, showLabel: false } });
-    const store = createSettingsStore(area);
-    expect(await store.load()).toEqual({ color: 'blue', hitZoneHeight: 20, showLabel: false });
+    const saved = { hitZoneHeight: 20, showLabel: false, barThickness: 6, handleSize: 16 };
+    const store = createSettingsStore(fakeArea({ [STORAGE_KEY]: saved }));
+    expect(await store.load()).toEqual(saved);
   });
 
   it('載入時會清理壞掉的資料', async () => {
-    const area = fakeArea({ [STORAGE_KEY]: { color: 'nope', hitZoneHeight: 9999 } });
+    const area = fakeArea({ [STORAGE_KEY]: { hitZoneHeight: 9999, barThickness: -3 } });
     const store = createSettingsStore(area);
     expect(await store.load()).toEqual({
-      color: DEFAULTS.color,
+      ...DEFAULTS,
       hitZoneHeight: HIT_ZONE_MAX,
-      showLabel: DEFAULTS.showLabel,
+      barThickness: THICKNESS_MIN,
     });
   });
 
@@ -154,15 +184,20 @@ describe('createSettingsStore', () => {
   it('儲存時會先正規化再寫入', async () => {
     const area = fakeArea();
     const store = createSettingsStore(area);
-    const saved = await store.save({ color: 'red', hitZoneHeight: 100, showLabel: false });
-    expect(saved).toEqual({ color: 'red', hitZoneHeight: HIT_ZONE_MAX, showLabel: false });
+    const saved = await store.save({ hitZoneHeight: 100, showLabel: false, handleSize: 1 });
+    expect(saved).toEqual({
+      ...DEFAULTS,
+      hitZoneHeight: HIT_ZONE_MAX,
+      showLabel: false,
+      handleSize: HANDLE_MIN,
+    });
     expect(area._raw()[STORAGE_KEY]).toEqual(saved);
   });
 
   it('儲存拋錯時不會讓呼叫端炸掉', async () => {
     const broken = { get: async () => ({}), set: () => Promise.reject(new Error('配額用完')) };
     const store = createSettingsStore(broken);
-    await expect(store.save({ color: 'red' })).resolves.toMatchObject({ color: 'red' });
+    await expect(store.save({ barThickness: 5 })).resolves.toMatchObject({ barThickness: 5 });
   });
 
   it('設定變更時通知監聽者', async () => {
@@ -170,8 +205,8 @@ describe('createSettingsStore', () => {
     const store = createSettingsStore(area);
     const seen = vi.fn();
     store.watch(seen);
-    await store.save({ color: 'blue' });
-    expect(seen).toHaveBeenCalledWith(expect.objectContaining({ color: 'blue' }));
+    await store.save({ barThickness: 7 });
+    expect(seen).toHaveBeenCalledWith(expect.objectContaining({ barThickness: 7 }));
   });
 
   it('其他鍵的變更不會觸發通知', async () => {
@@ -179,7 +214,7 @@ describe('createSettingsStore', () => {
     const store = createSettingsStore(area);
     const seen = vi.fn();
     store.watch(seen);
-    await area.set({ '其他東西': 1 });
+    await area.set({ 其他東西: 1 });
     expect(seen).not.toHaveBeenCalled();
   });
 
@@ -191,14 +226,14 @@ describe('createSettingsStore', () => {
     expect(area._listenerCount()).toBe(1);
     unwatch();
     expect(area._listenerCount()).toBe(0);
-    await store.save({ color: 'red' });
+    await store.save({ barThickness: 4 });
     expect(seen).not.toHaveBeenCalled();
   });
 
   it('沒有 storage 可用時整個 store 退化成預設值且不拋錯', async () => {
     const store = createSettingsStore(null);
     expect(await store.load()).toEqual(DEFAULTS);
-    expect(await store.save({ color: 'red' })).toMatchObject({ color: 'red' });
+    expect(await store.save({ barThickness: 5 })).toMatchObject({ barThickness: 5 });
     expect(() => store.watch(() => {})()).not.toThrow();
   });
 });

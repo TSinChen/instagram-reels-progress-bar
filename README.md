@@ -1,4 +1,4 @@
-# Reels Scrubber
+# Instagram Reels Progress Bar
 
 為 Instagram 網頁版的 Reels 與影片加上一條可以拖曳的進度條。Instagram 原本沒有進度條，只能從頭看到尾；裝上之後可以直接跳到想看的位置。
 
@@ -11,7 +11,7 @@
 - 拖曳時標籤即時顯示「放開會跳到哪」
 - 顯示已緩衝範圍，一眼看出拖到哪裡是安全的
 - 生效頁面：Reels 專頁 `/reels/`、首頁 feed、貼文燈箱 `/p/`、探索頁 `/explore/`
-- popup 設定頁：進度條顏色、感應區高度、時間標籤開關，改完立刻套用到所有開著的分頁
+- popup 設定頁：進度條粗細、圓點大小、感應區高度、時間標籤開關，改完立刻套用到所有開著的分頁
 - 中英雙語
 
 ## 安裝
@@ -33,7 +33,7 @@ npm run build
 ### 打包上架
 
 ```bash
-npm run zip     # 產出 .output/reels-scrubber-1.0.0-chrome.zip
+npm run zip     # 產出 .output/instagram-reels-progress-bar-1.0.0-chrome.zip
 ```
 
 上架所需的全部素材與逐欄填寫說明在 `docs/store/STORE.md`。
@@ -48,19 +48,22 @@ npm run zip     # 產出 .output/reels-scrubber-1.0.0-chrome.zip
 - [ ] 點開任一貼文燈箱（`/p/...`），進度條正常出現
 - [ ] 探索頁點開影片，進度條正常出現
 - [ ] 小縮圖上不會出現進度條
-- [ ] 點工具列圖示開設定，換顏色後 Instagram 分頁立刻跟著變
+- [ ] 點工具列圖示開設定，拉粗進度條後 Instagram 分頁立刻跟著變
 
 ## 設定
 
 點工具列圖示即可調整，不需要改程式碼：
 
-| 設定 | 預設 | 說明 |
-|---|---|---|
-| 進度條顏色 | 白色 | 白 / 紅 / Instagram 藍 |
-| 感應區高度 | 16px | 影片底部由進度條接管的範圍。會擋到 Instagram 按鈕就調小 |
-| 顯示時間標籤 | 開 | 關掉就只剩進度條本身 |
+| 設定 | 預設 | 範圍 | 說明 |
+|---|---|---|---|
+| 進度條粗細 | 3px | 2–8px | 閒置時的高度。hover 時自動變成兩倍 |
+| 拖曳圓點大小 | 12px | 8–20px | 圓點直徑 |
+| 感應區高度 | 16px | 8–32px | 影片底部由進度條接管的範圍。會擋到 Instagram 按鈕就調小 |
+| 顯示時間標籤 | 開 | — | 關掉就只剩進度條本身 |
 
-想改的東西不在上面（進度條粗細、圓點大小、影片選取門檻），在 `lib/config.js`，改完 `npm run build`。
+進度條變粗時，時間標籤會自動往上讓位，不會被壓到。
+
+顏色固定白色，不開放調整 —— 深色系在深色影片上會完全看不見，開放選色只會製造「裝了但看不到」的客訴。想換色改 `lib/config.js` 的 `COLOR_PLAYED`，改完 `npm run build`。
 
 ## 已知限制
 
@@ -72,7 +75,7 @@ npm run zip     # 產出 .output/reels-scrubber-1.0.0-chrome.zip
 
 ```bash
 npm install
-npm test           # 147 個單元測試
+npm test           # 151 個單元測試
 npm run test:watch
 npm run dev        # WXT 開發模式，含 HMR
 npm run build
@@ -112,7 +115,7 @@ node tools/serve.mjs
 | `entrypoints/popup/` | 設定頁。預覽區掛的是真正的 `ProgressBar`，可以實際拖曳 |
 | `lib/main.js` | 生命週期接線與 rAF 渲染迴圈 |
 | `lib/config.js` | 不開放給使用者調的常數 |
-| `lib/settings.js` | 色票、正規化、CSS 變數轉換、storage 包裝 |
+| `lib/settings.js` | 設定的正規化、CSS 變數轉換、storage 包裝 |
 | `lib/geometry.js` | 純幾何：可視面積、指標位置換算 |
 | `lib/time-format.js` | 秒數格式化 |
 | `lib/media-state.js` | 緩衝終點、卡頓判定 |

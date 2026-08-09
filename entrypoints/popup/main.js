@@ -1,7 +1,7 @@
 import { ProgressBar } from '../../lib/progress-bar.js';
 import { SeekController } from '../../lib/seek-controller.js';
 import { buildRenderState } from '../../lib/main.js';
-import { createSettingsStore, DEFAULTS, COLOR_PRESETS } from '../../lib/settings.js';
+import { createSettingsStore, DEFAULTS } from '../../lib/settings.js';
 
 // ── i18n ──────────────────────────────────────────────
 for (const el of document.querySelectorAll('[data-i18n]')) {
@@ -35,7 +35,7 @@ function frame() {
   bar.syncTo(stage.getBoundingClientRect());
   const state = buildRenderState(fakeVideo, seek, Date.now());
   // 預覽固定顯示 hover 狀態：使用者在這裡調的就是那個樣子，
-  // 給他看閒置的 3px 細線沒有意義。
+  // 給他看閒置的細線沒有意義。
   state.active = true;
   bar.render(state);
 }
@@ -51,29 +51,33 @@ setInterval(() => {
 // ── 設定 ──────────────────────────────────────────────
 const store = createSettingsStore(chrome.storage.sync);
 
-const colorsEl = document.getElementById('colors');
-const hitzoneEl = document.getElementById('hitzone');
-const hitzoneValueEl = document.getElementById('hitzone-value');
-const showLabelEl = document.getElementById('showlabel');
-const resetEl = document.getElementById('reset');
 const savedEl = document.getElementById('saved');
+const showLabelEl = document.getElementById('showlabel');
+
+/**
+ * 三個滑桿的共通處理：拖曳時只更新畫面，放開才寫 storage。
+ * 每個像素都打一次 storage 會撞到寫入頻率上限。
+ */
+const SLIDERS = [
+  { key: 'barThickness', input: 'thickness', readout: 'thickness-value' },
+  { key: 'handleSize', input: 'handle', readout: 'handle-value' },
+  { key: 'hitZoneHeight', input: 'hitzone', readout: 'hitzone-value' },
+].map((slider) => ({
+  ...slider,
+  inputEl: document.getElementById(slider.input),
+  readoutEl: document.getElementById(slider.readout),
+}));
 
 let current = { ...DEFAULTS };
 
 /** 把設定畫到控制項與預覽上。不寫 storage。 */
 function paint(settings) {
   current = settings;
-
-  for (const btn of colorsEl.querySelectorAll('.swatch')) {
-    btn.setAttribute('aria-checked', String(btn.dataset.color === settings.color));
+  for (const { key, inputEl, readoutEl } of SLIDERS) {
+    inputEl.value = String(settings[key]);
+    readoutEl.textContent = `${settings[key]}px`;
   }
-  // UI 的強調色跟著使用者選的進度條顏色，選了就立刻有回饋
-  document.documentElement.style.setProperty('--accent', COLOR_PRESETS[settings.color].played);
-
-  hitzoneEl.value = String(settings.hitZoneHeight);
-  hitzoneValueEl.textContent = `${settings.hitZoneHeight}px`;
   showLabelEl.checked = settings.showLabel;
-
   bar.applySettings(settings);
 }
 
@@ -91,23 +95,19 @@ async function update(patch) {
   flashSaved();
 }
 
-colorsEl.addEventListener('click', (event) => {
-  const btn = event.target.closest('.swatch');
-  if (btn) update({ color: btn.dataset.color });
-});
-
-// 拖曳滑桿時只更新畫面，放開才寫 storage，避免每個像素都打一次 storage
-hitzoneEl.addEventListener('input', () => {
-  paint({ ...current, hitZoneHeight: Number(hitzoneEl.value) });
-});
-hitzoneEl.addEventListener('change', () => {
-  update({ hitZoneHeight: Number(hitzoneEl.value) });
-});
+for (const { key, inputEl } of SLIDERS) {
+  inputEl.addEventListener('input', () => {
+    paint({ ...current, [key]: Number(inputEl.value) });
+  });
+  inputEl.addEventListener('change', () => {
+    update({ [key]: Number(inputEl.value) });
+  });
+}
 
 showLabelEl.addEventListener('change', () => {
   update({ showLabel: showLabelEl.checked });
 });
 
-resetEl.addEventListener('click', () => update({ ...DEFAULTS }));
+document.getElementById('reset').addEventListener('click', () => update({ ...DEFAULTS }));
 
 store.load().then(paint);

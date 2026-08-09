@@ -1,6 +1,6 @@
 {
   "extName": {
-    "message": "Reels Scrubber",
+    "message": "Instagram Reels Progress Bar",
     "description": "擴充功能名稱，商店與瀏覽器都會顯示。"
   },
   "extDescription": {
@@ -8,19 +8,7 @@
     "description": "Chrome 線上應用程式商店的簡短說明。"
   },
   "popupTitle": {
-    "message": "Reels Scrubber"
-  },
-  "settingColor": {
-    "message": "進度條顏色"
-  },
-  "settingColorWhite": {
-    "message": "白色"
-  },
-  "settingColorRed": {
-    "message": "紅色"
-  },
-  "settingColorBlue": {
-    "message": "藍色"
+    "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
     "message": "感應區高度"
@@ -39,5 +27,11 @@
   },
   "previewHint": {
     "message": "拖看看"
+  },
+  "settingThickness": {
+    "message": "進度條粗細"
+  },
+  "settingHandle": {
+    "message": "拖曳圓點大小"
   }
 }

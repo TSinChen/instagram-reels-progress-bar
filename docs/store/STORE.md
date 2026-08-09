@@ -1,7 +1,7 @@
 # Chrome 線上應用程式商店 — 送審素材
 
 這份文件裡的每一段都可以直接複製貼上到開發人員資訊主頁的對應欄位。
-標記 **[待決定]** 的地方需要你先做決定。
+只剩一個 **[待填]**：隱私權政策的網址（第 6 節有步驟）。其餘欄位都已定案。
 
 ---
 
@@ -10,10 +10,11 @@
 | 項目 | 說明 |
 |---|---|
 | 開發人員帳號 | 到 [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) 註冊，一次性費用 5 美元，需要 Google 帳號。 |
-| 隱私權政策網址 | 商店要求提供可公開存取的網址。把 `docs/store/PRIVACY.md` 發布到 GitHub Pages 或 Gist，把網址填進去。 |
-| 名稱定案 | 見下方 **[待決定] 名稱**。 |
+| 隱私權政策網址 | 把 `docs/store/PRIVACY.md` 貼成公開的 GitHub Gist，網址填進第 6 節。步驟見那一節。 |
 
-打包指令（產出 `.output/reels-scrubber-1.0.0-chrome.zip`）：
+名稱、類別、顯示設定都已定案，其餘欄位照抄本文件即可。
+
+打包指令（產出 `.output/instagram-reels-progress-bar-1.0.0-chrome.zip`）：
 
 ```bash
 npm run zip
@@ -21,13 +22,18 @@ npm run zip
 
 ---
 
-## 1. [待決定] 名稱
+## 1. 名稱
 
-目前 `public/_locales/*/messages.json` 的 `extName` 填的是 **Reels Scrubber**。
+**Instagram Reels Progress Bar**（已定案）
 
-要換名字改那兩個檔案的 `extName` 就好，其他地方都會跟著變。
+名稱帶 Instagram 字樣，可搜尋性好，代價是屬於事後可能被 Meta 提出商標申訴而下架的類型。這是已知且接受的取捨。
 
-商標上的取捨我在對話裡說過，這裡只留結論：名稱帶 Instagram 字樣可搜尋性較好，但屬於事後被檢舉下架的風險；中性名稱沒有這個問題。
+真的收到通知需要改名時，改名是一個指令，不用手動翻檔案：
+
+```bash
+node tools/rename.mjs "新名稱"
+npm run build
+```
 
 ---
 
@@ -38,7 +44,7 @@ npm run zip
 | 類別 | Functionality & UI |
 | 語言 | English（主要）、中文（繁體） |
 | 版本 | 1.0.0 |
-| 顯示設定 | **[待決定]** 公開（Public）或以連結分享（Unlisted） |
+| 顯示設定 | 公開（Public） |
 
 ---
 
@@ -67,8 +73,8 @@ Adds a draggable seek bar to Reels and videos on instagram.com, so you can jump 
 
 ```
 Instagram's web player has no seek bar. You can't skip ahead, you can't go back to
-the part you missed, and you can't tell how long a video is. Reels Scrubber adds the
-bar that should have been there.
+the part you missed, and you can't tell how long a video is. This extension adds
+the bar that should have been there.
 
 WHAT YOU GET
 
@@ -80,8 +86,8 @@ WHAT YOU GET
 
 SETTINGS
 
-Click the toolbar icon to change the bar color (white, red or blue), adjust how tall
-the hover area is, or turn the time label off. Changes apply immediately to every
+Click the toolbar icon to adjust the bar thickness, the handle size, how tall the
+hover area is, or to turn the time label off. Changes apply immediately to every
 Instagram tab you have open.
 
 HOW IT WORKS
@@ -94,12 +100,12 @@ Instagram changes its layout.
 PRIVACY
 
 No data collection of any kind. No analytics, no telemetry, no servers, no network
-requests. The only thing stored is your three appearance settings, kept in your own
+requests. The only thing stored is your four appearance settings, kept in your own
 browser profile.
 
 GOOD TO KNOW
 
-• The bottom 16 pixels of the video become the scrubber's hover area, so clicks
+• The bottom 16 pixels of the video become the bar's hover area, so clicks
   there go to the bar instead of Instagram. You can shrink this in settings.
 • Jumping to a part of the video that hasn't downloaded yet may stall, because
   Instagram's own player decides whether to fetch it. The buffered range is drawn
@@ -113,7 +119,7 @@ Not affiliated with, endorsed by, or sponsored by Instagram or Meta.
 
 ```
 Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法回去看漏掉的片段，
-也不知道影片到底多長。Reels Scrubber 把本來就該有的那條進度條補上。
+也不知道影片到底多長。這個擴充功能把本來就該有的那條進度條補上。
 
 功能
 
@@ -124,7 +130,7 @@ Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法�
 
 設定
 
-點工具列的圖示即可更換進度條顏色（白、紅、藍）、調整感應區高度，
+點工具列的圖示即可調整進度條粗細、拖曳圓點大小、感應區高度，
 或關掉時間標籤。改完立刻套用到所有開著的 Instagram 分頁。
 
 運作方式
@@ -136,7 +142,7 @@ Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法�
 隱私
 
 不蒐集任何資料。沒有分析工具、沒有遙測、沒有伺服器、不發任何網路請求。
-唯一儲存的是你的三項外觀設定，存在你自己的瀏覽器設定檔裡。
+唯一儲存的是你的四項外觀設定，存在你自己的瀏覽器設定檔裡。
 
 使用前須知
 
@@ -203,9 +209,9 @@ instagram.com so the user can jump to any point in a video. It does nothing else
 **`storage`**
 
 ```
-Stores three appearance preferences chosen by the user: the bar color, the height
-of the hover area, and whether the time label is shown. No user content, browsing
-data, or personal information is stored.
+Stores four appearance preferences chosen by the user: the thickness of the bar,
+the size of the drag handle, the height of the hover area, and whether the time
+label is shown. No user content, browsing data, or personal information is stored.
 ```
 
 **主機權限 `https://*.instagram.com/*`**
@@ -244,9 +250,14 @@ site the feature applies to.
 
 ### 隱私權政策網址
 
-**[待決定]** — 把 `docs/store/PRIVACY.md` 發布出去後填入網址。
+**[待填]** — 用公開的 GitHub Gist：
 
-最省事的做法是開一個公開的 GitHub Gist 貼上內容，網址就能用。
+1. 到 [gist.github.com](https://gist.github.com) 新增一個 Gist
+2. 檔名填 `PRIVACY.md`，內容整份貼上 `docs/store/PRIVACY.md`
+3. 按 **Create public gist**（不能選 secret，商店要能公開存取）
+4. 複製網址列的網址填進這一欄
+
+Gist 的網址長這樣：`https://gist.github.com/<你的帳號>/<一串英數>`
 
 ---
 

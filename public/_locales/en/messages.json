@@ -1,6 +1,6 @@
 {
   "extName": {
-    "message": "Reels Scrubber",
+    "message": "Instagram Reels Progress Bar",
     "description": "Extension name shown in the store and the browser."
   },
   "extDescription": {
@@ -8,25 +8,13 @@
     "description": "Short description shown in the Chrome Web Store."
   },
   "popupTitle": {
-    "message": "Reels Scrubber"
-  },
-  "settingColor": {
-    "message": "Bar color"
-  },
-  "settingColorWhite": {
-    "message": "White"
-  },
-  "settingColorRed": {
-    "message": "Red"
-  },
-  "settingColorBlue": {
-    "message": "Blue"
+    "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
     "message": "Hover area height"
   },
   "settingHitZoneHint": {
-    "message": "The strip at the bottom of the video that the scrubber takes over. Lower it if it gets in the way of Instagram's own buttons."
+    "message": "The strip at the bottom of the video that the progress bar takes over. Lower it if it gets in the way of Instagram's own buttons."
   },
   "settingShowLabel": {
     "message": "Show time label"
@@ -39,5 +27,11 @@
   },
   "previewHint": {
     "message": "Drag it"
+  },
+  "settingThickness": {
+    "message": "Bar thickness"
+  },
+  "settingHandle": {
+    "message": "Handle size"
   }
 }
