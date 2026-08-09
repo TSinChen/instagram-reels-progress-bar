@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>Instagram 版面模擬 — 進度條驗證</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .section { padding: 24px; border-bottom: 1px solid #262626; }
+  .section h2 { font-size: 14px; font-weight: 600; color: #a8a8a8; margin: 0 0 16px; }
+
+  /* 版面 A：全螢幕直式 Reels */
+  .reels { display: flex; justify-content: center; }
+  .reels video {
+    width: 380px;
+    height: 675px;
+    background: linear-gradient(160deg, #3a1c71, #d76d77, #ffaf7b);
+    object-fit: cover;
+  }
+
+  /* 版面 B：首頁 feed，多支影片可捲動 */
+  .feed { max-width: 470px; margin: 0 auto; }
+  .post { margin-bottom: 32px; }
+  .post-header { display: flex; align-items: center; gap: 10px; padding: 10px 4px; font-size: 13px; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #444; }
+  .feed video {
+    width: 100%;
+    height: 585px;
+    display: block;
+    background: linear-gradient(200deg, #0f2027, #203a43, #2c5364);
+    object-fit: cover;
+  }
+  .post-actions { padding: 10px 4px; font-size: 13px; color: #a8a8a8; }
+
+  /* 版面 C：貼文燈箱 */
+  .lightbox {
+    background: #1a1a1a;
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lightbox video {
+    width: 100%;
+    height: 500px;
+    display: block;
+    background: linear-gradient(140deg, #232526, #414345);
+    object-fit: cover;
+  }
+  .lightbox aside { padding: 16px; font-size: 13px; color: #a8a8a8; }
+
+  /* 小縮圖，用來確認 80px 的門檻有生效，不應該長出進度條 */
+  .thumbs { display: flex; gap: 8px; }
+  .thumbs video { width: 60px; height: 60px; background: #555; }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h2>版面 A — Reels 專頁（全螢幕直式）</h2>
+  <div class="reels">
+    <video id="reel-1" data-duration="32" data-start="7" muted playsinline></video>
+  </div>
+</div>
+
+<div class="section">
+  <h2>版面 B — 首頁 feed（捲動時進度條應跟著畫面中央的影片走）</h2>
+  <div class="feed">
+    <div class="post">
+      <div class="post-header"><div class="avatar"></div><span>user_one</span></div>
+      <video id="feed-1" data-duration="18" data-start="2" muted playsinline></video>
+      <div class="post-actions">1,204 個讚</div>
+    </div>
+    <div class="post">
+      <div class="post-header"><div class="avatar"></div><span>user_two</span></div>
+      <video id="feed-2" data-duration="45" data-start="30" muted playsinline></video>
+      <div class="post-actions">88 個讚</div>
+    </div>
+    <div class="post">
+      <div class="post-header"><div class="avatar"></div><span>user_three</span></div>
+      <video id="feed-3" data-duration="120" data-start="15" muted playsinline></video>
+      <div class="post-actions">9,331 個讚</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>版面 C — 貼文燈箱 /p/</h2>
+  <div class="lightbox">
+    <video id="lightbox-1" data-duration="26" data-start="4" muted playsinline></video>
+    <aside>留言區</aside>
+  </div>
+</div>
+
+<div class="section">
+  <h2>小縮圖 — 這裡不應該出現進度條（低於 80px 門檻）</h2>
+  <div class="thumbs">
+    <video id="thumb-1" data-duration="10" muted playsinline></video>
+    <video id="thumb-2" data-duration="10" muted playsinline></video>
+  </div>
+</div>
+
+<script type="module" src="./bootstrap.js"></script>
+</body>
+</html>
