@@ -78,6 +78,31 @@ describe('pickActiveVideo', () => {
     expect(pickActiveVideo([bigPaused, smallPlaying], viewport)).toBe(bigPaused);
   });
 
+  it('picks the same video whatever order the videos appear in', () => {
+    // A pairwise fold makes the winner depend on document order; sorting does not
+    const a = fakeVideo({ id: 'a', width: 100, height: 104, paused: true });
+    const b = fakeVideo({ id: 'b', width: 100, height: 109, paused: true });
+    const c = fakeVideo({ id: 'c', width: 100, height: 100, paused: false });
+    const orders = [[a,b,c],[a,c,b],[b,a,c],[b,c,a],[c,a,b],[c,b,a]];
+    const picked = orders.map((o) => pickActiveVideo(o, viewport).id);
+    expect(new Set(picked).size).toBe(1);
+    expect(picked[0]).toBe('b');
+  });
+
+  it('prefers the larger video when a near tie has both paused', () => {
+    const small = fakeVideo({ id: 'small', width: 100, height: 100, paused: true });
+    const large = fakeVideo({ id: 'large', width: 100, height: 104, paused: true });
+    expect(pickActiveVideo([small, large], viewport).id).toBe('large');
+    expect(pickActiveVideo([large, small], viewport).id).toBe('large');
+  });
+
+  it('prefers the larger video when a near tie has both playing', () => {
+    const small = fakeVideo({ id: 'small', width: 100, height: 100, paused: false });
+    const large = fakeVideo({ id: 'large', width: 100, height: 104, paused: false });
+    expect(pickActiveVideo([small, large], viewport).id).toBe('large');
+    expect(pickActiveVideo([large, small], viewport).id).toBe('large');
+  });
+
   it('returns null when every video is off screen', () => {
     const above = fakeVideo({ id: 'above', top: -900, height: 600 });
     const below = fakeVideo({ id: 'below', top: 900, height: 600 });

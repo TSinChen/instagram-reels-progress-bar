@@ -66,6 +66,16 @@ describe('SeekController', () => {
     expect(controller.dragging).toBe(false);
   });
 
+  it('picks up a pointer that is already inside when attaching', () => {
+    // Re-attaching to the same element does not replay pointerenter
+    const hovered = makeParts();
+    hovered.hit.matches = (sel) => sel === ':hover';
+    const fresh = new SeekController({ win, now: () => nowValue });
+    fresh.attach(makeVideo(), hovered);
+    expect(fresh.hovering).toBe(true);
+    fresh.detach();
+  });
+
   it('pointerenter starts hovering', () => {
     parts.hit.dispatchEvent(pointerEvent('pointerenter', 0));
     expect(controller.hovering).toBe(true);

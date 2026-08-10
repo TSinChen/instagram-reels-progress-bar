@@ -103,6 +103,24 @@ describe('ProgressBar', () => {
     expect(root.querySelector('.label').textContent).toBe('0:30 / 0:40');
   });
 
+  it('leaves the label text node alone when the text has not changed', () => {
+    // Assigning textContent replaces the node even for an identical string
+    bar.mount();
+    bar.render(baseState());
+    const root = document.querySelector('[data-igrc="host"]').shadowRoot;
+    const node = root.querySelector('.label').firstChild;
+    bar.render(baseState());
+    expect(root.querySelector('.label').firstChild).toBe(node);
+  });
+
+  it('replaces the label when the text does change', () => {
+    bar.mount();
+    bar.render(baseState({ labelTime: 10 }));
+    const root = document.querySelector('[data-igrc="host"]').shadowRoot;
+    bar.render(baseState({ labelTime: 20 }));
+    expect(root.querySelector('.label').textContent).toBe('0:20 / 0:40');
+  });
+
   it('active adds the is-active class', () => {
     bar.mount();
     bar.render(baseState({ active: true }));

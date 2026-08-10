@@ -109,15 +109,16 @@ describe('buildRenderState', () => {
   });
 });
 
-/** A window whose animation frames only run when the test asks for them. */
+/** A window whose animation frames and intervals only run when the test asks for them. */
 function makeWin(overrides = {}) {
   const frames = [];
+  const intervals = [];
   return {
     innerWidth: 1000,
     innerHeight: 800,
     requestAnimationFrame: (fn) => frames.push(fn),
-    cancelAnimationFrame: vi.fn(),
-    setInterval: vi.fn(() => 1),
+    cancelAnimationFrame: vi.fn(() => frames.length = 0),
+    setInterval: vi.fn((fn) => intervals.push(fn)),
     clearInterval: vi.fn(),
     setTimeout: () => 1,
     clearTimeout: vi.fn(),
@@ -135,6 +136,10 @@ function makeWin(overrides = {}) {
       const next = frames.pop();
       frames.length = 0;
       if (next) next();
+    },
+    /** Runs the tracker's re-evaluation, which the fake interval otherwise never fires. */
+    runInterval() {
+      intervals.forEach((fn) => fn());
     },
     frameCount: () => frames.length,
     ...overrides,
@@ -279,6 +284,40 @@ describe('the render loop', () => {
     expect(win.frameCount()).toBe(1);
     win.tick();
     expect(win.frameCount()).toBe(1);
+  });
+
+  it('never starts on a page with no video', () => {
+    // A queued frame keeps the renderer producing them even with nothing to draw
+    app = init({ doc: document, win });
+    expect(win.frameCount()).toBe(0);
+  });
+
+  it('starts once a video appears', () => {
+    app = init({ doc: document, win });
+    expect(win.frameCount()).toBe(0);
+
+    addVideo();
+    win.runInterval();
+    expect(win.frameCount()).toBe(1);
+  });
+
+  it('stops when the last video goes away', () => {
+    const video = addVideo();
+    app = init({ doc: document, win });
+    expect(win.frameCount()).toBe(1);
+
+    video.remove();
+    win.runInterval();
+    expect(win.cancelAnimationFrame).toHaveBeenCalled();
+    expect(win.frameCount()).toBe(0);
+  });
+
+  it('does not start while the tab is hidden', () => {
+    Object.defineProperty(document, 'hidden', { value: true, configurable: true });
+    addVideo();
+    app = init({ doc: document, win });
+    expect(win.frameCount()).toBe(0);
+    Object.defineProperty(document, 'hidden', { value: false, configurable: true });
   });
 });
 
