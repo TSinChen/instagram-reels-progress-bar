@@ -278,6 +278,26 @@ describe('the render loop', () => {
     expect(getComputedStyle.mock.calls.length).toBe(afterFirstFrame);
   });
 
+  it('re-reads the corner radii when the video moves without resizing', () => {
+    // Which corners apply depends on where the video sits inside its clipping ancestor,
+    // so position has to be part of the cache key
+    const video = addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    const getComputedStyle = vi.fn(() => ({
+      overflow: 'visible', overflowX: 'visible', overflowY: 'visible',
+      borderBottomLeftRadius: '0px', borderBottomRightRadius: '0px',
+    }));
+    win = makeWin({ getComputedStyle });
+    app = init({ doc: document, win });
+    win.tick();
+    const afterFirstFrame = getComputedStyle.mock.calls.length;
+
+    video.getBoundingClientRect = () => ({
+      left: 260, top: 50, right: 660, bottom: 650, width: 400, height: 600,
+    });
+    win.tick();
+    expect(getComputedStyle.mock.calls.length).toBeGreaterThan(afterFirstFrame);
+  });
+
   it('keeps queuing frames while it runs', () => {
     addVideo();
     app = init({ doc: document, win });

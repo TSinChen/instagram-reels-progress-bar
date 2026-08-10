@@ -27,7 +27,7 @@ Splitting the two means the label has room to render without being clipped, whil
 
 ### Rounded corners
 
-A fixed-position element on `body` is not clipped by an ancestor's `overflow: hidden`, so over a rounded video the bar's ends would protrude past the curve. `corner-radius.js` walks up at most five levels to find the element that actually clips the video — one with both an overflow clip and a corner radius — and the host applies those radii itself.
+A fixed-position element on `body` is not clipped by an ancestor's `overflow: hidden`, so over a rounded video the bar's ends would protrude past the curve. `corner-radius.js` walks up at most five levels to find the element that actually clips the video — one with both an overflow clip and a corner radius — and the host applies those radii itself. Each corner is taken only when that ancestor's edge coincides with the video's: a container wider than the video, such as a lightbox with a comment column beside it, rounds its own corner somewhere else, and copying that radius would draw a curve where the video has a square edge.
 
 The clip goes on the host rather than on the bar. A 48px host renders the full curve; CSS scales radii down when they exceed the box, so applying a 22px radius to a 3px-tall bar would draw the wrong arc. When there is no radius the host leaves `overflow` visible, otherwise the handle would be cut in half at either end of the track.
 
