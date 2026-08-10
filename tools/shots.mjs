@@ -73,25 +73,44 @@ const HOVER_BAR = `(async () => {
 
 /** The popup is embedded in an iframe, where a height mismatch shows up as a scrollbar. */
 const CHECK_POPUP = `(async () => {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const iframe = document.getElementById('popup');
-  for (let i = 0; i < 40 && !iframe.contentDocument?.getElementById('reset'); i++) {
-    await new Promise((r) => setTimeout(r, 100));
-  }
+  for (let i = 0; i < 40 && !iframe.contentDocument?.getElementById('reset'); i++) await sleep(100);
   const doc = iframe.contentDocument;
   const reset = doc.getElementById('reset');
   if (!reset) return { ok: false, why: 'popup did not finish loading' };
 
+  // Too short adds a scrollbar and clips the footer, too tall leaves dead space below it
   const frameH = iframe.getBoundingClientRect().height;
   const contentH = doc.body.scrollHeight;
-  if (contentH > frameH + 1) {
-    return { ok: false, why: 'popup content ' + contentH + 'px exceeds the iframe ' + frameH + 'px, which adds a scrollbar and clips the footer. Adjust the iframe height in store-shot-settings.html.' };
+  if (Math.abs(contentH - frameH) > 1) {
+    return { ok: false, why: 'popup content is ' + contentH + 'px but the iframe is ' + frameH + 'px. Set the iframe height in store-shot-settings.html to ' + contentH + 'px.' };
   }
   const resetBottom = reset.getBoundingClientRect().bottom;
   if (resetBottom > frameH + 1) return { ok: false, why: 'the reset link is clipped' };
 
   const host = doc.querySelector('[data-igrc="host"]');
   if (!host) return { ok: false, why: 'popup preview did not mount' };
-  return { ok: true, note: 'iframe ' + frameH + 'px / content ' + contentH + 'px' };
+
+  // The preview behaves as it does on Instagram, so the label and handle only appear
+  // under the pointer. A shot of the idle hairline would show none of what is adjustable.
+  const hit = host.shadowRoot.querySelector('.hit');
+  const rect = hit.getBoundingClientRect();
+  const x = rect.left + rect.width * 0.55;
+  hit.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, clientX: x }));
+  hit.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, clientX: x }));
+
+  const root = host.shadowRoot.querySelector('.root');
+  for (let i = 0; i < 20 && !root.classList.contains('is-active'); i++) await sleep(50);
+  if (!root.classList.contains('is-active')) return { ok: false, why: 'preview never entered its hover state' };
+  // Let the transitions settle, or the shot catches them mid-flight
+  await sleep(250);
+
+  const label = host.shadowRoot.querySelector('.label');
+  if (doc.defaultView.getComputedStyle(label).opacity !== '1') {
+    return { ok: false, why: 'preview time label is not visible' };
+  }
+  return { ok: true, note: 'iframe ' + frameH + 'px / content ' + contentH + 'px  ' + label.textContent };
 })()`;
 
 // still=1 stops the fixtures advancing their playback clocks, so a rerun that changed

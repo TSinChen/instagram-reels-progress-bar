@@ -13,9 +13,6 @@
   "settingHitZone": {
     "message": "感應區高度"
   },
-  "settingHitZoneHint": {
-    "message": "影片底部由進度條接管的範圍。如果會擋到 Instagram 原本的按鈕，就把它調小。"
-  },
   "settingShowLabel": {
     "message": "顯示時間標籤"
   },

@@ -13,9 +13,6 @@
   "settingHitZone": {
     "message": "Hover area height"
   },
-  "settingHitZoneHint": {
-    "message": "The strip at the bottom of the video that the progress bar takes over. Lower it if it gets in the way of Instagram's own buttons."
-  },
   "settingShowLabel": {
     "message": "Show time label"
   },

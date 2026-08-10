@@ -32,10 +32,7 @@ seek.attach(fakeVideo, { hit: bar.hitElement, track: bar.trackElement });
 function frame() {
   requestAnimationFrame(frame);
   bar.syncTo(stage.getBoundingClientRect());
-  const state = buildRenderState(fakeVideo, seek, Date.now());
-  // Pinned to the hover state, since that is the appearance being configured
-  state.active = true;
-  bar.render(state);
+  bar.render(buildRenderState(fakeVideo, seek, Date.now()));
 }
 requestAnimationFrame(frame);
 

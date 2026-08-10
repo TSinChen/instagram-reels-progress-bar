@@ -96,10 +96,12 @@ body {
   gap: 8px;
 }
 
+/* The switch is this field's value, so it sits where the other fields put theirs */
 .field-row {
-  flex-direction: row;
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .label {
@@ -114,13 +116,6 @@ body {
 .field-head .label,
 .field-row .label {
   margin-bottom: 0;
-}
-
-.hint {
-  margin: 7px 0 0;
-  font-size: 11px;
-  line-height: 1.4;
-  color: var(--muted);
 }
 
 /* Styled like a player timecode */

@@ -50,7 +50,8 @@
   .panel { display: flex; justify-content: center; }
   iframe {
     width: 300px;
-    height: 484px;
+    /* Must match the popup's own height; shots.mjs fails the run if it drifts either way */
+    height: 409px;
     border: 0;
     border-radius: 12px;
     box-shadow: 0 36px 80px rgba(0, 0, 0, .7);
