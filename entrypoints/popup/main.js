@@ -49,8 +49,14 @@ setInterval(() => {
 // ── Settings ─────────────────────────────────────────
 const store = createSettingsStore(chrome.storage.sync);
 
-const savedEl = document.getElementById('saved');
+const statusEl = document.getElementById('status');
 const showLabelEl = document.getElementById('showlabel');
+
+/**
+ * Writes are deferred rather than issued per event. Holding an arrow key on a slider
+ * fires change on every step, which would run past the storage.sync write-rate limit.
+ */
+const WRITE_DELAY_MS = 300;
 
 const SLIDERS = [
   { key: 'barThickness', input: 'thickness', readout: 'thickness-value' },
@@ -75,33 +81,56 @@ function paint(settings) {
   bar.applySettings(settings);
 }
 
-let savedTimer = 0;
-function flashSaved() {
-  savedEl.classList.add('is-shown');
-  clearTimeout(savedTimer);
-  savedTimer = setTimeout(() => savedEl.classList.remove('is-shown'), 1100);
+let statusTimer = 0;
+function showStatus(messageKey, failed) {
+  statusEl.textContent = chrome.i18n.getMessage(messageKey);
+  statusEl.classList.toggle('is-failed', Boolean(failed));
+  statusEl.classList.add('is-shown');
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => statusEl.classList.remove('is-shown'), 1600);
 }
 
-/** Paints immediately, then persists; content scripts pick it up through watch. */
-async function update(patch) {
+let persistTimer = 0;
+let lastWritten = null;
+
+function sameAsWritten(settings) {
+  return lastWritten && Object.keys(settings).every((k) => settings[k] === lastWritten[k]);
+}
+
+async function persist() {
+  if (sameAsWritten(current)) return;
+  const attempted = current;
+  try {
+    await store.save(attempted);
+    lastWritten = attempted;
+    showStatus('saved', false);
+  } catch {
+    showStatus('saveFailed', true);
+  }
+}
+
+/** Paints immediately; the write is deferred. Content scripts pick it up through watch. */
+function update(patch) {
   paint({ ...current, ...patch });
-  await store.save(current);
-  flashSaved();
+  clearTimeout(persistTimer);
+  persistTimer = setTimeout(persist, WRITE_DELAY_MS);
 }
 
 for (const { key, inputEl } of SLIDERS) {
-  inputEl.addEventListener('input', () => {
-    paint({ ...current, [key]: Number(inputEl.value) });
-  });
-  inputEl.addEventListener('change', () => {
-    update({ [key]: Number(inputEl.value) });
-  });
+  inputEl.addEventListener('input', () => update({ [key]: Number(inputEl.value) }));
 }
 
-showLabelEl.addEventListener('change', () => {
-  update({ showLabel: showLabelEl.checked });
-});
+showLabelEl.addEventListener('change', () => update({ showLabel: showLabelEl.checked }));
 
 document.getElementById('reset').addEventListener('click', () => update({ ...DEFAULTS }));
 
-store.load().then(paint);
+// The popup can be dismissed before the deferred write fires
+window.addEventListener('pagehide', () => {
+  clearTimeout(persistTimer);
+  persist();
+});
+
+store.load().then((loaded) => {
+  lastWritten = loaded;
+  paint(loaded);
+});

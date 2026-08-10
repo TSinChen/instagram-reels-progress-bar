@@ -194,10 +194,11 @@ describe('createSettingsStore', () => {
     expect(area._raw()[STORAGE_KEY]).toEqual(saved);
   });
 
-  it('a failing write does not throw at the caller', async () => {
+  it('a failing write rejects, so the caller can report it', async () => {
+    // Swallowing this would let the popup claim it saved when it did not
     const broken = { get: async () => ({}), set: () => Promise.reject(new Error('quota exceeded')) };
     const store = createSettingsStore(broken);
-    await expect(store.save({ barThickness: 5 })).resolves.toMatchObject({ barThickness: 5 });
+    await expect(store.save({ barThickness: 5 })).rejects.toThrow('quota exceeded');
   });
 
   it('notifies watchers when settings change', async () => {
@@ -233,7 +234,7 @@ describe('createSettingsStore', () => {
   it('without a storage area the store yields defaults and never throws', async () => {
     const store = createSettingsStore(null);
     expect(await store.load()).toEqual(DEFAULTS);
-    expect(await store.save({ barThickness: 5 })).toMatchObject({ barThickness: 5 });
+    await expect(store.save({ barThickness: 5 })).resolves.toMatchObject({ barThickness: 5 });
     expect(() => store.watch(() => {})()).not.toThrow();
   });
 });

@@ -215,14 +215,16 @@ input[type="range"]::-webkit-slider-thumb {
 
 .reset:hover { color: var(--text); }
 
-.saved {
+.status {
   font-size: 11px;
   color: var(--muted);
   opacity: 0;
   transition: opacity 160ms ease;
 }
 
-.saved.is-shown { opacity: 1; }
+.status.is-shown { opacity: 1; }
+
+.status.is-failed { color: #ff6b6b; }
 
 /* ── Accessibility ─────────────────────────── */
 

@@ -33,5 +33,8 @@
   },
   "settingHandle": {
     "message": "拖曳圓點大小"
+  },
+  "saveFailed": {
+    "message": "儲存失敗"
   }
 }

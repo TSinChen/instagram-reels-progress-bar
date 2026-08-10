@@ -33,5 +33,8 @@
   },
   "settingHandle": {
     "message": "Handle size"
+  },
+  "saveFailed": {
+    "message": "Could not save"
   }
 }
