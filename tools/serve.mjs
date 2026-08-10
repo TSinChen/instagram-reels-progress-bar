@@ -33,7 +33,16 @@ export function createStaticServer(port = DEFAULT_PORT, root = process.cwd()) {
     }
   });
 
-  return new Promise((resolve) => server.listen(port, () => resolve(server)));
+  return new Promise((resolve, reject) => {
+    // Without this, listen errors such as EADDRINUSE reach EventEmitter with no listener
+    // and throw where no caller can catch them
+    server.once('error', reject);
+    server.listen(port, () => {
+      server.removeListener('error', reject);
+      server.on('error', (err) => console.error(`static server: ${err.message}`));
+      resolve(server);
+    });
+  });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

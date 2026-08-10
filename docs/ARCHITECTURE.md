@@ -49,7 +49,7 @@ This falls out correctly on the Reels page (a swipe brings the next video into v
 
 **Rendering runs every frame,** and only while a video is active. It aligns the host, reads playback state, and paints. The loop stops entirely when the tab is hidden.
 
-Corner radii are recomputed only when the video or its size changes; `getComputedStyle` every frame would be wasteful.
+Corner radii are recomputed only when the video's geometry changes; `getComputedStyle` every frame would be wasteful.
 
 ## Settings
 
@@ -81,7 +81,7 @@ Pointer capture is taken on `pointerdown` so a drag continues to track after the
 | `geometry.js` | Visible area, pointer position to ratio to seconds. Pure. |
 | `time-format.js` | Seconds to `M:SS`. Pure. |
 | `media-state.js` | Buffered end, stall detection. Pure. |
-| `corner-radius.js` | Locate the element that clips the video. Pure given a style getter. |
+| `corner-radius.js` | Locate the element that clips the video. Pure given style and rect getters. |
 | `settings.js` | Defaults, normalisation, CSS variable mapping, storage wrapper |
 | `video-tracker.js` | Select the active video and report changes |
 | `progress-bar.js` | Shadow DOM UI. Draws only; knows nothing about video. |
@@ -106,3 +106,5 @@ What none of this covers is Instagram's real DOM and how its MSE player responds
 **Seeking into unbuffered video may stall.** Instagram streams over MSE and decides for itself whether to fetch a segment that has not been requested. The bar draws the buffered range in a lighter shade so the safe region is visible in advance, and shows a spinner on the handle rather than failing silently.
 
 **Live video has no bar.** Its `duration` is `Infinity`; there is no progress to show.
+
+**The bar stays visible behind Instagram's own dialogs.** Nothing in the selection rule knows that a modal has been opened in front of the video, so the idle hairline keeps drawing and a click landing in the hover strip is swallowed. The obvious remedy — hit-testing the point under the bar — is worse than the problem: Instagram keeps its own transparent layers over the video, so that test would hide the bar during ordinary playback. A safer version would look for `[aria-modal="true"]` and exclude any dialog that contains the video, since the post lightbox is itself a dialog with the video inside it.

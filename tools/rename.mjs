@@ -15,10 +15,17 @@ const TARGETS = [
   'docs/_config.yml',
 ];
 
+const SOURCE_OF_TRUTH = 'public/_locales/en/messages.json';
+
 /** The English extName is the source of truth for the current name. */
 function currentName() {
-  const messages = JSON.parse(readFileSync('public/_locales/en/messages.json', 'utf8'));
-  return messages.extName.message;
+  try {
+    return JSON.parse(readFileSync(SOURCE_OF_TRUTH, 'utf8')).extName.message;
+  } catch {
+    console.error(`${SOURCE_OF_TRUTH} is not valid JSON. Restore it with:`);
+    console.error('  git checkout public/_locales');
+    process.exit(1);
+  }
 }
 
 /** Slug used for package.json name and the zip filename. */
@@ -53,6 +60,12 @@ if (!arg || arg === '--check') {
 const to = arg.trim();
 if (!to) {
   console.error('The new name cannot be empty.');
+  process.exit(1);
+}
+// The targets include JSON and HTML, and this is a raw string substitution, so a name
+// containing these would produce files that no longer parse
+if (/["\\<>]|[\u0000-\u001F]/.test(to)) {
+  console.error('The new name cannot contain " \\ < > or control characters.');
   process.exit(1);
 }
 if (to === from) {

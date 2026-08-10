@@ -142,6 +142,16 @@ class Cdp {
         else resolve(msg.result);
       }
     });
+    // A Chrome that dies mid-command would otherwise leave every caller awaiting a
+    // promise that can never settle, and waitFor cannot time that out because it only
+    // sleeps between attempts
+    const abandon = (why) => {
+      const waiting = [...this.pending.values()];
+      this.pending.clear();
+      waiting.forEach(({ reject }) => reject(new Error(why)));
+    };
+    ws.addEventListener('close', () => abandon('CDP connection closed'));
+    ws.addEventListener('error', () => abandon('CDP connection failed'));
   }
 
   static async connect(url) {
@@ -154,6 +164,9 @@ class Cdp {
   }
 
   send(method, params = {}) {
+    if (this.ws.readyState !== WebSocket.OPEN) {
+      return Promise.reject(new Error('CDP connection is not open'));
+    }
     const id = ++this.id;
     this.ws.send(JSON.stringify({ id, method, params }));
     return new Promise((resolve, reject) => this.pending.set(id, { resolve, reject }));
@@ -204,6 +217,15 @@ let failures = 0;
 try {
   server = await createStaticServer(PORT);
   console.log(`serving http://localhost:${PORT}`);
+
+  // A Chrome left over from an interrupted run would answer on this port, and the
+  // script would silently drive that browser instead of the one it spawns
+  const inUse = await fetch(`http://localhost:${DEBUG_PORT}/json/version`)
+    .then(() => true)
+    .catch(() => false);
+  if (inUse) {
+    throw new Error(`Something is already listening on ${DEBUG_PORT}. Close the leftover Chrome and retry.`);
+  }
 
   chrome = spawn(findChrome(), [
     `--remote-debugging-port=${DEBUG_PORT}`,
