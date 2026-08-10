@@ -14,7 +14,7 @@ import {
   createSettingsStore,
 } from '../lib/settings.js';
 
-/** 做一個假的 storage area，行為比照 chrome.storage.sync。 */
+/** A stand-in storage area that behaves like chrome.storage.sync. */
 function fakeArea(initial = {}) {
   const data = { ...initial };
   const listeners = [];
@@ -43,70 +43,70 @@ function fakeArea(initial = {}) {
 }
 
 describe('hoverThicknessFor', () => {
-  it('hover 高度是閒置高度的兩倍', () => {
+  it('hover thickness is twice the idle thickness', () => {
     expect(hoverThicknessFor(3)).toBe(6);
     expect(hoverThicknessFor(8)).toBe(16);
   });
 });
 
 describe('normalizeSettings', () => {
-  it('沒有輸入時回傳預設值', () => {
+  it('returns defaults for no input', () => {
     expect(normalizeSettings(undefined)).toEqual(DEFAULTS);
   });
 
-  it('null 也回傳預設值', () => {
+  it('returns defaults for null', () => {
     expect(normalizeSettings(null)).toEqual(DEFAULTS);
   });
 
-  it('不是物件的輸入回傳預設值', () => {
-    expect(normalizeSettings('壞掉的資料')).toEqual(DEFAULTS);
+  it('returns defaults for a non-object', () => {
+    expect(normalizeSettings('not an object')).toEqual(DEFAULTS);
   });
 
-  it('感應區高度低於下限會夾住', () => {
+  it('clamps a hover area height below the minimum', () => {
     expect(normalizeSettings({ hitZoneHeight: 1 }).hitZoneHeight).toBe(HIT_ZONE_MIN);
   });
 
-  it('感應區高度高於上限會夾住', () => {
+  it('clamps a hover area height above the maximum', () => {
     expect(normalizeSettings({ hitZoneHeight: 999 }).hitZoneHeight).toBe(HIT_ZONE_MAX);
   });
 
-  it('感應區高度取整數', () => {
+  it('rounds the hover area height', () => {
     expect(normalizeSettings({ hitZoneHeight: 16.7 }).hitZoneHeight).toBe(17);
   });
 
-  it('感應區高度是字串數字也接受', () => {
+  it('accepts a numeric string for the hover area height', () => {
     expect(normalizeSettings({ hitZoneHeight: '20' }).hitZoneHeight).toBe(20);
   });
 
-  it('感應區高度不是數字時退回預設', () => {
+  it('falls back to the default for a non-numeric hover area height', () => {
     expect(normalizeSettings({ hitZoneHeight: 'abc' }).hitZoneHeight).toBe(DEFAULTS.hitZoneHeight);
   });
 
-  it('進度條粗細會夾在範圍內', () => {
+  it('clamps bar thickness to its range', () => {
     expect(normalizeSettings({ barThickness: 0 }).barThickness).toBe(THICKNESS_MIN);
     expect(normalizeSettings({ barThickness: 99 }).barThickness).toBe(THICKNESS_MAX);
     expect(normalizeSettings({ barThickness: 5 }).barThickness).toBe(5);
   });
 
-  it('圓點大小會夾在範圍內', () => {
+  it('clamps handle size to its range', () => {
     expect(normalizeSettings({ handleSize: 2 }).handleSize).toBe(HANDLE_MIN);
     expect(normalizeSettings({ handleSize: 99 }).handleSize).toBe(HANDLE_MAX);
     expect(normalizeSettings({ handleSize: 14 }).handleSize).toBe(14);
   });
 
-  it('showLabel 只接受布林值', () => {
+  it('showLabel accepts booleans only', () => {
     expect(normalizeSettings({ showLabel: false }).showLabel).toBe(false);
     expect(normalizeSettings({ showLabel: 'false' }).showLabel).toBe(DEFAULTS.showLabel);
   });
 
-  it('多餘的欄位會被丟掉', () => {
-    const result = normalizeSettings({ barThickness: 4, 惡意欄位: 1, color: 'red' });
+  it('drops unknown fields', () => {
+    const result = normalizeSettings({ barThickness: 4, injected: 1, color: 'red' });
     expect(result).toEqual({ ...DEFAULTS, barThickness: 4 });
     expect('color' in result).toBe(false);
   });
 
-  it('舊版存下來的 color 欄位不會造成問題', () => {
-    // 顏色設定已經拿掉，storage 裡可能還留著舊值
+  it('a colour field left by an older version is harmless', () => {
+    // Colour is no longer a setting, but old installs may still have it stored
     expect(normalizeSettings({ color: 'blue', hitZoneHeight: 20 })).toEqual({
       ...DEFAULTS,
       hitZoneHeight: 20,
@@ -115,36 +115,36 @@ describe('normalizeSettings', () => {
 });
 
 describe('cssVarsFor', () => {
-  it('感應區高度帶上 px 單位', () => {
+  it('the hover area height carries px units', () => {
     expect(cssVarsFor({ hitZoneHeight: 24 })['--igrc-hit-zone']).toBe('24px');
   });
 
-  it('關掉時間標籤時對應到 display none', () => {
+  it('hiding the time label maps to display none', () => {
     expect(cssVarsFor({ showLabel: false })['--igrc-label-display']).toBe('none');
   });
 
-  it('開啟時間標籤時對應到 display block', () => {
+  it('showing the time label maps to display block', () => {
     expect(cssVarsFor({ showLabel: true })['--igrc-label-display']).toBe('block');
   });
 
-  it('粗細同時產生閒置與 hover 兩個值', () => {
+  it('thickness yields both an idle and a hover value', () => {
     const vars = cssVarsFor({ barThickness: 5 });
     expect(vars['--igrc-bar-idle']).toBe('5px');
     expect(vars['--igrc-bar-hover']).toBe('10px');
   });
 
-  it('圓點大小帶上 px 單位', () => {
+  it('the handle size carries px units', () => {
     expect(cssVarsFor({ handleSize: 18 })['--igrc-handle']).toBe('18px');
   });
 
-  it('輸入不合法時仍產生一組完整且合法的變數', () => {
+  it('invalid input still yields a complete, legal set', () => {
     const vars = cssVarsFor({ hitZoneHeight: -5, barThickness: 'x', handleSize: 999 });
     expect(vars['--igrc-hit-zone']).toBe(`${HIT_ZONE_MIN}px`);
     expect(vars['--igrc-bar-idle']).toBe(`${DEFAULTS.barThickness}px`);
     expect(vars['--igrc-handle']).toBe(`${HANDLE_MAX}px`);
   });
 
-  it('每一個變數都有值，不會漏掉造成沒有樣式', () => {
+  it('every property has a value, so nothing is left unstyled', () => {
     const vars = cssVarsFor({});
     for (const [name, value] of Object.entries(vars)) {
       expect(value, name).toBeTruthy();
@@ -154,18 +154,18 @@ describe('cssVarsFor', () => {
 });
 
 describe('createSettingsStore', () => {
-  it('storage 是空的時候載入預設值', async () => {
+  it('loads defaults from empty storage', async () => {
     const store = createSettingsStore(fakeArea());
     expect(await store.load()).toEqual(DEFAULTS);
   });
 
-  it('載入已儲存的設定', async () => {
+  it('loads stored settings', async () => {
     const saved = { hitZoneHeight: 20, showLabel: false, barThickness: 6, handleSize: 16 };
     const store = createSettingsStore(fakeArea({ [STORAGE_KEY]: saved }));
     expect(await store.load()).toEqual(saved);
   });
 
-  it('載入時會清理壞掉的資料', async () => {
+  it('sanitises corrupt data on load', async () => {
     const area = fakeArea({ [STORAGE_KEY]: { hitZoneHeight: 9999, barThickness: -3 } });
     const store = createSettingsStore(area);
     expect(await store.load()).toEqual({
@@ -175,13 +175,13 @@ describe('createSettingsStore', () => {
     });
   });
 
-  it('storage 讀取拋錯時退回預設值而不是炸掉', async () => {
-    const broken = { get: () => Promise.reject(new Error('storage 掛了')) };
+  it('a failing read falls back to defaults instead of throwing', async () => {
+    const broken = { get: () => Promise.reject(new Error('storage unavailable')) };
     const store = createSettingsStore(broken);
     await expect(store.load()).resolves.toEqual(DEFAULTS);
   });
 
-  it('儲存時會先正規化再寫入', async () => {
+  it('normalises before writing', async () => {
     const area = fakeArea();
     const store = createSettingsStore(area);
     const saved = await store.save({ hitZoneHeight: 100, showLabel: false, handleSize: 1 });
@@ -194,13 +194,13 @@ describe('createSettingsStore', () => {
     expect(area._raw()[STORAGE_KEY]).toEqual(saved);
   });
 
-  it('儲存拋錯時不會讓呼叫端炸掉', async () => {
-    const broken = { get: async () => ({}), set: () => Promise.reject(new Error('配額用完')) };
+  it('a failing write does not throw at the caller', async () => {
+    const broken = { get: async () => ({}), set: () => Promise.reject(new Error('quota exceeded')) };
     const store = createSettingsStore(broken);
     await expect(store.save({ barThickness: 5 })).resolves.toMatchObject({ barThickness: 5 });
   });
 
-  it('設定變更時通知監聽者', async () => {
+  it('notifies watchers when settings change', async () => {
     const area = fakeArea();
     const store = createSettingsStore(area);
     const seen = vi.fn();
@@ -209,16 +209,16 @@ describe('createSettingsStore', () => {
     expect(seen).toHaveBeenCalledWith(expect.objectContaining({ barThickness: 7 }));
   });
 
-  it('其他鍵的變更不會觸發通知', async () => {
+  it('changes to other keys do not notify', async () => {
     const area = fakeArea();
     const store = createSettingsStore(area);
     const seen = vi.fn();
     store.watch(seen);
-    await area.set({ 其他東西: 1 });
+    await area.set({ somethingElse: 1 });
     expect(seen).not.toHaveBeenCalled();
   });
 
-  it('watch 回傳的函式可以解除監聽', async () => {
+  it('the function returned by watch unsubscribes', async () => {
     const area = fakeArea();
     const store = createSettingsStore(area);
     const seen = vi.fn();
@@ -230,7 +230,7 @@ describe('createSettingsStore', () => {
     expect(seen).not.toHaveBeenCalled();
   });
 
-  it('沒有 storage 可用時整個 store 退化成預設值且不拋錯', async () => {
+  it('without a storage area the store yields defaults and never throws', async () => {
     const store = createSettingsStore(null);
     expect(await store.load()).toEqual(DEFAULTS);
     expect(await store.save({ barThickness: 5 })).toMatchObject({ barThickness: 5 });

@@ -33,7 +33,7 @@ function makeSeek(overrides = {}) {
 }
 
 describe('buildRenderState', () => {
-  it('閒置時 playedTime 與 labelTime 都是真實播放位置', () => {
+  it('idle: both played and label times track real playback', () => {
     const state = buildRenderState(makeVideo(), makeSeek(), 1000);
     expect(state.playedTime).toBe(10);
     expect(state.labelTime).toBe(10);
@@ -41,7 +41,7 @@ describe('buildRenderState', () => {
     expect(state.dragging).toBe(false);
   });
 
-  it('hover 時進度條停在真實位置，只有標籤跟著指標走', () => {
+  it('hovering: the fill stays put and only the label follows the pointer', () => {
     const seek = makeSeek({ hovering: true, hoverTime: 33 });
     const state = buildRenderState(makeVideo(), seek, 1000);
     expect(state.playedTime).toBe(10);
@@ -49,7 +49,7 @@ describe('buildRenderState', () => {
     expect(state.active).toBe(true);
   });
 
-  it('拖曳時進度條與標籤都用拖曳暫存值', () => {
+  it('dragging: both the fill and the label use the drag position', () => {
     const seek = makeSeek({ hovering: true, dragging: true, dragTime: 25 });
     const state = buildRenderState(makeVideo(), seek, 1000);
     expect(state.playedTime).toBe(25);
@@ -58,20 +58,20 @@ describe('buildRenderState', () => {
     expect(state.dragging).toBe(true);
   });
 
-  it('帶出影片長度與緩衝終點', () => {
+  it('carries duration and buffered end through', () => {
     const state = buildRenderState(makeVideo(), makeSeek(), 1000);
     expect(state.duration).toBe(40);
     expect(state.bufferedEnd).toBe(20);
   });
 
-  it('seek 後資料不足超過門檻時標記卡頓', () => {
+  it('flags a stall once a seek has waited past the threshold', () => {
     const video = makeVideo({ readyState: 1 });
     const seek = makeSeek({ lastSeekAt: 1000 });
     const state = buildRenderState(video, seek, 3000);
     expect(state.stalled).toBe(true);
   });
 
-  it('資料補齊後不再標記卡頓，並清掉 seek 時間戳', () => {
+  it('clears the stall and the seek mark once data is available', () => {
     const video = makeVideo({ readyState: 4 });
     const seek = makeSeek({ lastSeekAt: 1000 });
     const state = buildRenderState(video, seek, 9000);
@@ -105,13 +105,13 @@ describe('init', () => {
     document.body.innerHTML = '';
   });
 
-  it('會在文件裡建立浮層', () => {
+  it('mounts the overlay into the document', () => {
     const app = init({ doc: document, win });
     expect(document.querySelector('[data-igrc="host"]')).not.toBe(null);
     app.teardown();
   });
 
-  it('重複 init 不會建立第二個浮層，第二次回傳 null', () => {
+  it('a second init returns null and mounts nothing', () => {
     const app = init({ doc: document, win });
     const second = init({ doc: document, win });
     expect(second).toBe(null);
@@ -119,13 +119,13 @@ describe('init', () => {
     app.teardown();
   });
 
-  it('teardown 會把浮層移除', () => {
+  it('teardown removes the overlay', () => {
     const app = init({ doc: document, win });
     app.teardown();
     expect(document.querySelector('[data-igrc="host"]')).toBe(null);
   });
 
-  it('teardown 之後可以重新 init', () => {
+  it('init works again after teardown', () => {
     init({ doc: document, win }).teardown();
     const app = init({ doc: document, win });
     expect(app).not.toBe(null);

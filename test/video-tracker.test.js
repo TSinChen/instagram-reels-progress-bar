@@ -4,8 +4,8 @@ import { pickActiveVideo, VideoTracker } from '../lib/video-tracker.js';
 const viewport = { width: 1000, height: 800 };
 
 /**
- * 做一個假的 video 元素。只需要 getBoundingClientRect 與 paused。
- * 用普通物件而不是真的 <video>，因為 jsdom 的 getBoundingClientRect 一律回傳全 0。
+ * A stand-in video. Only getBoundingClientRect and paused are needed, and a plain object
+ * is used because jsdom returns an all-zero rect for real elements.
  */
 function fakeVideo({ left = 0, top = 0, width = 400, height = 600, paused = false, id = '' } = {}) {
   return {
@@ -23,62 +23,62 @@ function fakeVideo({ left = 0, top = 0, width = 400, height = 600, paused = fals
 }
 
 describe('pickActiveVideo', () => {
-  it('沒有影片時回傳 null', () => {
+  it('returns null with no videos', () => {
     expect(pickActiveVideo([], viewport)).toBe(null);
   });
 
-  it('只有一支完全可見的影片就選它', () => {
+  it('picks the only fully visible video', () => {
     const v = fakeVideo({ id: 'a' });
     expect(pickActiveVideo([v], viewport)).toBe(v);
   });
 
-  it('略過寬度小於 80px 的元素', () => {
+  it('skips elements narrower than the minimum', () => {
     const tiny = fakeVideo({ id: 'tiny', width: 40, height: 600 });
     expect(pickActiveVideo([tiny], viewport)).toBe(null);
   });
 
-  it('略過高度小於 80px 的元素', () => {
+  it('skips elements shorter than the minimum', () => {
     const tiny = fakeVideo({ id: 'tiny', width: 400, height: 40 });
     expect(pickActiveVideo([tiny], viewport)).toBe(null);
   });
 
-  it('露出比例低於 50% 的不列入候選', () => {
-    // 高 600，只露出 200 → 比例 0.33
+  it('a video less than half visible is not a candidate', () => {
+    // 600 tall, 200 visible: a ratio of 0.33
     const barelyVisible = fakeVideo({ id: 'barely', top: 600, height: 600 });
     expect(pickActiveVideo([barelyVisible], viewport)).toBe(null);
   });
 
-  it('露出比例剛好 50% 列入候選', () => {
-    // 高 600，top = 500 → 露出 300 → 比例 0.5
+  it('a video exactly half visible is a candidate', () => {
+    // 600 tall at top 500: 300 visible, a ratio of 0.5
     const half = fakeVideo({ id: 'half', top: 500, height: 600 });
     expect(pickActiveVideo([half], viewport)).toBe(half);
   });
 
-  it('兩支都完全可見時選面積大的', () => {
+  it('picks the larger of two fully visible videos', () => {
     const small = fakeVideo({ id: 'small', width: 200, height: 200 });
     const large = fakeVideo({ id: 'large', width: 400, height: 600 });
     expect(pickActiveVideo([small, large], viewport)).toBe(large);
   });
 
-  it('面積大小順序顛倒也選得到面積大的', () => {
+  it('picks the larger video regardless of document order', () => {
     const small = fakeVideo({ id: 'small', width: 200, height: 200 });
     const large = fakeVideo({ id: 'large', width: 400, height: 600 });
     expect(pickActiveVideo([large, small], viewport)).toBe(large);
   });
 
-  it('面積接近平手時優先選播放中的', () => {
+  it('prefers the playing video when areas are close', () => {
     const pausedOne = fakeVideo({ id: 'paused', width: 400, height: 600, paused: true });
     const playingOne = fakeVideo({ id: 'playing', width: 400, height: 598, paused: false });
     expect(pickActiveVideo([pausedOne, playingOne], viewport)).toBe(playingOne);
   });
 
-  it('面積差距超過容忍值時仍以面積為準，即使大的那支是暫停的', () => {
+  it('area wins past the tie margin even if the larger video is paused', () => {
     const bigPaused = fakeVideo({ id: 'big', width: 400, height: 600, paused: true });
     const smallPlaying = fakeVideo({ id: 'small', width: 200, height: 200, paused: false });
     expect(pickActiveVideo([bigPaused, smallPlaying], viewport)).toBe(bigPaused);
   });
 
-  it('全部都在視窗外時回傳 null', () => {
+  it('returns null when every video is off screen', () => {
     const above = fakeVideo({ id: 'above', top: -900, height: 600 });
     const below = fakeVideo({ id: 'below', top: 900, height: 600 });
     expect(pickActiveVideo([above, below], viewport)).toBe(null);
@@ -110,7 +110,7 @@ describe('VideoTracker', () => {
     doc.body.innerHTML = '';
   });
 
-  /** 插入一個真的 <video> 並覆寫它的 getBoundingClientRect。 */
+  /** Inserts a real <video> with its rect overridden. */
   function addVideo({ width = 400, height = 600, top = 0, paused = false } = {}) {
     const el = doc.createElement('video');
     el.getBoundingClientRect = () => ({
@@ -126,7 +126,7 @@ describe('VideoTracker', () => {
     return el;
   }
 
-  it('start 之後立刻回報找到的影片', () => {
+  it('reports the video it finds as soon as it starts', () => {
     const video = addVideo();
     const onChange = vi.fn();
     const tracker = new VideoTracker(onChange, { doc, win });
@@ -136,7 +136,7 @@ describe('VideoTracker', () => {
     tracker.stop();
   });
 
-  it('沒有影片時回報 null 只發生一次', () => {
+  it('reports null once when there are no videos', () => {
     const onChange = vi.fn();
     const tracker = new VideoTracker(onChange, { doc, win });
     tracker.start();
@@ -147,7 +147,7 @@ describe('VideoTracker', () => {
     tracker.stop();
   });
 
-  it('同一支影片重複評估不會重複回報', () => {
+  it('re-evaluating the same video does not report again', () => {
     addVideo();
     const onChange = vi.fn();
     const tracker = new VideoTracker(onChange, { doc, win });
@@ -158,7 +158,7 @@ describe('VideoTracker', () => {
     tracker.stop();
   });
 
-  it('影片被移除後回報 null', () => {
+  it('reports null after the video is removed', () => {
     const video = addVideo();
     const onChange = vi.fn();
     const tracker = new VideoTracker(onChange, { doc, win });
@@ -171,7 +171,7 @@ describe('VideoTracker', () => {
     tracker.stop();
   });
 
-  it('定時器到期會自動重新評估', () => {
+  it('re-evaluates when the interval fires', () => {
     const onChange = vi.fn();
     const tracker = new VideoTracker(onChange, { doc, win });
     tracker.start();
@@ -181,7 +181,7 @@ describe('VideoTracker', () => {
     tracker.stop();
   });
 
-  it('stop 之後定時器不再觸發', () => {
+  it('the interval stops firing after stop', () => {
     const onChange = vi.fn();
     const tracker = new VideoTracker(onChange, { doc, win });
     tracker.start();

@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>商店截圖版面</title>
+<title>Store screenshot layout</title>
 <!--
-  Chrome 線上應用程式商店的截圖規格是 1280x800。
-  這一頁把模擬的 Reels 版面排成那個尺寸，截出來就能直接上傳。
-  文案由 ?copy= 決定語系。
+  1280x800, the Chrome Web Store screenshot size. Driven by tools/shots.mjs.
+  ?copy= selects the locale of the marketing copy.
 -->
 <style>
   * { box-sizing: border-box; }
@@ -45,7 +44,7 @@
     background: linear-gradient(165deg, #3a1c71 0%, #d76d77 52%, #ffaf7b 100%);
   }
 
-  /* 模擬 Instagram 疊在影片上的 UI，讓截圖看起來像真的場景 */
+  /* Stand-in for the UI Instagram overlays on a video */
   .overlay {
     position: absolute;
     left: 16px;
@@ -146,8 +145,8 @@
     '</ul>';
 </script>
 <script type="module">
-  // 建置產物是 WXT 的 content script 包裝，在一般網頁沒有 chrome 可用，
-  // 所以這裡直接載入模組原始碼。畫出來的東西完全一樣。
+  // The built content script needs the chrome APIs, so load the modules directly.
+  // The rendered result is identical.
   import { init } from '../../lib/main.js';
   init();
   window.__shotReady = true;

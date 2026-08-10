@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Popup 預覽</title>
+<title>Popup preview</title>
 <!--
-  在一般網頁裡預覽 popup。不複製任何 popup 的標記或樣式，
-  而是抓真正的 entrypoints/popup/index.html 注入，再載入它的 main.js，
-  這樣預覽頁不會跟實際 popup 漂移。chrome API 用記憶體版本頂替。
+  Renders the popup in an ordinary page. It fetches the real
+  entrypoints/popup/index.html and loads its main.js rather than duplicating any markup,
+  so this page cannot drift from the popup. The chrome APIs are backed by memory.
 -->
 <style>
   body { margin: 0; background: #3a3a3a; }
@@ -17,14 +17,14 @@
     border-radius: 10px;
     overflow: hidden;
   }
-  /* ?bare=1：給商店截圖用 iframe 嵌入時，去掉外框與背景 */
+  /* ?bare=1 drops the frame and backdrop for the screenshot iframe */
   body.bare { background: transparent; }
   body.bare #frame { margin: 0; box-shadow: none; border-radius: 0; }
 </style>
 </head>
 <body>
 <script>
-  // 記憶體版的 chrome API，只實作 popup 會用到的部分
+  // In-memory chrome APIs, only what the popup touches
   const memory = {};
   const changeListeners = [];
   window.chrome = {
@@ -69,7 +69,7 @@
   document.head.appendChild(link);
   await new Promise((r) => { link.onload = r; link.onerror = r; });
 
-  // popup 的 CSS 對 body 設寬度，這裡改成套在外框上
+  // The popup stylesheet sizes body; here that belongs on the frame
   const frame = document.createElement('div');
   frame.id = 'frame';
   for (const node of [...parsed.body.children]) {

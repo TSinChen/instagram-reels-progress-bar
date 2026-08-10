@@ -1,6 +1,6 @@
 import { init } from '../../lib/main.js';
 
-/** 做一個假的 TimeRanges。 */
+/** A stand-in TimeRanges. */
 function fakeTimeRanges(ranges) {
   return {
     length: ranges.length,
@@ -10,9 +10,8 @@ function fakeTimeRanges(ranges) {
 }
 
 /**
- * 把一個真的 <video> 元素的媒體屬性換成可控的假值。
- * 保留真實元素是為了讓版面、getBoundingClientRect 與指標事件都是真的，
- * 只有媒體行為是模擬的，這樣驗證結果才確定。
+ * Replaces a real <video> element's media properties with controllable values, so layout
+ * and pointer behaviour stay real while the media behaviour is deterministic.
  */
 function stubVideo(el, { duration, currentTime = 0, bufferedEnd = duration * 0.6 }) {
   let time = currentTime;
@@ -32,7 +31,7 @@ function stubVideo(el, { duration, currentTime = 0, bufferedEnd = duration * 0.6
   Object.defineProperty(el, 'paused', { get: () => false, configurable: true });
   Object.defineProperty(el, 'readyState', { get: () => 4, configurable: true });
 
-  // 讓時間自己前進，看得出進度條會動
+  // Advance the clock so the bar visibly moves
   setInterval(() => {
     time = time + 0.1 >= duration ? 0 : time + 0.1;
   }, 100);

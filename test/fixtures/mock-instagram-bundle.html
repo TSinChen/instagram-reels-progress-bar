@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>建置產物驗證 — 載入 WXT 打包後的 content script</title>
+<title>Built content script under a strict CSP</title>
 <!--
-  這一頁載入的是 WXT 建置產物（實際會被擴充功能注入的那支腳本），
-  而不是 lib/ 的 ES modules。目的是確認打包後的產出行為與模組版一致。
-  另外刻意加上與 Instagram 相近的嚴格 CSP，確認腳本不會被擋。
+  Loads the built content script rather than the ES modules under lib/, to confirm the
+  bundled output behaves the same. The strict CSP mirrors Instagram's.
 -->
 <meta http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' blob:; object-src 'none'">
@@ -34,27 +33,27 @@
 <body>
 
 <div class="section">
-  <h2>版面 A — Reels 專頁</h2>
+  <h2>Layout A — Reels page</h2>
   <div class="reels">
     <video id="reel-1" data-duration="32" data-start="7" muted playsinline></video>
   </div>
 </div>
 
 <div class="section">
-  <h2>版面 B — 首頁 feed</h2>
+  <h2>Layout B — home feed</h2>
   <div class="feed">
     <video id="feed-1" data-duration="45" data-start="30" muted playsinline></video>
   </div>
 </div>
 
 <div class="section">
-  <h2>小縮圖 — 不應出現進度條</h2>
+  <h2>Thumbnails — no bar should appear here</h2>
   <div class="thumbs">
     <video id="thumb-1" data-duration="10" muted playsinline></video>
   </div>
 </div>
 
-<!-- 先把影片的媒體屬性換成可控的假值，再載入 bundle（模擬擴充功能注入） -->
+<!-- Stub the media properties first, then load the bundle as the extension would -->
 <script src="./stub-videos.js"></script>
 <script src="../../.output/chrome-mv3/content-scripts/content.js"></script>
 </body>

@@ -1,6 +1,6 @@
-// 把頁面上的 <video> 媒體屬性換成可控的假值。
-// 保留真實元素，所以版面、getBoundingClientRect 與指標事件都是真的，
-// 只有媒體行為是模擬的，驗證結果才確定、不需要影片檔案。
+// Replaces the media properties of every <video> on the page with controllable values.
+// The elements stay real, so layout, rects and pointer events behave normally; only the
+// media behaviour is simulated, which keeps results deterministic without a video file.
 (() => {
   function fakeTimeRanges(ranges) {
     return {
@@ -28,7 +28,7 @@
     Object.defineProperty(el, 'paused', { get: () => false, configurable: true });
     Object.defineProperty(el, 'readyState', { get: () => 4, configurable: true });
 
-    // 讓時間自己前進，看得出進度條會動
+    // Advance the clock so the bar visibly moves
     setInterval(() => {
       time = time + 0.1 >= duration ? 0 : time + 0.1;
     }, 100);
