@@ -53,7 +53,7 @@ If this policy ever changes, the updated version will be published at this same 
 
 ## Contact
 
-Questions about this policy: sinin60076@gmail.com
+Questions about this policy: [open an issue](https://github.com/TSinChen/instagram-reels-progress-bar/issues).
 
 ---
 
@@ -107,4 +107,4 @@ Instagram Reels Progress Bar 在 `instagram.com` 的影片上畫一條可拖曳�
 
 ## 聯絡方式
 
-對本政策有疑問：sinin60076@gmail.com
+對本政策有疑問：[開一個 issue](https://github.com/TSinChen/instagram-reels-progress-bar/issues)。
