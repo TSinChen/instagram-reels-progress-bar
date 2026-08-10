@@ -96,14 +96,6 @@ body {
   gap: 8px;
 }
 
-/* The switch is this field's value, so it sits where the other fields put theirs */
-.field-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 .label {
   margin: 0 0 7px;
   font-size: 11px;
@@ -113,8 +105,8 @@ body {
   color: var(--muted);
 }
 
-.field-head .label,
-.field-row .label {
+/* Sits beside its readout rather than above a control, so the gap below is not wanted */
+.field-head .label {
   margin-bottom: 0;
 }
 
