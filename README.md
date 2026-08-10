@@ -57,7 +57,7 @@ npm run dev        # WXT dev mode with hot reload
 npm run build
 npm run zip        # packaged for the Chrome Web Store
 npm run shots      # regenerate the store screenshots
-npm run icons      # regenerate the procedural fallback icons
+npm run icons      # regenerate the icons
 npm run rename     # change the extension name everywhere at once
 ```
 

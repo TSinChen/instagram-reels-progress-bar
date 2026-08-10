@@ -43,8 +43,8 @@ body {
 .mark {
   width: 14px;
   height: 14px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #7b2ff7, #f7b733);
+  border-radius: 50%;
+  background: #2dd4bf;
   flex: none;
 }
 
