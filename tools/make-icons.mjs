@@ -1,4 +1,4 @@
-// 產生備用圖示。手寫 PNG，不引入第三方套件。
+// Generates the fallback icons. Writes PNG by hand to avoid a dependency.
 import { deflateSync } from 'node:zlib';
 import { writeFileSync, mkdirSync } from 'node:fs';
 
@@ -31,7 +31,7 @@ function chunk(type, data) {
   return Buffer.concat([length, typeAndData, crc]);
 }
 
-/** pixels 是 RGBA，長度 size * size * 4。 */
+/** pixels is RGBA, length size * size * 4. */
 function encodePng(size, pixels) {
   const signature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -44,7 +44,7 @@ function encodePng(size, pixels) {
   ihdr[11] = 0;  // filter
   ihdr[12] = 0;  // interlace
 
-  // 每列前面要加 filter type byte，一律用 0（None）
+  // Each row is prefixed with a filter type byte; 0 means None
   const stride = size * 4 + 1;
   const raw = Buffer.alloc(size * stride);
   for (let y = 0; y < size; y += 1) {
@@ -62,7 +62,7 @@ function encodePng(size, pixels) {
   ]);
 }
 
-/** 紫橘漸層圓角方塊，底部一條白色進度條加圓點。 */
+/** Rounded square with a gradient, a white progress bar and a handle across the lower third. */
 function drawIcon(size) {
   const pixels = new Uint8Array(size * size * 4);
   const radius = size * 0.22;
@@ -128,5 +128,5 @@ function insideRoundedSquare(x, y, size, radius) {
 mkdirSync('public/icon', { recursive: true });
 for (const size of [16, 48, 128]) {
   writeFileSync(`public/icon/${size}.png`, encodePng(size, drawIcon(size)));
-  console.log(`public/icon/${size}.png 已產生`);
+  console.log(`wrote public/icon/${size}.png`);
 }

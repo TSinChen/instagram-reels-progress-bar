@@ -2,9 +2,6 @@ title: Instagram Reels Progress Bar
 description: Adds a draggable seek bar to Reels and videos on instagram.com.
 theme: jekyll-theme-cayman
 
-# 只發布首頁與隱私權政策。
-# store/ 是送審用的內部筆記、superpowers/ 是設計與實作文件，
-# 都不需要變成公開網頁。
+# store/ holds submission notes that are not part of the site.
 exclude:
   - store/
-  - superpowers/

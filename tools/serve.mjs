@@ -1,4 +1,5 @@
-// 驗證頁與截圖用的靜態伺服器。直接執行開在 8123，也可以被 import。
+// Static server for the fixtures and the screenshot script.
+// Run directly to serve on 8123, or import createStaticServer.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
@@ -15,7 +16,7 @@ const TYPES = {
   '.svg': 'image/svg+xml',
 };
 
-/** 回傳 Promise<http.Server>。 */
+/** Resolves once the server is listening. */
 export function createStaticServer(port = DEFAULT_PORT, root = process.cwd()) {
   const server = createServer(async (req, res) => {
     const urlPath = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);

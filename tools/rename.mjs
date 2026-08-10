@@ -1,7 +1,7 @@
-// 一次改掉所有出現擴充功能名稱的地方。
+// Renames the extension everywhere the name appears.
 //
 //   node tools/rename.mjs "New Name"
-//   node tools/rename.mjs --check        只列出，不修改
+//   node tools/rename.mjs --check        list occurrences without changing anything
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const TARGETS = [
@@ -15,13 +15,13 @@ const TARGETS = [
   'docs/_config.yml',
 ];
 
-/** 目前的顯示名稱以 en 語系的 extName 為準。 */
+/** The English extName is the source of truth for the current name. */
 function currentName() {
   const messages = JSON.parse(readFileSync('public/_locales/en/messages.json', 'utf8'));
   return messages.extName.message;
 }
 
-/** 名稱轉成 package.json 與 zip 檔名用的 slug。 */
+/** Slug used for package.json name and the zip filename. */
 function toSlug(name) {
   return name
     .toLowerCase()
@@ -33,11 +33,11 @@ const arg = process.argv[2];
 const from = currentName();
 
 if (!arg || arg === '--check') {
-  console.log(`目前名稱：${from}\n`);
+  console.log(`current name: ${from}\n`);
   let total = 0;
   for (const file of TARGETS) {
     if (!existsSync(file)) {
-      console.log(`   -  ${file}（不在這台機器上，略過）`);
+      console.log(`   -  ${file} (not present, skipped)`);
       continue;
     }
     const hits = readFileSync(file, 'utf8').split(from).length - 1;
@@ -45,18 +45,18 @@ if (!arg || arg === '--check') {
     console.log(`  ${String(hits).padStart(2)}  ${file}`);
   }
   const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
-  console.log(`\npackage.json name（決定 zip 檔名）：${pkg.name}`);
-  console.log(`共 ${total} 處。改名請執行：node tools/rename.mjs "新名稱"`);
+  console.log(`\npackage.json name (drives the zip filename): ${pkg.name}`);
+  console.log(`${total} occurrences. To rename: node tools/rename.mjs "New Name"`);
   process.exit(0);
 }
 
 const to = arg.trim();
 if (!to) {
-  console.error('新名稱不能是空的');
+  console.error('The new name cannot be empty.');
   process.exit(1);
 }
 if (to === from) {
-  console.log(`名稱已經是「${to}」，沒有東西要改。`);
+  console.log(`Already named "${to}". Nothing to do.`);
   process.exit(0);
 }
 
@@ -69,7 +69,7 @@ for (const file of TARGETS) {
     writeFileSync(file, after);
     const hits = before.split(from).length - 1;
     changed += hits;
-    console.log(`  ${String(hits).padStart(2)} 處  ${file}`);
+    console.log(`  ${String(hits).padStart(2)}  ${file}`);
   }
 }
 
@@ -79,8 +79,8 @@ const slug = toSlug(to);
 if (pkg.name !== slug) {
   pkg.name = slug;
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log(`   1 處  ${pkgPath}（name → ${slug}，zip 會變成 ${slug}-${pkg.version}-chrome.zip）`);
+  console.log(`   1  ${pkgPath} (name -> ${slug}, zip becomes ${slug}-${pkg.version}-chrome.zip)`);
 }
 
-console.log(`\n「${from}」→「${to}」，共改 ${changed} 處。`);
-console.log('接著跑：npm run build');
+console.log(`\n"${from}" -> "${to}", ${changed} occurrences changed.`);
+console.log('Now run: npm run build');

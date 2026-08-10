@@ -1,9 +1,7 @@
-// 產生 Chrome 線上應用程式商店的 1280x800 截圖。
+// Generates the 1280x800 Chrome Web Store screenshots.
 //
-// 截圖前會斷言，錯了直接失敗、不覆蓋既有檔案——手動截圖漏掉的都是
-// 「看了才會發現」的錯誤（名字沒更新、iframe 出現捲軸、按鈕被切掉）。
-//
-// 起自己的靜態伺服器，用 CDP 驅動系統上的 Chrome，不需要 puppeteer。
+// Every shot is asserted before it is written. A failure exits non-zero and leaves the
+// existing files untouched. Serves the fixtures itself and drives Chrome over CDP.
 //
 //   node tools/shots.mjs
 //   CHROME_PATH="...\chrome.exe" node tools/shots.mjs
@@ -19,11 +17,12 @@ const HEIGHT = 800;
 const OUT_DIR = 'docs/store';
 const DEBUG_PORT = 9422;
 
-// ── 要產生哪些圖 ──────────────────────────────────────────
+// ── Shots ────────────────────────────────────────────────
 
 /**
- * 讓進度條停在 hover 狀態，否則截到的是閒置的細線。
- * 要等追蹤器選到影片才能送指標事件——readyState complete 時 SeekController 還沒綁上。
+ * Holds the bar in its hover state; otherwise the shot captures the idle hairline.
+ * Pointer events only land once the tracker has picked the video, which happens after
+ * readyState reaches complete.
  */
 const HOVER_BAR = `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -32,16 +31,16 @@ const HOVER_BAR = `(async () => {
     return false;
   };
 
-  if (!await wait(() => window.__shotReady)) return { ok: false, why: '頁面腳本沒有啟動' };
+  if (!await wait(() => window.__shotReady)) return { ok: false, why: 'page script never started' };
 
   const video = document.querySelector('video');
   const host = document.querySelector('[data-igrc="host"]');
-  if (!host) return { ok: false, why: '浮層沒有注入' };
+  if (!host) return { ok: false, why: 'overlay was not injected' };
 
   const attached = await wait(() =>
     host.style.display === 'block' &&
     host.style.width === video.getBoundingClientRect().width + 'px');
-  if (!attached) return { ok: false, why: '浮層沒有貼上影片，追蹤器可能還沒選到它' };
+  if (!attached) return { ok: false, why: 'overlay never aligned to the video' };
 
   const hit = host.shadowRoot.querySelector('.hit');
   const root = host.shadowRoot.querySelector('.root');
@@ -50,29 +49,29 @@ const HOVER_BAR = `(async () => {
   hit.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, clientX: x }));
 
   if (!await wait(() => root.classList.contains('is-active'), 20)) {
-    return { ok: false, why: '進度條沒有進入 hover 狀態' };
+    return { ok: false, why: 'bar never entered its hover state' };
   }
-  // 等轉場跑完，不然會截到動畫中間
+  // Let the transitions settle, or the shot catches them mid-flight
   await sleep(250);
 
   const label = host.shadowRoot.querySelector('.label');
-  if (getComputedStyle(label).opacity !== '1') return { ok: false, why: '時間標籤沒有顯示' };
+  if (getComputedStyle(label).opacity !== '1') return { ok: false, why: 'time label is not visible' };
   if (getComputedStyle(host.shadowRoot.querySelector('.handle')).transform === 'matrix(0, 0, 0, 0, 0, 0)') {
-    return { ok: false, why: '拖曳圓點還沒放大' };
+    return { ok: false, why: 'handle has not scaled up' };
   }
 
-  // 浮層不會被影片容器的 overflow: hidden 裁到，得自己套圓角
+  // The overlay is not clipped by the container, so it must apply the radii itself
   const frame = video.closest('.phone');
   const want = frame ? parseFloat(getComputedStyle(frame).borderBottomLeftRadius) || 0 : 0;
   const got = parseFloat(getComputedStyle(host).borderBottomLeftRadius) || 0;
   if (Math.abs(want - got) > 0.5) {
-    return { ok: false, why: '進度條沒有跟著影片容器的圓角裁切（容器 ' + want + 'px，浮層 ' + got + 'px）' };
+    return { ok: false, why: 'bar is not clipped to the video corners (container ' + want + 'px, overlay ' + got + 'px)' };
   }
 
-  return { ok: true, note: label.textContent + '  圓角 ' + got + 'px' };
+  return { ok: true, note: label.textContent + '  radius ' + got + 'px' };
 })()`;
 
-/** iframe 嵌 popup，最容易踩到高度不夠而出現捲軸。 */
+/** The popup is embedded in an iframe, where a height mismatch shows up as a scrollbar. */
 const CHECK_POPUP = `(async () => {
   const iframe = document.getElementById('popup');
   for (let i = 0; i < 40 && !iframe.contentDocument?.getElementById('reset'); i++) {
@@ -80,19 +79,19 @@ const CHECK_POPUP = `(async () => {
   }
   const doc = iframe.contentDocument;
   const reset = doc.getElementById('reset');
-  if (!reset) return { ok: false, why: 'popup 沒有載入完成' };
+  if (!reset) return { ok: false, why: 'popup did not finish loading' };
 
   const frameH = iframe.getBoundingClientRect().height;
   const contentH = doc.body.scrollHeight;
   if (contentH > frameH + 1) {
-    return { ok: false, why: 'popup 內容 ' + contentH + 'px 超出 iframe ' + frameH + 'px，會出現捲軸並切掉底部。改 store-shot-settings.html 的 iframe height。' };
+    return { ok: false, why: 'popup content ' + contentH + 'px exceeds the iframe ' + frameH + 'px, which adds a scrollbar and clips the footer. Adjust the iframe height in store-shot-settings.html.' };
   }
   const resetBottom = reset.getBoundingClientRect().bottom;
-  if (resetBottom > frameH + 1) return { ok: false, why: '「恢復預設」被切掉' };
+  if (resetBottom > frameH + 1) return { ok: false, why: 'the reset link is clipped' };
 
   const host = doc.querySelector('[data-igrc="host"]');
-  if (!host) return { ok: false, why: 'popup 的預覽元件沒有掛上' };
-  return { ok: true, note: 'iframe ' + frameH + 'px / 內容 ' + contentH + 'px' };
+  if (!host) return { ok: false, why: 'popup preview did not mount' };
+  return { ok: true, note: 'iframe ' + frameH + 'px / content ' + contentH + 'px' };
 })()`;
 
 const SHOTS = [
@@ -100,7 +99,7 @@ const SHOTS = [
     file: 'screenshot-1-en.png',
     path: '/test/fixtures/store-shot.html?copy=en',
     prepare: HOVER_BAR,
-    // 首頁主視覺。一起產出而不是事後複製，否則會漂移。
+    // Also the site hero. Produced here rather than copied, so it cannot drift.
     alsoWrite: ['docs/assets/hero.png'],
   },
   { file: 'screenshot-1-zh.png', path: '/test/fixtures/store-shot.html?copy=zh_TW', prepare: HOVER_BAR },
@@ -108,7 +107,7 @@ const SHOTS = [
   { file: 'screenshot-2-zh.png', path: '/test/fixtures/store-shot-settings.html?copy=zh_TW', prepare: CHECK_POPUP },
 ];
 
-// ── 找 Chrome ────────────────────────────────────────────
+// ── Locating Chrome ──────────────────────────────────────
 
 function findChrome() {
   if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
@@ -122,12 +121,12 @@ function findChrome() {
   ];
   const found = candidates.find((p) => p && existsSync(p));
   if (!found) {
-    throw new Error('找不到 Chrome。用 CHROME_PATH 環境變數指定執行檔路徑。');
+    throw new Error('Chrome not found. Set CHROME_PATH to the executable.');
   }
   return found;
 }
 
-// ── 極簡 CDP 客戶端 ───────────────────────────────────────
+// ── Minimal CDP client ───────────────────────────────────
 
 class Cdp {
   constructor(ws) {
@@ -149,7 +148,7 @@ class Cdp {
     const ws = new WebSocket(url);
     await new Promise((resolve, reject) => {
       ws.addEventListener('open', resolve, { once: true });
-      ws.addEventListener('error', () => reject(new Error('CDP 連線失敗')), { once: true });
+      ws.addEventListener('error', () => reject(new Error('CDP connection failed')), { once: true });
     });
     return new Cdp(ws);
   }
@@ -160,14 +159,14 @@ class Cdp {
     return new Promise((resolve, reject) => this.pending.set(id, { resolve, reject }));
   }
 
-  /** 執行一段回傳 Promise 的運算式。 */
+  /** Evaluates an expression that resolves to a value. */
   async run(expression) {
     const { result, exceptionDetails } = await this.send('Runtime.evaluate', {
       expression,
       awaitPromise: true,
       returnByValue: true,
     });
-    if (exceptionDetails) throw new Error(exceptionDetails.text || '頁面拋出例外');
+    if (exceptionDetails) throw new Error(exceptionDetails.text || 'page threw');
     return result.value;
   }
 
@@ -176,26 +175,26 @@ class Cdp {
   }
 }
 
-async function waitFor(fn, { tries = 60, gap = 250, what = '條件' } = {}) {
+async function waitFor(fn, { tries = 60, gap = 250, what = 'condition' } = {}) {
   for (let i = 0; i < tries; i += 1) {
     try {
       const value = await fn();
       if (value) return value;
     } catch {
-      // 還沒好
+      // Not ready yet
     }
     await new Promise((r) => setTimeout(r, gap));
   }
-  throw new Error(`等不到${what}`);
+  throw new Error(`timed out waiting for ${what}`);
 }
 
-/** 從 PNG 標頭讀尺寸。 */
+/** Reads the dimensions from the PNG header. */
 function pngSize(buffer) {
   if (buffer.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') return null;
   return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
 }
 
-// ── 主流程 ───────────────────────────────────────────────
+// ── Main ─────────────────────────────────────────────────
 
 const profileDir = join(tmpdir(), `igpb-shots-${process.pid}`);
 let server;
@@ -204,7 +203,7 @@ let failures = 0;
 
 try {
   server = await createStaticServer(PORT);
-  console.log(`靜態伺服器 http://localhost:${PORT}`);
+  console.log(`serving http://localhost:${PORT}`);
 
   chrome = spawn(findChrome(), [
     `--remote-debugging-port=${DEBUG_PORT}`,
@@ -220,7 +219,7 @@ try {
 
   const version = await waitFor(
     async () => (await fetch(`http://localhost:${DEBUG_PORT}/json/version`)).json(),
-    { what: 'Chrome 啟動' },
+    { what: 'Chrome to start' },
   );
   console.log(`${version.Browser}\n`);
 
@@ -244,11 +243,11 @@ try {
     process.stdout.write(`${shot.file.padEnd(22)}`);
 
     await page.send('Page.navigate', { url: `http://localhost:${PORT}${shot.path}` });
-    await waitFor(() => page.run('document.readyState === "complete"'), { what: `${shot.file} 載入` });
+    await waitFor(() => page.run('document.readyState === "complete"'), { what: `${shot.file} to load` });
 
     const check = await page.run(shot.prepare);
     if (!check.ok) {
-      console.log(`✗ ${check.why}`);
+      console.log(`x ${check.why}`);
       failures += 1;
       continue;
     }
@@ -257,7 +256,7 @@ try {
     const buffer = Buffer.from(data, 'base64');
     const size = pngSize(buffer);
     if (!size || size.width !== WIDTH || size.height !== HEIGHT) {
-      console.log(`✗ 尺寸不是 ${WIDTH}x${HEIGHT}（實際 ${size ? `${size.width}x${size.height}` : '非 PNG'}）`);
+      console.log(`x expected ${WIDTH}x${HEIGHT}, got ${size ? `${size.width}x${size.height}` : 'a non-PNG'}`);
       failures += 1;
       continue;
     }
@@ -268,7 +267,7 @@ try {
       writeFileSync(target, buffer);
     }
     const extra = written.length > 1 ? `  → ${written.slice(1).join(', ')}` : '';
-    console.log(`✓ ${size.width}x${size.height}  ${(buffer.length / 1024).toFixed(0)} KB  ${check.note}${extra}`);
+    console.log(`ok ${size.width}x${size.height}  ${(buffer.length / 1024).toFixed(0)} KB  ${check.note}${extra}`);
   }
 
   page.close();
@@ -279,12 +278,12 @@ try {
   try {
     rmSync(profileDir, { recursive: true, force: true });
   } catch {
-    // Chrome 有時還握著檔案
+    // Chrome may still hold a handle
   }
 }
 
 if (failures) {
-  console.error(`\n${failures} 張失敗，沒有覆蓋既有檔案。`);
+  console.error(`\n${failures} shot(s) failed. Existing files were left untouched.`);
   process.exit(1);
 }
-console.log(`\n${SHOTS.length} 張都已更新到 ${OUT_DIR}/`);
+console.log(`\nwrote ${SHOTS.length} shots to ${OUT_DIR}/`);

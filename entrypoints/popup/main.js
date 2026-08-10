@@ -9,8 +9,9 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
   if (text) el.textContent = text;
 }
 
-// ── 預覽 ──────────────────────────────────────────────
-// 掛真元件配假影片，手感與線上一致，也順便驗證元件本身。
+// ── Preview ──────────────────────────────────────────
+// The real component driven by a fake video, so the preview behaves exactly as it will
+// on Instagram.
 const PREVIEW_DURATION = 32;
 
 const fakeVideo = {
@@ -32,26 +33,25 @@ function frame() {
   requestAnimationFrame(frame);
   bar.syncTo(stage.getBoundingClientRect());
   const state = buildRenderState(fakeVideo, seek, Date.now());
-  // 固定顯示 hover 狀態：使用者在這裡調的就是那個樣子
+  // Pinned to the hover state, since that is the appearance being configured
   state.active = true;
   bar.render(state);
 }
 requestAnimationFrame(frame);
 
-// 讓假影片自己走，預覽才像在播放
+// Advance the fake video so the preview looks like playback
 setInterval(() => {
   if (seek.dragging) return;
   fakeVideo.currentTime += 0.1;
   if (fakeVideo.currentTime >= PREVIEW_DURATION) fakeVideo.currentTime = 0;
 }, 100);
 
-// ── 設定 ──────────────────────────────────────────────
+// ── Settings ─────────────────────────────────────────
 const store = createSettingsStore(chrome.storage.sync);
 
 const savedEl = document.getElementById('saved');
 const showLabelEl = document.getElementById('showlabel');
 
-/** 拖曳時只更新畫面，放開才寫 storage——每個像素都寫會撞到頻率上限。 */
 const SLIDERS = [
   { key: 'barThickness', input: 'thickness', readout: 'thickness-value' },
   { key: 'handleSize', input: 'handle', readout: 'handle-value' },
@@ -64,7 +64,7 @@ const SLIDERS = [
 
 let current = { ...DEFAULTS };
 
-/** 只畫，不寫 storage。 */
+/** Renders the controls and preview. Does not write to storage. */
 function paint(settings) {
   current = settings;
   for (const { key, inputEl, readoutEl } of SLIDERS) {
@@ -82,7 +82,7 @@ function flashSaved() {
   savedTimer = setTimeout(() => savedEl.classList.remove('is-shown'), 1100);
 }
 
-/** 先畫再寫入；內容腳本透過 watch 收到。 */
+/** Paints immediately, then persists; content scripts pick it up through watch. */
 async function update(patch) {
   paint({ ...current, ...patch });
   await store.save(current);

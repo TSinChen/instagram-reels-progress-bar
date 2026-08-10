@@ -1,7 +1,4 @@
-/*
-  深色介面。這個擴充功能活在影片上，播放器 chrome 本來就是深色，
-  popup 跟著走比較不突兀。強調色用白色，跟進度條本身一致。
-*/
+/* Dark to match player chrome, which is where this extension lives. */
 :root {
   --surface: #0d0d10;
   --line: #26262e;
@@ -27,7 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── 頁首與頁尾 ─────────────────────────────── */
+/* ── Header and footer ─────────────────────── */
 
 .bar {
   display: flex;
@@ -58,7 +55,7 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ── 預覽 ───────────────────────────────────── */
+/* ── Preview ───────────────────────────────── */
 
 .stage {
   position: relative;
@@ -66,7 +63,7 @@ body {
   margin: var(--pad);
   border-radius: var(--radius);
   overflow: hidden;
-  /* 由暗到亮，讓使用者看得出進度條在亮畫面上的可讀性 */
+  /* Dark to light, so the bar can be judged against bright footage */
   background:
     radial-gradient(120% 140% at 12% 0%, #2a2140 0%, transparent 60%),
     linear-gradient(135deg, #1b1b22 0%, #4a3550 45%, #c98a5e 100%);
@@ -83,7 +80,7 @@ body {
   pointer-events: none;
 }
 
-/* ── 設定項 ─────────────────────────────────── */
+/* ── Fields ────────────────────────────────── */
 
 .settings {
   padding: 0 var(--pad) 4px;
@@ -126,7 +123,7 @@ body {
   color: var(--muted);
 }
 
-/* 數值讀數做成播放器時間碼的樣子 */
+/* Styled like a player timecode */
 .readout {
   font-variant-numeric: tabular-nums;
   font-size: 11px;
@@ -134,7 +131,7 @@ body {
   color: var(--text);
 }
 
-/* ── 滑桿 ───────────────────────────────────── */
+/* ── Sliders ───────────────────────────────── */
 
 input[type="range"] {
   -webkit-appearance: none;
@@ -163,7 +160,7 @@ input[type="range"]::-webkit-slider-thumb {
   border: none;
 }
 
-/* ── 開關 ───────────────────────────────────── */
+/* ── Switch ────────────────────────────────── */
 
 .switch {
   -webkit-appearance: none;
@@ -197,11 +194,11 @@ input[type="range"]::-webkit-slider-thumb {
 
 .switch:checked::after {
   transform: translateX(14px);
-  /* 開啟時軌道是強調色，圓鈕改用底色才看得出對比 */
+  /* The track takes the accent when on, so the knob needs the surface colour */
   background: var(--surface);
 }
 
-/* ── 重設 ───────────────────────────────────── */
+/* ── Reset ─────────────────────────────────── */
 
 .reset {
   padding: 0;
@@ -227,7 +224,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .saved.is-shown { opacity: 1; }
 
-/* ── 無障礙 ─────────────────────────────────── */
+/* ── Accessibility ─────────────────────────── */
 
 :focus-visible {
   outline: 2px solid var(--accent);
