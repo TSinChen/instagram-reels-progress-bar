@@ -94,17 +94,19 @@ const CHECK_POPUP = `(async () => {
   return { ok: true, note: 'iframe ' + frameH + 'px / content ' + contentH + 'px' };
 })()`;
 
+// still=1 stops the fixtures advancing their playback clocks, so a rerun that changed
+// nothing rewrites the same bytes instead of leaving a diff nobody can explain.
 const SHOTS = [
   {
     file: 'screenshot-1-en.png',
-    path: '/test/fixtures/store-shot.html?copy=en',
+    path: '/test/fixtures/store-shot.html?copy=en&still=1',
     prepare: HOVER_BAR,
     // Also the site hero. Produced here rather than copied, so it cannot drift.
     alsoWrite: ['docs/assets/hero.png'],
   },
-  { file: 'screenshot-1-zh.png', path: '/test/fixtures/store-shot.html?copy=zh_TW', prepare: HOVER_BAR },
-  { file: 'screenshot-2-en.png', path: '/test/fixtures/store-shot-settings.html?copy=en', prepare: CHECK_POPUP },
-  { file: 'screenshot-2-zh.png', path: '/test/fixtures/store-shot-settings.html?copy=zh_TW', prepare: CHECK_POPUP },
+  { file: 'screenshot-1-zh.png', path: '/test/fixtures/store-shot.html?copy=zh_TW&still=1', prepare: HOVER_BAR },
+  { file: 'screenshot-2-en.png', path: '/test/fixtures/store-shot-settings.html?copy=en&still=1', prepare: CHECK_POPUP },
+  { file: 'screenshot-2-zh.png', path: '/test/fixtures/store-shot-settings.html?copy=zh_TW&still=1', prepare: CHECK_POPUP },
 ];
 
 // ── Locating Chrome ──────────────────────────────────────

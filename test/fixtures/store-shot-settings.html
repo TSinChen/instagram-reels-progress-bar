@@ -86,13 +86,15 @@
       ],
     },
   };
-  const locale = new URLSearchParams(location.search).get('copy') || 'en';
+  const params = new URLSearchParams(location.search);
+  const locale = params.get('copy') || 'en';
   const c = COPY[locale] || COPY.en;
   document.getElementById('copy').innerHTML =
     '<h1>' + c.h1 + '</h1><p>' + c.p + '</p><ul class="points">' +
     c.points.map((t) => '<li><b></b><span>' + t + '</span></li>').join('') +
     '</ul>';
-  document.getElementById('popup').src = './popup-preview.html?locale=' + locale + '&bare=1';
+  document.getElementById('popup').src =
+    './popup-preview.html?locale=' + locale + '&bare=1' + (params.has('still') ? '&still=1' : '');
 </script>
 </body>
 </html>

@@ -10,6 +10,9 @@
     };
   }
 
+  // The screenshot script asks for a still clock, so repeated runs produce identical pixels
+  const still = new URLSearchParams(location.search).has('still');
+
   function stubVideo(el, duration, startTime) {
     let time = startTime;
     Object.defineProperty(el, 'duration', { get: () => duration, configurable: true });
@@ -29,9 +32,11 @@
     Object.defineProperty(el, 'readyState', { get: () => 4, configurable: true });
 
     // Advance the clock so the bar visibly moves
-    setInterval(() => {
-      time = time + 0.1 >= duration ? 0 : time + 0.1;
-    }, 100);
+    if (!still) {
+      setInterval(() => {
+        time = time + 0.1 >= duration ? 0 : time + 0.1;
+      }, 100);
+    }
   }
 
   document.querySelectorAll('video[data-duration]').forEach((el) => {

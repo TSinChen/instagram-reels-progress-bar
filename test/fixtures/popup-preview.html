@@ -78,6 +78,10 @@
   }
   document.body.appendChild(frame);
 
+  // The popup's only interval is the one advancing its preview clock, and the screenshot
+  // script needs that clock still so repeated runs produce identical pixels
+  if (params.has('still')) window.setInterval = () => 0;
+
   await import('/entrypoints/popup/main.js');
   window.__popupReady = true;
 </script>
