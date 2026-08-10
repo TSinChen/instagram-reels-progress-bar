@@ -164,6 +164,17 @@ function addVideo({ left = 100, top = 50, width = 400, height = 600 } = {}) {
   return el;
 }
 
+/** A panel Instagram draws over the video, as the Reels comment panel is. */
+function addPanel({ left, top, right, bottom }) {
+  const el = document.createElement('div');
+  el.setAttribute('role', 'dialog');
+  el.getBoundingClientRect = () => ({
+    left, top, right, bottom, width: right - left, height: bottom - top,
+  });
+  document.body.appendChild(el);
+  return el;
+}
+
 const host = () => document.querySelector('[data-igrc="host"]');
 
 describe('init', () => {
@@ -296,6 +307,69 @@ describe('the render loop', () => {
     });
     win.tick();
     expect(getComputedStyle.mock.calls.length).toBeGreaterThan(afterFirstFrame);
+  });
+
+  it('stops the bar where a panel drawn over the video begins', () => {
+    addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    addPanel({ left: 380, top: 20, right: 560, bottom: 700 });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.left).toBe('100px');
+    expect(host().style.width).toBe('280px');
+  });
+
+  it('keeps the full width when the panel ends above the hit zone', () => {
+    addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    addPanel({ left: 380, top: 20, right: 560, bottom: 600 });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.width).toBe('400px');
+  });
+
+  it('hides the bar under a dialog that covers the whole video', () => {
+    addVideo();
+    addPanel({ left: 0, top: 0, right: 900, bottom: 900 });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.display).toBe('none');
+  });
+
+  it('hides the bar rather than drawing the sliver a panel leaves', () => {
+    addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    addPanel({ left: 0, top: 0, right: 460, bottom: 900 });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.display).toBe('none');
+  });
+
+  it('drops the corner radius on the end a panel cut short', () => {
+    addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    addPanel({ left: 380, top: 20, right: 560, bottom: 700 });
+    win = makeWin({
+      getComputedStyle: () => ({
+        overflow: 'hidden', overflowX: 'hidden', overflowY: 'hidden',
+        borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px',
+      }),
+    });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.borderBottomLeftRadius).toBe('12px');
+    expect(host().style.borderBottomRightRadius).toBe('0px');
+  });
+
+  it('widens the band it dodges along with the hit zone setting', async () => {
+    addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    addPanel({ left: 380, top: 20, right: 560, bottom: 625 });
+    const stored = { [STORAGE_KEY]: { hitZoneHeight: 32 } };
+    app = init({ doc: document, win, storageArea: fakeArea(stored) });
+
+    win.tick();
+    expect(host().style.width).toBe('400px');
+
+    await Promise.resolve();
+    await Promise.resolve();
+    win.tick();
+    expect(host().style.width).toBe('280px');
   });
 
   it('keeps queuing frames while it runs', () => {

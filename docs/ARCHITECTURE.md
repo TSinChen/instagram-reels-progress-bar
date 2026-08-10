@@ -31,6 +31,16 @@ A fixed-position element on `body` is not clipped by an ancestor's `overflow: hi
 
 The clip goes on the host rather than on the bar. A 48px host renders the full curve; CSS scales radii down when they exceed the box, so applying a 22px radius to a 3px-tall bar would draw the wrong arc. When there is no radius the host leaves `overflow` visible, otherwise the handle would be cut in half at either end of the track.
 
+### Panels drawn on top of the video
+
+Opening the comments on the Reels page floats a panel over the right of the video rather than beside it. A bar spanning the full video width paints its track across that panel, and puts its click strip over the comment box.
+
+So `overlays.js` subtracts every `[role="dialog"]` that reaches into the band the bar occupies from the video's width, and the bar takes the widest run left over. Both the fills inside the shadow root and the seek arithmetic measure against the track, so a shortened bar still covers the whole duration. A dialog containing the video is skipped: the post lightbox is one, and it is the video's own frame rather than something over it. When nothing usable is left the bar hides, which also hands its clicks back to Instagram.
+
+The obvious alternative, hit-testing the point under the bar, is worse than the problem it solves. Instagram keeps its own transparent layers over the video, so that test would hide the bar during ordinary playback.
+
+Whether a panel ends above the band or below it decides the whole question, and that depends on the window: a portrait reel is taller than the panel and clears it, a landscape one is not. Nothing about it can be cached, which is why this runs every frame while the corner radii do not.
+
 ## Choosing the active video
 
 One rule covers every page. There are no per-page special cases.
@@ -82,6 +92,7 @@ Pointer capture is taken on `pointerdown` so a drag continues to track after the
 | `time-format.js` | Seconds to `M:SS`. Pure. |
 | `media-state.js` | Buffered end, stall detection. Pure. |
 | `corner-radius.js` | Locate the element that clips the video. Pure given style and rect getters. |
+| `overlays.js` | Panels covering the video, and the width they leave the bar |
 | `settings.js` | Defaults, normalisation, CSS variable mapping, storage wrapper |
 | `video-tracker.js` | Select the active video and report changes |
 | `progress-bar.js` | Shadow DOM UI. Draws only; knows nothing about video. |
@@ -107,4 +118,4 @@ What none of this covers is Instagram's real DOM and how its MSE player responds
 
 **Live video has no bar.** Its `duration` is `Infinity`; there is no progress to show.
 
-**The bar stays visible behind Instagram's own dialogs.** Nothing in the selection rule knows that a modal has been opened in front of the video, so the idle hairline keeps drawing and a click landing in the hover strip is swallowed. The obvious remedy — hit-testing the point under the bar — is worse than the problem: Instagram keeps its own transparent layers over the video, so that test would hide the bar during ordinary playback. A safer version would look for `[aria-modal="true"]` and exclude any dialog that contains the video, since the post lightbox is itself a dialog with the video inside it.
+**Only dialogs are treated as obstacles.** A panel that covers the video without carrying `role="dialog"` still gets painted over. Widening the rule to any positioned element would catch Instagram's transparent play/pause layer, which covers the video at all times.
