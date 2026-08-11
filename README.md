@@ -17,6 +17,10 @@ Instagram's web player has no seek bar. You can't skip ahead, you can't go back 
 
 ## Install
 
+[**Get it on the Chrome Web Store**](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+
+Or build it yourself:
+
 ```bash
 npm install
 npm run build

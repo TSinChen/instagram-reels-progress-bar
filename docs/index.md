@@ -16,7 +16,9 @@ Instagram's web player has no seek bar. You can't skip ahead, you can't go back 
 
 ## Install
 
-From the source in this repository:
+### [Get it on the Chrome Web Store](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+
+Or build it from the source in this repository:
 
 ```bash
 npm install
@@ -54,6 +56,10 @@ Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法�
 - 已緩衝的範圍會用較亮的顏色畫出來，一眼看出拖到哪裡是安全的
 - Reels 專頁、首頁動態、貼文燈箱、探索頁都能用
 - 進度條粗細、圓點大小、感應區高度都可調，時間標籤也能關掉
+
+## 安裝
+
+### [到 Chrome 線上應用程式商店安裝](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
 
 ## 壞掉了？
 
