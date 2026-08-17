@@ -23,7 +23,8 @@
     "message": "Сохранено"
   },
   "previewHint": {
-    "message": "Потяни"
+    "message": "Тяните",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Толщина полосы"

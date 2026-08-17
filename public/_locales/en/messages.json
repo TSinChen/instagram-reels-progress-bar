@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser."
   },
   "extDescription": {
-    "message": "Adds a draggable seek bar to Reels and videos on instagram.com, so you can jump to any point.",
+    "message": "Adds a draggable seek bar to Reels and other videos on instagram.com, so you can jump to any point.",
     "description": "Short description shown in the Chrome Web Store."
   },
   "popupTitle": {
@@ -23,7 +23,8 @@
     "message": "Saved"
   },
   "previewHint": {
-    "message": "Drag it"
+    "message": "Drag it",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Bar thickness"

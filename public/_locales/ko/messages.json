@@ -23,15 +23,16 @@
     "message": "저장됨"
   },
   "previewHint": {
-    "message": "드래그"
+    "message": "드래그",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "재생바 두께"
   },
   "settingHandle": {
-    "message": "손잡이 크기"
+    "message": "핸들 크기"
   },
   "saveFailed": {
-    "message": "저장하지 못함"
+    "message": "저장 실패"
   }
 }

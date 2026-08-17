@@ -23,7 +23,8 @@
     "message": "Guardado"
   },
   "previewHint": {
-    "message": "Arrástrala"
+    "message": "Arrástrala",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Grosor de la barra"

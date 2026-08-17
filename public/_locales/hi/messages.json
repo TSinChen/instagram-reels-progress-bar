@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "instagram.com के Reels और वीडियो में खींचने लायक प्रोग्रेस बार जोड़ता है, ताकि आप किसी भी जगह पर जा सकें।",
+    "message": "instagram.com के Reels और वीडियो में ड्रैग किया जा सकने वाला प्रोग्रेस बार जोड़ता है, ताकि आप किसी भी जगह पर जा सकें।",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
@@ -23,7 +23,8 @@
     "message": "सहेजा गया"
   },
   "previewHint": {
-    "message": "खींचें"
+    "message": "खींचें",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "बार की मोटाई"

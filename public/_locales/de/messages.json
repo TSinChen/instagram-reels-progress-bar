@@ -23,7 +23,8 @@
     "message": "Gespeichert"
   },
   "previewHint": {
-    "message": "Zieh mich"
+    "message": "Zieh mich",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Dicke der Leiste"

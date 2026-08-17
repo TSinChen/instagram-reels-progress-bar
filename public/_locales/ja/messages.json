@@ -23,7 +23,8 @@
     "message": "保存しました"
   },
   "previewHint": {
-    "message": "ドラッグ"
+    "message": "ドラッグ",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "バーの太さ"
@@ -32,6 +33,6 @@
     "message": "つまみの大きさ"
   },
   "saveFailed": {
-    "message": "保存できません"
+    "message": "保存できませんでした"
   }
 }

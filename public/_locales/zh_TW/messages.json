@@ -23,7 +23,8 @@
     "message": "已儲存"
   },
   "previewHint": {
-    "message": "拖看看"
+    "message": "拖看看",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "進度條粗細"

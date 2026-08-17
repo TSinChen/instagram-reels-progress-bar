@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "instagram.com'daki Reels ve videolara sürüklenebilir bir ilerleme çubuğu ekler, istediğiniz ana atlayın.",
+    "message": "instagram.com'daki Reels ve videolara sürüklenebilir bir ilerleme çubuğu ekler; istediğiniz ana atlayabilirsiniz.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
@@ -23,7 +23,8 @@
     "message": "Kaydedildi"
   },
   "previewHint": {
-    "message": "Sürükle"
+    "message": "Sürükleyin",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Çubuk kalınlığı"

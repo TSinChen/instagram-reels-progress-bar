@@ -11,7 +11,7 @@
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "Chiều cao vùng cảm ứng"
+    "message": "Chiều cao vùng bấm"
   },
   "settingShowLabel": {
     "message": "Hiện thời gian"
@@ -23,7 +23,8 @@
     "message": "Đã lưu"
   },
   "previewHint": {
-    "message": "Kéo thử"
+    "message": "Kéo thử",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Độ dày thanh"

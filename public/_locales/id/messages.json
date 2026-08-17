@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Menambahkan bilah progres yang bisa digeser ke Reels dan video di instagram.com, agar Anda bisa melompat ke titik mana pun.",
+    "message": "Menambahkan bilah progres yang bisa digeser pada Reels dan video di instagram.com, agar Anda bisa melompat ke titik mana pun.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
@@ -23,7 +23,8 @@
     "message": "Tersimpan"
   },
   "previewHint": {
-    "message": "Geser"
+    "message": "Geser",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
     "message": "Ketebalan bilah"
