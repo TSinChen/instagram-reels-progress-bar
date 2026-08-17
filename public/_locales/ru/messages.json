@@ -4,14 +4,14 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Добавляет перетаскиваемую полосу перемотки к Reels и видео на instagram.com, чтобы переходить к любому моменту.",
+    "message": "Добавляет к Reels и видео на instagram.com полосу перемотки: тяните её и переходите к любому моменту.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "Высота зоны наведения"
+    "message": "Зона наведения"
   },
   "settingShowLabel": {
     "message": "Показывать время"

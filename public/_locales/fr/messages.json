@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Ajoute aux Reels et vidéos d'instagram.com une barre de progression à faire glisser pour aller où vous voulez.",
+    "message": "Ajoute une vraie barre de progression aux Reels et vidéos d'instagram.com : glissez-la pour aller où vous voulez.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {

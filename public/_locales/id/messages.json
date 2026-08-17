@@ -4,14 +4,14 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Menambahkan bilah progres yang bisa digeser pada Reels dan video di instagram.com, agar Anda bisa melompat ke titik mana pun.",
+    "message": "Menambahkan progress bar yang bisa digeser di Reels dan video di instagram.com, supaya bisa langsung loncat ke bagian mana pun.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "Tinggi area sentuh"
+    "message": "Tinggi area aktif"
   },
   "settingShowLabel": {
     "message": "Tampilkan waktu"
@@ -27,10 +27,10 @@
     "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
-    "message": "Ketebalan bilah"
+    "message": "Ketebalan bar"
   },
   "settingHandle": {
-    "message": "Ukuran tombol geser"
+    "message": "Ukuran bulatan"
   },
   "saveFailed": {
     "message": "Gagal menyimpan"

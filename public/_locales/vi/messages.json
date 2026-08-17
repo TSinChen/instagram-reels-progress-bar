@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Thêm thanh tua kéo được vào Reels và video trên instagram.com, để bạn nhảy đến bất kỳ điểm nào.",
+    "message": "Thêm thanh tua cho Reels và video trên instagram.com: kéo hoặc bấm là nhảy tới đúng đoạn bạn muốn.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
@@ -17,7 +17,7 @@
     "message": "Hiện thời gian"
   },
   "reset": {
-    "message": "Khôi phục mặc định"
+    "message": "Đặt lại mặc định"
   },
   "saved": {
     "message": "Đã lưu"

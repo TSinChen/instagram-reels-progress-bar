@@ -4,33 +4,33 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Fügt Reels und Videos auf instagram.com eine ziehbare Fortschrittsleiste hinzu, damit du an jede Stelle springen kannst.",
+    "message": "Endlich vorspulen: eine Fortschrittsleiste über Reels und Videos auf instagram.com. Ziehen oder klicken – und du bist da.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "Höhe des Hover-Bereichs"
+    "message": "Hover-Bereich"
   },
   "settingShowLabel": {
     "message": "Zeitanzeige"
   },
   "reset": {
-    "message": "Auf Standard zurücksetzen"
+    "message": "Zurücksetzen"
   },
   "saved": {
     "message": "Gespeichert"
   },
   "previewHint": {
-    "message": "Zieh mich",
+    "message": "Hier ziehen",
     "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
   },
   "settingThickness": {
-    "message": "Dicke der Leiste"
+    "message": "Leistendicke"
   },
   "settingHandle": {
-    "message": "Größe des Reglers"
+    "message": "Reglergröße"
   },
   "saveFailed": {
     "message": "Speichern fehlgeschlagen"

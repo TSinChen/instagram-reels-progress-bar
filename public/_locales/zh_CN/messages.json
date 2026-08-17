@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "为 instagram.com 的 Reels 和视频添加可拖动的进度条，让你跳到视频的任意位置。",
+    "message": "给 instagram.com 的 Reels 和视频加一条可拖动的进度条，想跳到哪儿就跳到哪儿。",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
@@ -30,7 +30,7 @@
     "message": "进度条粗细"
   },
   "settingHandle": {
-    "message": "拖动圆点大小"
+    "message": "圆点大小"
   },
   "saveFailed": {
     "message": "保存失败"

@@ -4,14 +4,14 @@
     "description": "Extension name shown in the store and the browser."
   },
   "extDescription": {
-    "message": "Adds a draggable seek bar to Reels and other videos on instagram.com, so you can jump to any point.",
+    "message": "Instagram's web player has no seek bar. This adds one to Reels and other videos, so you can jump to any point.",
     "description": "Short description shown in the Chrome Web Store."
   },
   "popupTitle": {
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "Hover area height"
+    "message": "Hover area"
   },
   "settingShowLabel": {
     "message": "Show time label"

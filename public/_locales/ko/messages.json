@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "instagram.com의 릴스와 동영상에 드래그할 수 있는 재생바를 추가해 원하는 지점으로 바로 이동할 수 있습니다.",
+    "message": "instagram.com 릴스와 동영상에 재생바를 그려 줍니다. 드래그하거나 클릭해 원하는 지점으로 바로 이동하세요.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {

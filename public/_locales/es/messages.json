@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "Añade una barra de progreso arrastrable a los Reels y vídeos de instagram.com para saltar a cualquier punto.",
+    "message": "Añade a los Reels y vídeos de instagram.com una barra de progreso: arrástrala y salta a cualquier punto.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
@@ -14,7 +14,7 @@
     "message": "Altura del área activa"
   },
   "settingShowLabel": {
-    "message": "Mostrar el tiempo"
+    "message": "Mostrar tiempo"
   },
   "reset": {
     "message": "Restablecer valores"

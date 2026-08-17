@@ -1,21 +1,21 @@
 {
   "en": {
     "hero": {
-      "h1": "Drag to any point in a Reel.",
+      "h1": "Skip to the good part.",
       "p": "Instagram’s web player has no seek bar. This extension adds one.",
       "points": [
         "Drag or click the bar to jump anywhere",
-        "Buffered range always drawn, time while you drag",
+        "See what's already loaded, and the time as you drag",
         "Works on Reels, feed, enlarged posts and Explore"
       ]
     },
     "settings": {
       "h1": "Tune it to taste.",
-      "p": "Bar thickness, handle size, hover area height, and a time label you can switch off.",
+      "p": "Make the bar barely there, or impossible to miss.",
       "points": [
         "Changes apply instantly to every open Instagram tab",
-        "Shrink the hover area if it covers Instagram’s own buttons",
-        "Settings sync across your Chrome profile"
+        "Shrink the hover area if it covers Instagram's own buttons",
+        "Settings follow your Chrome profile to your other devices"
       ]
     }
   },
@@ -25,7 +25,7 @@
       "p": "Instagram 網頁版沒有進度條，這個擴充功能補上了。",
       "points": [
         "拖曳或點擊即可跳到任意位置",
-        "已緩衝範圍隨時看得到，時間在拖曳時顯示",
+        "已緩衝範圍隨時看得到，時間只在拖曳時出現",
         "Reels、首頁、貼文、探索頁都能用"
       ]
     },
@@ -41,117 +41,117 @@
   },
   "zh_CN": {
     "hero": {
-      "h1": "把 Reels 拖到你要的地方。",
+      "h1": "Reels 想看哪段，就拖到哪段。",
       "p": "Instagram 网页版没有进度条，这个扩展补上了。",
       "points": [
         "拖动或点击即可跳到任意位置",
-        "已缓冲范围随时都能看到，时间在拖动时显示",
+        "缓冲范围一直看得见，时间只在拖动时出现",
         "Reels、首页、帖子、探索页都能用"
       ]
     },
     "settings": {
-      "h1": "调成你喜欢的样子。",
+      "h1": "多粗、多大、多高，全由你说了算。",
       "p": "进度条粗细、圆点大小、感应区高度，时间标签也能关掉。",
       "points": [
-        "改完立刻应用到所有打开的 Instagram 标签页",
-        "会挡到 Instagram 按钮就把感应区调小",
-        "设置跟着 Chrome 配置文件同步"
+        "改完立刻生效，开着的 Instagram 标签页全都跟着变",
+        "挡到 Instagram 的按钮，就把感应区调小",
+        "设置随 Chrome 个人资料同步"
       ]
     }
   },
   "es": {
     "hero": {
-      "h1": "Salta a cualquier punto de un Reel.",
+      "h1": "Muévete por el Reel a tu antojo.",
       "p": "Instagram no tiene barra de progreso en la web. Esta extensión la añade.",
       "points": [
         "Arrastra o haz clic para saltar a donde quieras",
-        "Parte descargada siempre visible, tiempo al arrastrar",
+        "Siempre ves lo ya descargado; el tiempo, al arrastrar",
         "Funciona en Reels, Inicio, publicaciones y Explorar"
       ]
     },
     "settings": {
       "h1": "Ajústala a tu gusto.",
-      "p": "Grosor de la barra, tamaño del control, altura del área activa y un tiempo en pantalla que puedes ocultar.",
+      "p": "Grosor de la barra, tamaño del control, altura del área activa y el tiempo en pantalla, que puedes ocultar.",
       "points": [
-        "Los cambios se aplican al instante en las pestañas de Instagram abiertas",
-        "Reduce esa zona si tapa los botones de Instagram",
+        "Los cambios se aplican al instante en todas tus pestañas de Instagram",
+        "Reduce el área activa si tapa los botones de Instagram",
         "Los ajustes se sincronizan con tu perfil de Chrome"
       ]
     }
   },
   "pt_BR": {
     "hero": {
-      "h1": "Pule para qualquer ponto do Reel.",
-      "p": "O Instagram não tem barra de progresso na web. Esta extensão coloca uma.",
+      "h1": "Vá direto ao ponto do Reel.",
+      "p": "O Instagram na web não tem barra de progresso. Esta extensão coloca a barra que faltava.",
       "points": [
-        "Arraste ou clique para pular para onde quiser",
-        "Trecho carregado sempre à vista, tempo ao arrastar",
+        "Arraste ou clique e pule para onde quiser",
+        "Trecho já carregado sempre à vista; o tempo aparece ao arrastar",
         "Funciona nos Reels, no feed, nas publicações e no Explorar"
       ]
     },
     "settings": {
-      "h1": "Ajuste do seu jeito.",
-      "p": "Espessura da barra, tamanho do marcador, altura da área ativa e o tempo, que dá para ocultar.",
+      "h1": "Deixe do seu jeito.",
+      "p": "Espessura da barra, tamanho do marcador, altura da área ativa e o tempo na tela, que dá para desligar.",
       "points": [
-        "As mudanças valem na hora em todas as abas do Instagram abertas",
+        "As mudanças valem na hora em todas as abas abertas do Instagram",
         "Diminua essa área se ela cobrir os botões do Instagram",
-        "As configurações sincronizam com seu perfil do Chrome"
+        "As configurações acompanham o seu perfil do Chrome"
       ]
     }
   },
   "id": {
     "hero": {
-      "h1": "Lompat ke titik mana pun di Reels.",
-      "p": "Instagram versi web tidak punya bilah progres. Ekstensi ini menambahkannya.",
+      "h1": "Mau ke bagian mana pun, tinggal geser.",
+      "p": "Instagram versi web tidak punya progress bar. Sekarang punya.",
       "points": [
-        "Geser atau klik untuk melompat ke mana saja",
-        "Bagian yang sudah dimuat selalu terlihat, waktu saat digeser",
-        "Berfungsi di Reels, beranda, postingan, dan Jelajahi"
+        "Geser atau klik, langsung loncat ke situ",
+        "Bagian yang sudah dimuat selalu kelihatan, waktunya muncul saat digeser",
+        "Jalan di Reels, beranda, postingan, sampai Jelajahi"
       ]
     },
     "settings": {
       "h1": "Atur sesuai selera.",
-      "p": "Ketebalan bilah, ukuran tombol geser, tinggi area sentuh, dan tampilan waktu yang bisa dimatikan.",
+      "p": "Ketebalan bar, ukuran bulatan, tinggi area aktif. Tampilan waktu juga bisa dimatikan.",
       "points": [
         "Perubahan langsung berlaku di semua tab Instagram yang terbuka",
-        "Kecilkan area sentuh jika menutupi tombol Instagram",
-        "Setelan disinkronkan lewat profil Chrome Anda"
+        "Kecilkan area aktif kalau menutupi tombol Instagram",
+        "Setelan ikut sinkron lewat profil Chrome Anda"
       ]
     }
   },
   "hi": {
     "hero": {
-      "h1": "Reel में कहीं भी पहुँचें।",
-      "p": "Instagram के वेब प्लेयर में प्रोग्रेस बार नहीं है। यह उसे जोड़ता है।",
+      "h1": "Reel में जहाँ चाहें, वहीं पहुँचें।",
+      "p": "Instagram के वेब प्लेयर में प्रोग्रेस बार नहीं है। यह एक्सटेंशन वही कमी पूरी कर देता है।",
       "points": [
         "खींचें या क्लिक करें, कहीं भी पहुँचें",
-        "लोड हो चुका हिस्सा हमेशा दिखता है, समय खींचते समय",
+        "लोड हो चुका हिस्सा हमेशा दिखता है, बार छूते ही समय भी",
         "Reels, फ़ीड, पोस्ट और एक्सप्लोर सब पर चलता है"
       ]
     },
     "settings": {
       "h1": "अपने हिसाब से सेट करें।",
-      "p": "बार की मोटाई, हैंडल का आकार, हॉवर क्षेत्र की ऊँचाई — सब बदलें; समय का लेबल बंद भी कर सकते हैं।",
+      "p": "बार की मोटाई, हैंडल का आकार, हॉवर एरिया की ऊँचाई — सब आपके हाथ में। समय का लेबल बंद भी कर सकते हैं।",
       "points": [
-        "बदलाव खुले हुए सभी Instagram टैब पर तुरंत लागू होते हैं",
-        "हॉवर क्षेत्र Instagram के बटन ढँके तो उसे घटा दें",
+        "हर खुले Instagram टैब पर बदलाव तुरंत दिख जाते हैं",
+        "Instagram के बटन ढँक जाएँ तो हॉवर एरिया घटा दें",
         "सेटिंग्स आपकी Chrome प्रोफ़ाइल के साथ सिंक होती हैं"
       ]
     }
   },
   "ja": {
     "hero": {
-      "h1": "リールの好きな位置へジャンプ。",
-      "p": "Instagram のウェブ版にはシークバーがありません。この拡張機能が追加します。",
+      "h1": "見たい場面へ、ドラッグひとつで。",
+      "p": "Instagram のウェブ版にはシークバーがありません。だから、付けました。",
       "points": [
-        "ドラッグかクリックで好きな位置にジャンプ",
-        "読み込み済みの範囲は常に表示、時間はドラッグ中に表示",
-        "リール、フィード、投稿、発見タブで使える"
+        "ドラッグかクリックで、見たい場面へジャンプ",
+        "読み込み済みの範囲は常に表示、時間はバーに触れている間だけ",
+        "リール、フィード、投稿、発見タブに対応"
       ]
     },
     "settings": {
-      "h1": "好みに合わせて調整。",
-      "p": "バーの太さ、つまみの大きさ、反応エリア。時間表示はオフにもできます。",
+      "h1": "太さも、大きさも、好みのままに。",
+      "p": "バーの太さ、つまみの大きさ、反応エリアの高さ。時間表示はオフにもできます。",
       "points": [
         "変更は開いているすべての Instagram タブにすぐ反映",
         "Instagram のボタンに重なるなら反応エリアを狭く",
@@ -161,71 +161,71 @@
   },
   "ko": {
     "hero": {
-      "h1": "릴스의 원하는 지점으로 바로 이동.",
-      "p": "Instagram 웹에는 재생바가 없습니다. 이 확장 프로그램이 더해 줍니다.",
+      "h1": "릴스, 끌어서 원하는 장면으로.",
+      "p": "Instagram 웹에는 재생바가 없습니다. 그 자리를 이 확장 프로그램이 채웁니다.",
       "points": [
         "드래그하거나 클릭해 어디로든 이동",
-        "버퍼링된 구간은 항상, 시간은 드래그할 때 표시",
+        "버퍼링 구간은 항상, 시간은 드래그할 때만 표시",
         "릴스, 피드, 게시물, 탐색 탭에서 작동"
       ]
     },
     "settings": {
-      "h1": "취향대로 맞추기.",
+      "h1": "두께도 핸들도 취향대로.",
       "p": "재생바 두께, 핸들 크기, 반응 영역. 시간 표시는 끌 수도 있습니다.",
       "points": [
-        "변경 사항이 열려 있는 모든 Instagram 탭에 바로 적용",
-        "Instagram 버튼을 가리면 반응 영역 줄이기",
+        "바꾸는 즉시 열려 있는 모든 Instagram 탭에 반영",
+        "Instagram 버튼과 겹치면 반응 영역 줄이기",
         "설정은 Chrome 프로필로 동기화"
       ]
     }
   },
   "de": {
     "hero": {
-      "h1": "Spring an jede Stelle im Reel.",
-      "p": "Instagram hat im Web keine Fortschrittsleiste. Diese Erweiterung liefert sie.",
+      "h1": "Spring, wohin du willst.",
+      "p": "Im Web hat Instagram keine Fortschrittsleiste. Diese Erweiterung liefert sie nach.",
       "points": [
-        "Ziehen oder klicken und an jede Stelle springen",
-        "Geladener Bereich immer sichtbar, Zeit beim Ziehen",
-        "Funktioniert in Reels, Feed, Beiträgen und Entdecken"
+        "Ziehen oder klicken – schon bist du da",
+        "Geladener Bereich immer sichtbar, Zeit nur beim Ziehen",
+        "Reels, Feed, Beiträge, Entdecken – überall dabei"
       ]
     },
     "settings": {
-      "h1": "Stell es nach deinem Geschmack ein.",
-      "p": "Dicke der Leiste, Größe des Reglers, Höhe des Hover-Bereichs und eine Zeitanzeige, die du abschalten kannst.",
+      "h1": "Die Leiste, ganz wie du sie willst.",
+      "p": "Leistendicke, Reglergröße, Hover-Höhe – und eine Zeitanzeige, die du ausblenden kannst.",
       "points": [
         "Änderungen gelten sofort in allen offenen Instagram-Tabs",
-        "Hover-Bereich verkleinern, wenn er Instagram-Buttons verdeckt",
+        "Verdeckt der Hover-Bereich Instagram-Buttons, mach ihn kleiner",
         "Einstellungen werden über dein Chrome-Profil synchronisiert"
       ]
     }
   },
   "fr": {
     "hero": {
-      "h1": "Allez où vous voulez dans le Reel.",
-      "p": "Instagram n’a pas de barre de progression sur le web. La voici.",
+      "h1": "Avancez, revenez, où vous voulez.",
+      "p": "Sur le web, Instagram n'a pas de barre de progression. La voici.",
       "points": [
-        "Glissez ou cliquez pour aller n’importe où",
-        "Portion chargée toujours visible, temps au glissement",
-        "Fonctionne sur Reels, le fil, les publications et Explorer"
+        "Glissez ou cliquez pour aller droit au passage voulu",
+        "Portion chargée toujours visible, temps au survol",
+        "Fonctionne dans Reels, le fil, les publications et Explorer"
       ]
     },
     "settings": {
       "h1": "Réglez-la à votre goût.",
-      "p": "Épaisseur de la barre, taille du curseur, hauteur de la zone active et un affichage du temps que vous pouvez masquer.",
+      "p": "Épaisseur de la barre, taille du curseur, hauteur de la zone active. Le temps affiché, vous pouvez le masquer.",
       "points": [
-        "Les changements s’appliquent aussitôt aux onglets Instagram ouverts",
-        "Réduisez la zone active si elle recouvre les boutons d’Instagram",
+        "Chaque réglage s'applique aussitôt aux onglets Instagram ouverts",
+        "Réduisez la zone active si elle recouvre les boutons d'Instagram",
         "Les réglages se synchronisent avec votre profil Chrome"
       ]
     }
   },
   "ru": {
     "hero": {
-      "h1": "Перемотка в любую точку Reels.",
-      "p": "В веб-версии Instagram нет полосы перемотки. Это расширение её добавляет.",
+      "h1": "Мотайте Reels куда хотите.",
+      "p": "В веб-версии Instagram нет полосы перемотки. Теперь есть.",
       "points": [
-        "Потяните или щёлкните, чтобы перейти куда угодно",
-        "Загруженный участок виден всегда, время — при перетаскивании",
+        "Тяните полосу или кликните — попадёте куда нужно",
+        "Загруженная часть видна всегда, время — пока тянете",
         "Работает в Reels, ленте, публикациях и разделе «Интересное»"
       ]
     },
@@ -233,7 +233,7 @@
       "h1": "Настройте под себя.",
       "p": "Толщина полосы, размер ползунка, зона наведения и время, которое можно скрыть.",
       "points": [
-        "Изменения сразу применяются во всех открытых вкладках Instagram",
+        "Изменения видны сразу во всех открытых вкладках Instagram",
         "Уменьшите зону наведения, если она перекрывает кнопки Instagram",
         "Настройки синхронизируются с профилем Chrome"
       ]
@@ -241,40 +241,40 @@
   },
   "tr": {
     "hero": {
-      "h1": "Reel’de istediğiniz ana atlayın.",
-      "p": "Instagram’ın web sürümünde ilerleme çubuğu yok. Bu eklenti onu ekliyor.",
+      "h1": "Reels'te istediğiniz yere sarın.",
+      "p": "Instagram'ın web sürümünde ilerleme çubuğu yok. Bu eklenti ekliyor.",
       "points": [
         "Sürükleyin ya da tıklayın, istediğiniz yere gidin",
-        "Yüklenmiş bölüm hep görünür, süre sürüklerken",
-        "Reels, akış, gönderiler ve Keşfet’te çalışır"
+        "Yüklenmiş bölüm hep görünür, süre sürüklerken çıkar",
+        "Reels, akış, gönderiler ve Keşfet'te çalışır"
       ]
     },
     "settings": {
-      "h1": "Kendinize göre ayarlayın.",
-      "p": "Çubuk kalınlığı, tutamaç boyutu, etkin alan ve kapatılabilen bir süre göstergesi.",
+      "h1": "İnce ayarı siz yapın.",
+      "p": "Çubuk kalınlığı, tutamaç boyutu, etkin alan yüksekliği. Süre göstergesini de kapatabilirsiniz.",
       "points": [
-        "Değişiklikler açık olan tüm Instagram sekmelerine anında uygulanır",
-        "Etkin alan Instagram’ın düğmelerini kapatıyorsa küçültün",
-        "Ayarlar Chrome profilinizle eşitlenir"
+        "Değişiklikler açık tüm Instagram sekmelerine anında yansır",
+        "Instagram'ın düğmelerini örtüyorsa etkin alanı küçültün",
+        "Ayarlar Chrome profilinizle senkronize olur"
       ]
     }
   },
   "vi": {
     "hero": {
-      "h1": "Tua đến bất kỳ đâu trong Reels.",
-      "p": "Instagram bản web không có thanh tua. Tiện ích này bổ sung thanh đó.",
+      "h1": "Kéo tới đâu, Reels nhảy tới đó.",
+      "p": "Instagram bản web không có thanh tua. Tiện ích này thêm vào.",
       "points": [
         "Kéo hoặc bấm để nhảy đến bất kỳ đâu",
-        "Phần đã tải sẵn luôn hiện, thời gian khi bạn kéo",
+        "Phần đã tải luôn thấy, thời gian hiện khi bạn kéo",
         "Dùng được ở Reels, bảng tin, bài viết và Khám phá"
       ]
     },
     "settings": {
       "h1": "Chỉnh theo ý bạn.",
-      "p": "Độ dày thanh, cỡ nút kéo, chiều cao vùng bấm, và hiển thị thời gian có thể tắt đi.",
+      "p": "Độ dày thanh, cỡ nút kéo, chiều cao vùng bấm — thời gian hiện trên video cũng tắt được.",
       "points": [
-        "Thay đổi áp dụng ngay cho mọi thẻ Instagram đang mở",
-        "Thu nhỏ vùng bấm nếu nó che nút của Instagram",
+        "Chỉnh xong là mọi tab Instagram đang mở đổi theo ngay",
+        "Vùng bấm che nút Instagram thì thu nhỏ lại",
         "Cài đặt đồng bộ theo hồ sơ Chrome của bạn"
       ]
     }

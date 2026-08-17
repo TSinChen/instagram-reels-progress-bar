@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "instagram.com のリールと動画にドラッグできるシークバーを追加し、動画の好きな位置にジャンプできるようにします。",
+    "message": "instagram.com のリールや動画にシークバーを追加。ドラッグやクリックで、見たい場面へすぐジャンプできます。",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {

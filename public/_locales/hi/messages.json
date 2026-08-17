@@ -4,23 +4,23 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "instagram.com के Reels और वीडियो में ड्रैग किया जा सकने वाला प्रोग्रेस बार जोड़ता है, ताकि आप किसी भी जगह पर जा सकें।",
+    "message": "instagram.com के Reels और वीडियो पर प्रोग्रेस बार जोड़ता है — खींचें और वीडियो में कहीं भी पहुँचें।",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "हॉवर क्षेत्र की ऊँचाई"
+    "message": "हॉवर एरिया की ऊँचाई"
   },
   "settingShowLabel": {
     "message": "समय दिखाएँ"
   },
   "reset": {
-    "message": "डिफ़ॉल्ट पर लौटें"
+    "message": "डिफ़ॉल्ट पर रीसेट करें"
   },
   "saved": {
-    "message": "सहेजा गया"
+    "message": "सेव हो गया"
   },
   "previewHint": {
     "message": "खींचें",
@@ -33,6 +33,6 @@
     "message": "हैंडल का आकार"
   },
   "saveFailed": {
-    "message": "सहेजा नहीं जा सका"
+    "message": "सेव नहीं हुआ"
   }
 }

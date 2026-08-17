@@ -4,14 +4,14 @@
     "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
   },
   "extDescription": {
-    "message": "instagram.com'daki Reels ve videolara sürüklenebilir bir ilerleme çubuğu ekler; istediğiniz ana atlayabilirsiniz.",
+    "message": "instagram.com'daki Reels ve videolara ilerleme çubuğu ekler; sürükleyin ya da tıklayın, istediğiniz ana atlayın.",
     "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
   },
   "popupTitle": {
     "message": "Instagram Reels Progress Bar"
   },
   "settingHitZone": {
-    "message": "Etkin alan yüksekliği"
+    "message": "Etkin alan"
   },
   "settingShowLabel": {
     "message": "Süreyi göster"
