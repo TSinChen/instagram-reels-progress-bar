@@ -1,0 +1,37 @@
+{
+  "extName": {
+    "message": "Instagram Reels Progress Bar",
+    "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
+  },
+  "extDescription": {
+    "message": "instagram.com のリールと動画にドラッグできるシークバーを追加し、動画の好きな位置にジャンプできるようにします。",
+    "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
+  },
+  "popupTitle": {
+    "message": "Instagram Reels Progress Bar"
+  },
+  "settingHitZone": {
+    "message": "反応エリアの高さ"
+  },
+  "settingShowLabel": {
+    "message": "時間を表示"
+  },
+  "reset": {
+    "message": "初期設定に戻す"
+  },
+  "saved": {
+    "message": "保存しました"
+  },
+  "previewHint": {
+    "message": "ドラッグ"
+  },
+  "settingThickness": {
+    "message": "バーの太さ"
+  },
+  "settingHandle": {
+    "message": "つまみの大きさ"
+  },
+  "saveFailed": {
+    "message": "保存できません"
+  }
+}

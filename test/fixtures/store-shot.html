@@ -116,38 +116,13 @@
 <div class="copy" id="copy"></div>
 
 <script src="./stub-videos.js"></script>
-<script>
-  const COPY = {
-    en: {
-      h1: 'Drag to any point in a Reel.',
-      p: 'Instagram has no seek bar on the web. This adds one.',
-      points: [
-        'Drag or click the bar to jump anywhere',
-        'Time and buffered range always visible',
-        'Works on Reels, feed, posts and Explore',
-      ],
-    },
-    zh_TW: {
-      h1: '把 Reels 拖到你要的地方。',
-      p: 'Instagram 網頁版沒有進度條，這個擴充功能補上了。',
-      points: [
-        '拖曳或點擊即可跳到任意位置',
-        '隨時看得到目前時間與已緩衝範圍',
-        'Reels、首頁、貼文、探索頁都能用',
-      ],
-    },
-  };
-  const locale = new URLSearchParams(location.search).get('copy') || 'en';
-  const c = COPY[locale] || COPY.en;
-  document.getElementById('copy').innerHTML =
-    '<h1>' + c.h1 + '</h1><p>' + c.p + '</p><ul class="points">' +
-    c.points.map((t) => '<li><b></b><span>' + t + '</span></li>').join('') +
-    '</ul>';
-</script>
+<script src="./shot-copy.js"></script>
 <script type="module">
   // The built content script needs the chrome APIs, so load the modules directly.
   // The rendered result is identical.
   import { init } from '../../lib/main.js';
+
+  await renderShotCopy('hero');
   init();
   window.__shotReady = true;
 </script>

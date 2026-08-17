@@ -30,6 +30,8 @@
   window.chrome = {
     i18n: {
       getMessage: (key) => (window.__messages && window.__messages[key]?.message) || '',
+      getUILanguage: () =>
+        (new URLSearchParams(location.search).get('locale') || 'en').replace('_', '-'),
     },
     storage: {
       sync: {

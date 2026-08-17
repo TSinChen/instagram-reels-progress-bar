@@ -1,0 +1,37 @@
+{
+  "extName": {
+    "message": "Instagram Reels Progress Bar",
+    "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
+  },
+  "extDescription": {
+    "message": "为 instagram.com 的 Reels 和视频添加可拖动的进度条，让你跳到视频的任意位置。",
+    "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
+  },
+  "popupTitle": {
+    "message": "Instagram Reels Progress Bar"
+  },
+  "settingHitZone": {
+    "message": "感应区高度"
+  },
+  "settingShowLabel": {
+    "message": "显示时间标签"
+  },
+  "reset": {
+    "message": "恢复默认"
+  },
+  "saved": {
+    "message": "已保存"
+  },
+  "previewHint": {
+    "message": "拖拖看"
+  },
+  "settingThickness": {
+    "message": "进度条粗细"
+  },
+  "settingHandle": {
+    "message": "拖动圆点大小"
+  },
+  "saveFailed": {
+    "message": "保存失败"
+  }
+}

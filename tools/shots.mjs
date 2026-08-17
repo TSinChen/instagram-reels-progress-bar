@@ -6,7 +6,7 @@
 //   node tools/shots.mjs
 //   CHROME_PATH="...\chrome.exe" node tools/shots.mjs
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createStaticServer } from './serve.mjs';
@@ -75,16 +75,22 @@ const HOVER_BAR = `(async () => {
 const CHECK_POPUP = `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const iframe = document.getElementById('popup');
-  for (let i = 0; i < 40 && !iframe.contentDocument?.getElementById('reset'); i++) await sleep(100);
+  // #reset exists as soon as the markup is injected, which is before the popup's module
+  // has imported and mounted the preview. __popupReady is set after that import resolves.
+  for (let i = 0; i < 60 && !iframe.contentWindow?.__popupReady; i++) await sleep(100);
   const doc = iframe.contentDocument;
   const reset = doc.getElementById('reset');
   if (!reset) return { ok: false, why: 'popup did not finish loading' };
 
-  // Too short adds a scrollbar and clips the footer, too tall leaves dead space below it
+  // A fixed height cannot fit every locale: translated labels wrap at different points.
+  // Too short adds a scrollbar and clips the footer, too tall leaves dead space below it.
+  iframe.style.height = doc.body.scrollHeight + 'px';
+  await sleep(100);
+
   const frameH = iframe.getBoundingClientRect().height;
   const contentH = doc.body.scrollHeight;
   if (Math.abs(contentH - frameH) > 1) {
-    return { ok: false, why: 'popup content is ' + contentH + 'px but the iframe is ' + frameH + 'px. Set the iframe height in store-shot-settings.html to ' + contentH + 'px.' };
+    return { ok: false, why: 'popup content is ' + contentH + 'px but the iframe settled at ' + frameH + 'px' };
   }
   const resetBottom = reset.getBoundingClientRect().bottom;
   if (resetBottom > frameH + 1) return { ok: false, why: 'the reset link is clipped' };
@@ -113,20 +119,26 @@ const CHECK_POPUP = `(async () => {
   return { ok: true, note: 'iframe ' + frameH + 'px / content ' + contentH + 'px  ' + label.textContent };
 })()`;
 
-// still=1 stops the fixtures advancing their playback clocks, so a rerun that changed
-// nothing rewrites the same bytes instead of leaving a diff nobody can explain.
-const SHOTS = [
+// Every locale under public/_locales gets both shots, so a locale added there is never
+// left without store images. still=1 stops the fixtures advancing their playback clocks,
+// so a rerun that changed nothing rewrites the same bytes instead of leaving a diff
+// nobody can explain.
+const LOCALES = readdirSync('public/_locales').sort();
+
+const SHOTS = LOCALES.flatMap((locale) => [
   {
-    file: 'screenshot-1-en.png',
-    path: '/test/fixtures/store-shot.html?copy=en&still=1',
+    file: `screenshot-1-${locale}.png`,
+    path: `/test/fixtures/store-shot.html?copy=${locale}&still=1`,
     prepare: HOVER_BAR,
-    // Also the site hero. Produced here rather than copied, so it cannot drift.
-    alsoWrite: ['docs/assets/hero.png'],
+    // The English hero is also the site's. Produced here rather than copied, so it cannot drift.
+    alsoWrite: locale === 'en' ? ['docs/assets/hero.png'] : [],
   },
-  { file: 'screenshot-1-zh.png', path: '/test/fixtures/store-shot.html?copy=zh_TW&still=1', prepare: HOVER_BAR },
-  { file: 'screenshot-2-en.png', path: '/test/fixtures/store-shot-settings.html?copy=en&still=1', prepare: CHECK_POPUP },
-  { file: 'screenshot-2-zh.png', path: '/test/fixtures/store-shot-settings.html?copy=zh_TW&still=1', prepare: CHECK_POPUP },
-];
+  {
+    file: `screenshot-2-${locale}.png`,
+    path: `/test/fixtures/store-shot-settings.html?copy=${locale}&still=1`,
+    prepare: CHECK_POPUP,
+  },
+]);
 
 // ── Locating Chrome ──────────────────────────────────────
 

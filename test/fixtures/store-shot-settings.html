@@ -50,7 +50,7 @@
   .panel { display: flex; justify-content: center; }
   iframe {
     width: 300px;
-    /* Must match the popup's own height; shots.mjs fails the run if it drifts either way */
+    /* Starting height only; shots.mjs resizes this to whatever the locale's popup needs */
     height: 437px;
     border: 0;
     border-radius: 12px;
@@ -66,34 +66,11 @@
   <iframe id="popup" title="settings"></iframe>
 </div>
 
+<script src="./shot-copy.js"></script>
 <script>
-  const COPY = {
-    en: {
-      h1: 'Tune it to taste.',
-      p: 'Bar thickness, handle size, hover area, and a time label you can switch off.',
-      points: [
-        'Changes apply to open tabs instantly',
-        'Shrink the hover area if it covers Instagram’s buttons',
-        'Settings sync across your Chrome profile',
-      ],
-    },
-    zh_TW: {
-      h1: '調成你喜歡的樣子。',
-      p: '進度條粗細、圓點大小、感應區高度，時間標籤也能關掉。',
-      points: [
-        '改完立刻套用到所有開著的分頁',
-        '會擋到 Instagram 按鈕就把感應區調小',
-        '設定跟著 Chrome 帳號同步',
-      ],
-    },
-  };
   const params = new URLSearchParams(location.search);
   const locale = params.get('copy') || 'en';
-  const c = COPY[locale] || COPY.en;
-  document.getElementById('copy').innerHTML =
-    '<h1>' + c.h1 + '</h1><p>' + c.p + '</p><ul class="points">' +
-    c.points.map((t) => '<li><b></b><span>' + t + '</span></li>').join('') +
-    '</ul>';
+  renderShotCopy('settings');
   document.getElementById('popup').src =
     './popup-preview.html?locale=' + locale + '&bare=1' + (params.has('still') ? '&still=1' : '');
 </script>

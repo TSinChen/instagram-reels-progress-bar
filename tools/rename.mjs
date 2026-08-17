@@ -2,11 +2,11 @@
 //
 //   node tools/rename.mjs "New Name"
 //   node tools/rename.mjs --check        list occurrences without changing anything
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 
 const TARGETS = [
-  'public/_locales/en/messages.json',
-  'public/_locales/zh_TW/messages.json',
+  // Read rather than listed, so a locale added later is never left with the old name
+  ...readdirSync('public/_locales').map((code) => `public/_locales/${code}/messages.json`),
   'entrypoints/popup/index.html',
   'README.md',
   'docs/store/STORE.md',

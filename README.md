@@ -13,7 +13,7 @@ Instagram's web player has no seek bar. You can't skip ahead, you can't go back 
 - The buffered range is drawn in a lighter shade, so you can see how far ahead is safe to jump to
 - Works on the Reels page, the home feed, post lightboxes and Explore
 - Adjustable bar thickness, handle size and hover area; the time label can be switched off
-- English and Traditional Chinese
+- 14 languages: English, 繁體中文, 简体中文, Español, Português (BR), Bahasa Indonesia, हिन्दी, 日本語, 한국어, Deutsch, Français, Русский, Türkçe, Tiếng Việt
 
 ## Install
 

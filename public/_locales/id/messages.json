@@ -1,0 +1,37 @@
+{
+  "extName": {
+    "message": "Instagram Reels Progress Bar",
+    "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
+  },
+  "extDescription": {
+    "message": "Menambahkan bilah progres yang bisa digeser ke Reels dan video di instagram.com, agar Anda bisa melompat ke titik mana pun.",
+    "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
+  },
+  "popupTitle": {
+    "message": "Instagram Reels Progress Bar"
+  },
+  "settingHitZone": {
+    "message": "Tinggi area sentuh"
+  },
+  "settingShowLabel": {
+    "message": "Tampilkan waktu"
+  },
+  "reset": {
+    "message": "Setel ulang"
+  },
+  "saved": {
+    "message": "Tersimpan"
+  },
+  "previewHint": {
+    "message": "Geser"
+  },
+  "settingThickness": {
+    "message": "Ketebalan bilah"
+  },
+  "settingHandle": {
+    "message": "Ukuran tombol geser"
+  },
+  "saveFailed": {
+    "message": "Gagal menyimpan"
+  }
+}

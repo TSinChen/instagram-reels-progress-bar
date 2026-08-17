@@ -4,6 +4,11 @@ import { buildRenderState } from '../../lib/main.js';
 import { createSettingsStore, DEFAULTS } from '../../lib/settings.js';
 
 // ── i18n ──────────────────────────────────────────────
+// Without the right lang, the browser picks fonts by guesswork — Japanese kanji come out
+// with Chinese glyph shapes — and uppercasing follows the wrong rules, which turns
+// Turkish "i" into "I" rather than "İ".
+document.documentElement.lang = chrome.i18n.getUILanguage();
+
 for (const el of document.querySelectorAll('[data-i18n]')) {
   const text = chrome.i18n.getMessage(el.dataset.i18n);
   if (text) el.textContent = text;

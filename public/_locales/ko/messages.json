@@ -1,0 +1,37 @@
+{
+  "extName": {
+    "message": "Instagram Reels Progress Bar",
+    "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
+  },
+  "extDescription": {
+    "message": "instagram.com의 릴스와 동영상에 드래그할 수 있는 재생바를 추가해 원하는 지점으로 바로 이동할 수 있습니다.",
+    "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
+  },
+  "popupTitle": {
+    "message": "Instagram Reels Progress Bar"
+  },
+  "settingHitZone": {
+    "message": "반응 영역 높이"
+  },
+  "settingShowLabel": {
+    "message": "시간 표시"
+  },
+  "reset": {
+    "message": "기본값으로 되돌리기"
+  },
+  "saved": {
+    "message": "저장됨"
+  },
+  "previewHint": {
+    "message": "드래그"
+  },
+  "settingThickness": {
+    "message": "재생바 두께"
+  },
+  "settingHandle": {
+    "message": "손잡이 크기"
+  },
+  "saveFailed": {
+    "message": "저장하지 못함"
+  }
+}
