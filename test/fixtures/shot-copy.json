@@ -5,7 +5,7 @@
       "p": "Instagram's web player has no seek bar. This extension adds one.",
       "points": [
         "Drag or click the bar to jump anywhere",
-        "See what's already loaded, and the time as you drag",
+        "See what's already loaded, and the time when you use the bar",
         "Works on Reels, feed, enlarged posts and Explore"
       ]
     },
@@ -31,7 +31,7 @@
     },
     "settings": {
       "h1": "調成你喜歡的樣子。",
-      "p": "進度條粗細、圓點大小、感應區高度，時間標籤也能關掉。",
+      "p": "進度條粗細、拖曳圓點大小、感應區高度，時間標籤也能關掉。",
       "points": [
         "改完立刻套用到所有開著的 Instagram 分頁",
         "會擋到 Instagram 按鈕，就把感應區調小",
@@ -45,13 +45,13 @@
       "p": "Instagram 网页版没有进度条，这个扩展补上了。",
       "points": [
         "拖动或点击即可跳到任意位置",
-        "缓冲范围一直看得见，时间滑过或拖动才出现",
+        "缓冲范围一直看得见，鼠标滑过或拖动才显示时间",
         "Reels、首页、帖子、探索页都能用"
       ]
     },
     "settings": {
-      "h1": "进度条长什么样，你说了算。",
-      "p": "进度条粗细、圆点大小、感应区高度，时间标签也能关掉。",
+      "h1": "长什么样，你说了算。",
+      "p": "进度条粗细、圆点大小、感应区高度，时间标签能关掉。",
       "points": [
         "改完立刻生效，开着的 Instagram 标签页全都跟着变",
         "挡到 Instagram 的按钮，就把感应区调小",
@@ -65,7 +65,7 @@
       "p": "Instagram no tiene barra de progreso en la web. Esta extensión la añade.",
       "points": [
         "Arrastra o haz clic para saltar a donde quieras",
-        "Siempre ves la parte descargada; el tiempo, al arrastrar",
+        "Siempre ves lo descargado; el tiempo, al usar la barra",
         "Funciona en Reels, Inicio, publicaciones y Explorar"
       ]
     },
@@ -85,7 +85,7 @@
       "p": "O Instagram na web não tem barra de progresso. Esta extensão coloca a barra que faltava.",
       "points": [
         "Arraste ou clique e pule para onde quiser",
-        "O trecho já carregado fica sempre à vista; o tempo aparece ao arrastar",
+        "O trecho já carregado fica sempre à vista; o tempo aparece ao usar a barra",
         "Funciona nos Reels, no feed, nas publicações e no Explorar"
       ]
     },
@@ -105,7 +105,7 @@
       "p": "Instagram versi web tidak punya progress bar. Sekarang punya.",
       "points": [
         "Geser atau klik, langsung loncat ke situ",
-        "Bagian yang sudah dimuat selalu kelihatan, waktunya muncul saat digeser",
+        "Bagian yang sudah dimuat selalu kelihatan, waktunya muncul saat bar dipakai",
         "Jalan di Reels, beranda, postingan, sampai Jelajahi"
       ]
     },
@@ -171,7 +171,7 @@
     },
     "settings": {
       "h1": "두께도 핸들도 취향대로.",
-      "p": "재생바 두께, 핸들 크기, 반응 영역 높이.",
+      "p": "재생바 두께, 핸들 크기, 반응 영역 높이. 시간 표시는 끌 수도 있습니다.",
       "points": [
         "바꾸는 즉시 열려 있는 모든 Instagram 탭에 반영",
         "Instagram 버튼과 겹치면 반응 영역 줄이기",
@@ -185,7 +185,7 @@
       "p": "Im Web hat Instagram keine Fortschrittsleiste. Diese Erweiterung liefert sie nach.",
       "points": [
         "Ziehen oder klicken – schon bist du da",
-        "Geladener Bereich immer sichtbar, Zeit beim Anfassen der Leiste",
+        "Geladener Bereich immer sichtbar, Zeit beim Überfahren oder Ziehen",
         "Funktioniert in Reels, Feed, Beiträgen und Entdecken"
       ]
     },
@@ -225,7 +225,7 @@
       "p": "В веб-версии Instagram нет полосы перемотки. Теперь есть.",
       "points": [
         "Тяните полосу или кликните — попадёте куда нужно",
-        "Загруженная часть видна всегда, время — пока тянете",
+        "Загруженная часть видна всегда, время — как только тронете полосу",
         "Работает в Reels, ленте, публикациях и разделе «Интересное»"
       ]
     },
@@ -245,7 +245,7 @@
       "p": "Instagram'ın web sürümünde ilerleme çubuğu yok. Bu eklenti ekliyor.",
       "points": [
         "Sürükleyin ya da tıklayın, istediğiniz yere gidin",
-        "Yüklenmiş bölüm hep görünür, süre ise sürüklerken çıkar",
+        "Yüklenmiş bölüm hep görünür, süre çubuğu kullanırken",
         "Reels, akış, gönderiler ve Keşfet'te çalışır"
       ]
     },
@@ -254,7 +254,7 @@
       "p": "Çubuk kalınlığı, tutamaç boyutu, etkin alan yüksekliği. Süre göstergesini de kapatabilirsiniz.",
       "points": [
         "Değişiklikler tüm açık Instagram sekmelerine anında yansır",
-        "Etkin alan Instagram’ın düğmelerini örtüyorsa küçültün",
+        "Etkin alan Instagram'ın düğmelerini örtüyorsa küçültün",
         "Ayarlar Chrome profilinizle senkronize olur"
       ]
     }
@@ -265,7 +265,7 @@
       "p": "Instagram bản web không có thanh tua. Tiện ích này vẽ thêm một thanh.",
       "points": [
         "Kéo hoặc bấm để nhảy đến bất kỳ đâu",
-        "Phần đã tải lúc nào cũng thấy, thời gian hiện khi bạn kéo",
+        "Phần đã tải luôn hiện, rê chuột hay kéo là thấy thời gian",
         "Dùng được ở Reels, bảng tin, bài viết và Khám phá"
       ]
     },

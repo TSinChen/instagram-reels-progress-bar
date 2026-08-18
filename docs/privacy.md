@@ -13,7 +13,7 @@ This extension does not collect, store, transmit, or sell any personal data. The
 
 ## What the extension does
 
-Instagram Reels Progress Bar draws a draggable seek bar over videos on `instagram.com` so you can jump to any point in a video. It reads the current playback position and duration of the video element on the page in order to draw the bar, and it writes a new playback position when you drag it. That is the entire interaction with the page.
+Instagram Reels Progress Bar draws a draggable seek bar over videos on `instagram.com` so you can jump to any point in a video. It reads the current playback position and duration of the video element on the page in order to draw the bar, and it writes a new playback position when you drag or click it. That is the entire interaction with the page.
 
 ## What is stored
 
@@ -67,7 +67,7 @@ _最後更新：2026-08-10_
 
 ## 這個擴充功能做什麼
 
-Instagram Reels Progress Bar 在 `instagram.com` 的影片上畫一條可拖曳的進度條，讓你跳到影片的任意位置。它會讀取頁面上影片元素的目前播放位置與總長度來畫這條進度條，並在你拖曳時寫入新的播放位置。與頁面的互動僅止於此。
+Instagram Reels Progress Bar 在 `instagram.com` 的影片上畫一條可拖曳的進度條，讓你跳到影片的任意位置。它會讀取頁面上影片元素的目前播放位置與總長度來畫這條進度條，並在你拖曳或點擊時寫入新的播放位置。與頁面的互動僅止於此。
 
 ## 儲存了什麼
 

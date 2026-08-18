@@ -98,6 +98,21 @@ const CHECK_POPUP = `(async () => {
   const host = doc.querySelector('[data-igrc="host"]');
   if (!host) return { ok: false, why: 'popup preview did not mount' };
 
+  // This image shows the real popup, so a caption that renames a setting contradicts its
+  // own screenshot. A caption may leave the sliders unnamed — the English one does, and the
+  // panel names them anyway — but naming some and renaming another is the failure to catch.
+  // The caption paragraph only: the bullets discuss settings in passing, and the English
+  // caption names none of them on purpose.
+  const caption = (document.querySelector('.copy p')?.innerText || '').toLowerCase();
+  const labels = [...doc.querySelectorAll('.field-head .label')]
+    .map((el) => el.textContent.trim())
+    .filter(Boolean);
+  const named = labels.filter((label) => caption.includes(label.toLowerCase()));
+  if (named.length && named.length !== labels.length) {
+    const renamed = labels.filter((label) => !caption.includes(label.toLowerCase()));
+    return { ok: false, why: 'caption names some settings but not ' + renamed.join(', ') + ' as the popup labels them' };
+  }
+
   // The preview behaves as it does on Instagram, so the label and handle only appear
   // under the pointer. A shot of the idle hairline would show none of what is adjustable.
   const hit = host.shadowRoot.querySelector('.hit');
