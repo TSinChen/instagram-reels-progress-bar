@@ -1,0 +1,38 @@
+{
+  "extName": {
+    "message": "Instagram Reels Progress Bar",
+    "description": "Extension name shown in the store and the browser. Keep the product name untranslated."
+  },
+  "extDescription": {
+    "message": "Adiciona uma barra de progresso aos Reels e vídeos do instagram.com. Arraste e salte para qualquer ponto.",
+    "description": "Short description shown in the Chrome Web Store. Limit 132 characters."
+  },
+  "popupTitle": {
+    "message": "Instagram Reels Progress Bar"
+  },
+  "settingHitZone": {
+    "message": "Altura da área ativa"
+  },
+  "settingShowLabel": {
+    "message": "Mostrar tempo"
+  },
+  "reset": {
+    "message": "Repor predefinições"
+  },
+  "saved": {
+    "message": "Guardado"
+  },
+  "previewHint": {
+    "message": "Arraste",
+    "description": "Hint badge over the settings preview. Tells the user the preview bar can be dragged. Must be very short."
+  },
+  "settingThickness": {
+    "message": "Espessura da barra"
+  },
+  "settingHandle": {
+    "message": "Tamanho do marcador"
+  },
+  "saveFailed": {
+    "message": "Não foi possível guardar"
+  }
+}
