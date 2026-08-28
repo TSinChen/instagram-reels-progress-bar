@@ -18,9 +18,9 @@
     "zip:firefox": "wxt zip -b firefox --mv3"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "TSinChen",
+  "license": "MIT",
+  "description": "A draggable progress bar for Instagram Reels.",
   "private": "true",
   "type": "module",
   "devDependencies": {

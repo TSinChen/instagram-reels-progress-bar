@@ -106,6 +106,10 @@ The bar is a Shadow DOM overlay on `document.body`, positioned over whichever vi
 
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) covers the design in full: how the active video is chosen, why the overlay is split into two layers, how settings reach the bar without rebuilding it, and what the known trade-offs are.
 
+## License
+
+MIT. See [LICENSE](LICENSE).
+
 ## Not affiliated with Instagram
 
 An independent project. Not affiliated with, endorsed by, or sponsored by Instagram or Meta.
