@@ -5,7 +5,7 @@ title: Privacy Policy
 
 # Privacy Policy — Instagram Reels Progress Bar
 
-_Last updated: 2026-08-10_
+_Last updated: 2026-08-29_
 
 ## The short version
 
@@ -59,7 +59,7 @@ Questions about this policy: [open an issue](https://github.com/TSinChen/instagr
 
 # 隱私權政策 — Instagram Reels Progress Bar
 
-_最後更新：2026-08-10_
+_最後更新：2026-08-29_
 
 ## 一句話版本
 
