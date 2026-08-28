@@ -3,6 +3,8 @@ import { deflateSync } from 'node:zlib';
 import { writeFileSync, mkdirSync } from 'node:fs';
 
 const SIZES = [16, 48, 128];
+/** The Edge listing wants a square logo per language: 128 is its floor, 300 its recommendation. */
+const STORE_LOGO = 300;
 /** Rendered at this multiple and box-filtered down, which is where the anti-aliasing comes from. */
 const SUPERSAMPLE = 4;
 
@@ -154,9 +156,18 @@ function downsample(pixels, from, to) {
   return out;
 }
 
+const render = (size) => {
+  const large = size * SUPERSAMPLE;
+  return encodePng(size, downsample(drawIcon(large), large, size));
+};
+
 mkdirSync('public/icon', { recursive: true });
 for (const size of SIZES) {
-  const large = size * SUPERSAMPLE;
-  writeFileSync(`public/icon/${size}.png`, encodePng(size, downsample(drawIcon(large), large, size)));
+  writeFileSync(`public/icon/${size}.png`, render(size));
   console.log(`wrote public/icon/${size}.png`);
 }
+
+// Ships with the listing, not with the extension, so it lives beside the screenshots.
+mkdirSync('docs/store', { recursive: true });
+writeFileSync(`docs/store/logo-${STORE_LOGO}.png`, render(STORE_LOGO));
+console.log(`wrote docs/store/logo-${STORE_LOGO}.png`);

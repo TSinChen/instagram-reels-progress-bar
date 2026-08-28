@@ -19,14 +19,15 @@ Instagram's web player has no seek bar. You can't skip ahead, you can't go back 
 
 [**Get it on the Chrome Web Store**](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
 
-Or build it yourself:
+Or build it yourself. The build needs Node 24; the exact pinned version is in `.nvmrc`.
 
 ```bash
-npm install
-npm run build
+npm ci
+npm run build          # Chrome and Edge
+npm run build:firefox  # Firefox
 ```
 
-Open `chrome://extensions`, turn on Developer mode, choose **Load unpacked**, and select **`.output/chrome-mv3`** — not the project root.
+Open `chrome://extensions`, turn on Developer mode, choose **Load unpacked**, and select **`.output/chrome-mv3`** — not the project root. In Firefox, open `about:debugging`, go to **This Firefox**, choose **Load Temporary Add-on**, and pick any file inside `.output/firefox-mv3`.
 
 For development, `npm run dev` launches a Chrome instance with the extension loaded and reloads it when `lib/` changes.
 
@@ -54,12 +55,14 @@ Colour is fixed to white. A dark bar over dark footage is invisible, and offerin
 ## Development
 
 ```bash
-npm install
-npm test           # unit tests
+npm ci
+npm test             # unit tests
 npm run test:watch
-npm run dev        # WXT dev mode with hot reload
+npm run dev          # WXT dev mode with hot reload
 npm run build
-npm run zip        # packaged for the Chrome Web Store
+npm run build:firefox
+npm run zip          # packaged for the Chrome Web Store and Edge Add-ons
+npm run zip:firefox  # packaged for AMO, alongside the source archive AMO requires
 npm run shots      # regenerate the store screenshots
 npm run icons      # regenerate the icons
 npm run rename     # change the extension name everywhere at once
@@ -82,6 +85,20 @@ node tools/serve.mjs
 Every `<video>` in these pages is a real element with its media properties stubbed, so results are deterministic and no video file is needed.
 
 `npm run shots` drives the last two headlessly and asserts on the result before writing: the bar must be hovered, aligned to the video, clipped to its corners, and the output must be 1280×800. A failure exits non-zero and leaves the existing files untouched.
+
+## Reproducing a released build
+
+The toolchain is pinned: Node 24.14.0 in `.nvmrc`, every dependency version in `package-lock.json`. Nothing is fetched during the build beyond those dependencies, and the extension loads no remote code at run time.
+
+```bash
+nvm use          # or install the version named in .nvmrc by hand
+npm ci
+npm run zip:firefox
+```
+
+The unpacked build lands in `.output/firefox-mv3/`, packaged next to it as `.output/instagram-reels-progress-bar-<version>-firefox.zip`.
+
+The output does not depend on which Node you use. Node 24.14.0 and 22.16.0 produce all 23 files of both the Chrome and the Firefox build with identical SHA-256 hashes.
 
 ## How it works
 

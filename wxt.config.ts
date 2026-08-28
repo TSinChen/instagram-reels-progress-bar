@@ -6,6 +6,10 @@ export default defineConfig({
   // and the 30 listing screenshots are 7 MB that no one needs to build the extension.
   zip: {
     excludeSources: ['docs/store/**'],
+    // excludeSources is merged with WXT's defaults but includeSources replaces them, so the
+    // '**/*' has to be repeated. Naming .nvmrc outright is what gets it past the dotfile filter,
+    // and AMO reviewers need it to know which Node reproduces the build.
+    includeSources: ['**/*', '.nvmrc'],
   },
   manifest: ({ browser }) => ({
     name: '__MSG_extName__',
