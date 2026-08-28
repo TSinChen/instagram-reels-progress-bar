@@ -17,7 +17,7 @@ Instagram Reels Progress Bar draws a draggable seek bar over videos on `instagra
 
 ## What is stored
 
-The extension stores exactly four appearance preferences using Chrome's `storage.sync` API:
+The extension stores exactly four appearance preferences using the browser's extension storage API:
 
 | Setting | Values |
 |---|---|
@@ -26,7 +26,7 @@ The extension stores exactly four appearance preferences using Chrome's `storage
 | Hover area height | a number between 8 and 32 |
 | Show time label | `true` or `false` |
 
-These are stored by Chrome in your own browser profile and, if you have Chrome Sync enabled, synced across your own devices by Google. They are never sent to the developer or to any third party. Uninstalling the extension removes them.
+Your browser keeps these in your own profile. If you have browser sync turned on, your browser vendor syncs them between your own devices the same way it syncs your bookmarks. They are never sent to the developer or to any third party. Uninstalling the extension removes them.
 
 ## What is not collected
 
@@ -71,7 +71,7 @@ Instagram Reels Progress Bar 在 `instagram.com` 的影片上畫一條可拖曳�
 
 ## 儲存了什麼
 
-擴充功能使用 Chrome 的 `storage.sync` 儲存四項外觀設定：
+擴充功能使用瀏覽器的擴充功能儲存 API 儲存四項外觀設定：
 
 | 設定 | 可能的值 |
 |---|---|
@@ -80,7 +80,7 @@ Instagram Reels Progress Bar 在 `instagram.com` 的影片上畫一條可拖曳�
 | 感應區高度 | 8 到 32 之間的數字 |
 | 顯示時間標籤 | `true` 或 `false` |
 
-這些資料由 Chrome 存在你自己的瀏覽器設定檔中；若你開啟了 Chrome 同步功能，Google 會在你自己的裝置之間同步它們。這些資料不會傳送給開發者或任何第三方。移除擴充功能即會一併移除。
+這些資料由瀏覽器存在你自己的設定檔中；若你開啟了瀏覽器同步功能，瀏覽器廠商會在你自己的裝置之間同步它們，就像同步書籤那樣。這些資料不會傳送給開發者或任何第三方。移除擴充功能即會一併移除。
 
 ## 沒有蒐集什麼
 
