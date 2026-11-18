@@ -108,6 +108,34 @@ describe('pickActiveVideo', () => {
     const below = fakeVideo({ id: 'below', top: 900, height: 600 });
     expect(pickActiveVideo([above, below], viewport)).toBe(null);
   });
+
+  it('skips an off-slide carousel video clipped by an overflow-hidden ancestor', () => {
+    const frame = {
+      tagName: 'DIV',
+      style: { overflow: 'hidden', overflowX: 'hidden', overflowY: 'visible' },
+      parentElement: null,
+      getBoundingClientRect: () => ({ left: 100, top: 50, right: 500, bottom: 650, width: 400, height: 600 }),
+    };
+    const offSlide = fakeVideo({ id: 'next-slide', left: 520, top: 50, width: 400, height: 600 });
+    offSlide.parentElement = frame;
+
+    expect(pickActiveVideo([offSlide], viewport, { getStyle: (el) => el.style })).toBe(null);
+  });
+
+  it('picks the visible carousel slide when an adjacent slide video is clipped out', () => {
+    const frame = {
+      tagName: 'DIV',
+      style: { overflow: 'hidden', overflowX: 'hidden', overflowY: 'visible' },
+      parentElement: null,
+      getBoundingClientRect: () => ({ left: 100, top: 50, right: 500, bottom: 650, width: 400, height: 600 }),
+    };
+    const activeSlide = fakeVideo({ id: 'active', left: 100, top: 50, width: 400, height: 600, paused: true });
+    const nextSlide = fakeVideo({ id: 'next', left: 520, top: 50, width: 400, height: 600, paused: false });
+    activeSlide.parentElement = frame;
+    nextSlide.parentElement = frame;
+
+    expect(pickActiveVideo([nextSlide, activeSlide], viewport, { getStyle: (el) => el.style })).toBe(activeSlide);
+  });
 });
 
 describe('VideoTracker', () => {
