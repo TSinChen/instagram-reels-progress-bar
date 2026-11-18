@@ -372,6 +372,58 @@ describe('the render loop', () => {
     expect(host().style.width).toBe('280px');
   });
 
+  it('clips the bar to an overflow-hidden carousel container during slide transitions', () => {
+    const frame = document.createElement('div');
+    frame.getBoundingClientRect = () => ({ left: 100, top: 50, right: 500, bottom: 650, width: 400, height: 600 });
+    document.body.appendChild(frame);
+
+    const video = addVideo({ left: 200, top: 50, width: 400, height: 600 });
+    frame.appendChild(video);
+
+    win = makeWin({
+      getComputedStyle: (el) => ({
+        overflow: el === frame ? 'hidden' : 'visible',
+        overflowX: el === frame ? 'hidden' : 'visible',
+        overflowY: 'visible',
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
+      }),
+    });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.display).toBe('block');
+    expect(host().style.left).toBe('200px');
+    expect(host().style.width).toBe('300px');
+  });
+
+  it('hides the bar when a tracked video slides out of its clipping ancestor', () => {
+    const frame = document.createElement('div');
+    frame.getBoundingClientRect = () => ({ left: 100, top: 50, right: 500, bottom: 650, width: 400, height: 600 });
+    document.body.appendChild(frame);
+
+    const video = addVideo({ left: 100, top: 50, width: 400, height: 600 });
+    frame.appendChild(video);
+
+    win = makeWin({
+      getComputedStyle: (el) => ({
+        overflow: el === frame ? 'hidden' : 'visible',
+        overflowX: el === frame ? 'hidden' : 'visible',
+        overflowY: 'visible',
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
+      }),
+    });
+    app = init({ doc: document, win });
+    win.tick();
+    expect(host().style.display).toBe('block');
+
+    video.getBoundingClientRect = () => ({
+      left: 520, top: 50, right: 920, bottom: 650, width: 400, height: 600,
+    });
+    win.tick();
+    expect(host().style.display).toBe('none');
+  });
+
   it('keeps queuing frames while it runs', () => {
     addVideo();
     app = init({ doc: document, win });

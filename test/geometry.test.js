@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { visibleArea, ratioFromPointerX, timeFromRatio } from '../lib/geometry.js';
+import {
+  visibleArea,
+  ratioFromPointerX,
+  timeFromRatio,
+  clippedRectFor,
+} from '../lib/geometry.js';
 
 const viewport = { width: 1000, height: 800 };
 
@@ -95,5 +100,87 @@ describe('timeFromRatio', () => {
 
   it('returns 0 for an infinite duration (live video)', () => {
     expect(timeFromRatio(0.5, Infinity)).toBe(0);
+  });
+});
+
+describe('clippedRectFor', () => {
+  function makeChain(videoRect, ancestors = []) {
+    const nodes = [{ rect: videoRect, style: {}, tagName: 'VIDEO', parentElement: null }];
+    for (const ancestor of ancestors) {
+      nodes.push({
+        rect: ancestor.rect,
+        style: {
+          overflow: 'visible',
+          overflowX: 'visible',
+          overflowY: 'visible',
+          ...ancestor.style,
+        },
+        tagName: ancestor.tagName || 'DIV',
+        parentElement: null,
+      });
+    }
+    for (let i = 0; i < nodes.length - 1; i += 1) {
+      nodes[i].parentElement = nodes[i + 1];
+    }
+    return {
+      video: nodes[0],
+      getStyle: (el) => el.style,
+      getRect: (el) => el.rect,
+    };
+  }
+
+  it('returns an empty rect when video is null', () => {
+    expect(clippedRectFor(null, () => ({}))).toEqual({
+      left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0,
+    });
+  });
+
+  it('returns the video rect unchanged when no ancestor clips', () => {
+    const videoRect = { left: 100, top: 50, right: 500, bottom: 650, width: 400, height: 600 };
+    const { video, getStyle, getRect } = makeChain(videoRect, [
+      { rect: { left: 0, top: 0, right: 200, bottom: 700 }, style: { overflow: 'visible' } },
+    ]);
+    expect(clippedRectFor(video, getStyle, getRect)).toEqual(videoRect);
+  });
+
+  it('returns zero width when an off-slide carousel video is clipped out horizontally', () => {
+    const videoRect = { left: 520, top: 50, right: 920, bottom: 650, width: 400, height: 600 };
+    const { video, getStyle, getRect } = makeChain(videoRect, [
+      { rect: { left: 100, top: 50, right: 500, bottom: 650 }, style: { overflow: 'hidden' } },
+    ]);
+    expect(clippedRectFor(video, getStyle, getRect)).toEqual({
+      left: 520, top: 50, right: 500, bottom: 650, width: 0, height: 600,
+    });
+  });
+
+  it('clips horizontally on overflowX: hidden and overflowX: scroll', () => {
+    const videoRect = { left: 300, top: 50, right: 700, bottom: 650, width: 400, height: 600 };
+    for (const overflowX of ['hidden', 'clip', 'scroll', 'auto']) {
+      const { video, getStyle, getRect } = makeChain(videoRect, [
+        { rect: { left: 100, top: 50, right: 500, bottom: 650 }, style: { overflowX } },
+      ]);
+      expect(clippedRectFor(video, getStyle, getRect)).toEqual({
+        left: 300, top: 50, right: 500, bottom: 650, width: 200, height: 600,
+      });
+    }
+  });
+
+  it('clips vertically when an ancestor sets overflowY: hidden', () => {
+    const videoRect = { left: 100, top: 400, right: 500, bottom: 1000, width: 400, height: 600 };
+    const { video, getStyle, getRect } = makeChain(videoRect, [
+      { rect: { left: 0, top: 0, right: 1000, bottom: 600 }, style: { overflowY: 'hidden' } },
+    ]);
+    expect(clippedRectFor(video, getStyle, getRect)).toEqual({
+      left: 100, top: 400, right: 500, bottom: 600, width: 400, height: 200,
+    });
+  });
+
+  it('stops walking at BODY and HTML', () => {
+    const videoRect = { left: 520, top: 50, right: 920, bottom: 650, width: 400, height: 600 };
+    const { video, getStyle, getRect } = makeChain(videoRect, [
+      { tagName: 'BODY', rect: { left: 0, top: 0, right: 400, bottom: 800 }, style: { overflow: 'hidden' } },
+      { tagName: 'HTML', rect: { left: 0, top: 0, right: 400, bottom: 800 }, style: { overflow: 'hidden' } },
+    ]);
+    expect(clippedRectFor(video, getStyle, getRect)).toEqual(videoRect);
   });
 });
