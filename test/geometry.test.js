@@ -111,8 +111,6 @@ describe('clippedRectFor', () => {
         rect: ancestor.rect,
         style: {
           overflow: 'visible',
-          overflowX: 'visible',
-          overflowY: 'visible',
           ...ancestor.style,
         },
         tagName: ancestor.tagName || 'DIV',
@@ -157,7 +155,7 @@ describe('clippedRectFor', () => {
     const videoRect = { left: 300, top: 50, right: 700, bottom: 650, width: 400, height: 600 };
     for (const overflowX of ['hidden', 'clip', 'scroll', 'auto']) {
       const { video, getStyle, getRect } = makeChain(videoRect, [
-        { rect: { left: 100, top: 50, right: 500, bottom: 650 }, style: { overflowX } },
+        { rect: { left: 100, top: 100, right: 500, bottom: 550 }, style: { overflow: overflowX + ' visible', overflowX, overflowY: 'visible' } },
       ]);
       expect(clippedRectFor(video, getStyle, getRect)).toEqual({
         left: 300, top: 50, right: 500, bottom: 650, width: 200, height: 600,
