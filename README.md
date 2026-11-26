@@ -102,6 +102,8 @@ The unpacked build lands in `.output/firefox-mv3/`, packaged next to it as `.out
 
 The output does not depend on which Node you use. Node 24.14.0 and 22.16.0 produce all 23 files of both the Chrome and the Firefox build with identical SHA-256 hashes.
 
+See the [release checklist](docs/RELEASING.md) for versioning, verification, and store submission.
+
 ## How it works
 
 The bar is a Shadow DOM overlay on `document.body`, positioned over whichever video is currently being watched. Nothing is inserted into Instagram's DOM, and videos are found by looking for standard `<video>` elements rather than Instagram's own markup — which is why it survives Instagram's redesigns.
