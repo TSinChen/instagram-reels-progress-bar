@@ -38,7 +38,7 @@ For each browser receiving the update, check that the extension loads on
 Instagram, seeking works on a Reel, and popup settings apply. Also test the
 behavior changed by the release and record the browser and page tested.
 
-## Tag and publish
+## Submit to stores and publish
 
 1. From the verified checkout, tag and push the exact commit you built.
 
@@ -47,12 +47,11 @@ behavior changed by the release and record the browser and page tested.
    git tag -a "v$version" -m "Version $version" && git push origin "refs/tags/v$version"
    ```
 
-2. Create a draft GitHub Release for that tag and copy in the PR's release notes.
-3. Submit the verified archives to the stores. For AMO, include the source
+2. Submit the verified archives to the stores. For AMO, include the source
    archive and the [README build instructions](../README.md#reproducing-a-released-build).
-4. Record each store's status in the GitHub Release. Publish once the first
-   store's update is live, mark pending stores as in review, and update those
-   entries as the rollout completes.
+3. Confirm the new version is live on every store receiving the update.
+4. Publish the GitHub Release for the tag. Use the PR's release notes, mention
+   contributors by GitHub handle, and link to the live store listings.
 
 If a submitted package needs a code change, prepare a new version through
 the same PR and verification steps. Keep the existing tag on the original commit.
