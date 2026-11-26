@@ -54,6 +54,8 @@ Colour is fixed to white. A dark bar over dark footage is invisible, and offerin
 
 ## Development
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to propose, test, and submit a change.
+
 ```bash
 npm ci
 npm test             # unit tests
