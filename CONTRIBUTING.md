@@ -1,6 +1,6 @@
 # Contributing
 
-Small fixes and documentation updates are welcome as pull requests. For a new feature or a larger change, open an [issue](https://github.com/TSinChen/instagram-reels-progress-bar/issues) first so we can discuss the approach.
+Small fixes and documentation updates are welcome as pull requests. For a new feature or a larger change, open a [Change proposal](https://github.com/TSinChen/instagram-reels-progress-bar/issues/new?template=change_proposal.yml) first so we can discuss the approach.
 
 ## Set up and verify your change
 

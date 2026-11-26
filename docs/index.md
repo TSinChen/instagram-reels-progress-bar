@@ -16,7 +16,9 @@ Instagram's web player has no seek bar. You can't skip ahead, you can't go back 
 
 ## Install
 
-### [Get it on the Chrome Web Store](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+- [Chrome Web Store](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/instagram-reels-progress-/ccbcbdolidnclfmghoikhlgpnjhdcjja)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/instagram-reels-progress-bar/)
 
 Or build it from the source in this repository:
 
@@ -59,7 +61,9 @@ Instagram 網頁版的播放器沒有進度條。你沒辦法快轉、沒辦法�
 
 ## 安裝
 
-### [到 Chrome 線上應用程式商店安裝](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+- [Chrome 線上應用程式商店](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+- [Microsoft Edge 附加元件](https://microsoftedge.microsoft.com/addons/detail/instagram-reels-progress-/ccbcbdolidnclfmghoikhlgpnjhdcjja)
+- [Firefox 附加元件](https://addons.mozilla.org/en-US/firefox/addon/instagram-reels-progress-bar/)
 
 ## 壞掉了？
 
