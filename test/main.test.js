@@ -374,7 +374,10 @@ describe('the render loop', () => {
 
   it('clips the bar to an overflow-hidden carousel container during slide transitions', () => {
     const frame = document.createElement('div');
-    frame.getBoundingClientRect = () => ({ left: 100, top: 50, right: 500, bottom: 650, width: 400, height: 600 });
+    let right = 500;
+    frame.getBoundingClientRect = () => ({
+      left: 100, top: 50, right, bottom: 650, width: right - 100, height: 600,
+    });
     document.body.appendChild(frame);
 
     const video = addVideo({ left: 200, top: 50, width: 400, height: 600 });
@@ -394,6 +397,10 @@ describe('the render loop', () => {
     expect(host().style.display).toBe('block');
     expect(host().style.left).toBe('200px');
     expect(host().style.width).toBe('300px');
+
+    right = 450;
+    win.tick();
+    expect(host().style.width).toBe('250px');
   });
 
   it('hides the bar when a tracked video slides out of its clipping ancestor', () => {
