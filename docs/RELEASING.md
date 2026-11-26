@@ -59,24 +59,28 @@ the same PR and verification steps. Keep the existing tag on the original commit
 
 ## GitHub Release notes
 
-Use the release tag as the title. Summarize user-visible changes in the body
-and link the relevant PRs. Put the tag comparison on the final line for the
-full commit history. Replace `PREVIOUS_TAG` and `CURRENT_TAG` with the exact
-tags, including the `v` prefix. List only the stores receiving this update
-and fill in their links once the version is live.
+Use the release tag as the title. Write one bullet per user-visible change and
+group PRs for the same change on that line. In the Thanks section, use one line
+per contributor and mention their GitHub handle. Keep only the store links where
+this version is live. Put the tag comparison on the final line for the full
+commit history. Replace `PREVIOUS_TAG` and `CURRENT_TAG` with the exact tags,
+including the `v` prefix.
 
 ```markdown
 ## What's changed
 
-- Describe the change users will notice. (PR #NUMBER)
+- Describe the change users will notice. (#PR_NUMBER, #FOLLOW_UP_PR_NUMBER)
 
-Thanks to @USERNAME for contributing the fix.
+## Thanks
+
+- @USERNAME for reporting and fixing the issue. (#PR_NUMBER)
+- @ANOTHER_USERNAME for the follow-up fix. (#FOLLOW_UP_PR_NUMBER)
 
 ## Get the update
 
-- [Chrome Web Store](CHROME_LISTING_URL)
-- [Microsoft Edge Add-ons](EDGE_LISTING_URL)
-- [Firefox Add-ons](FIREFOX_LISTING_URL)
+- [Chrome Web Store](https://chromewebstore.google.com/detail/instagram-reels-progress/jahkjaheehohdaehigjiekbfliegofdo)
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/instagram-reels-progress-/ccbcbdolidnclfmghoikhlgpnjhdcjja)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/instagram-reels-progress-bar/)
 
 **Full changelog:** [PREVIOUS_TAG...CURRENT_TAG](https://github.com/TSinChen/instagram-reels-progress-bar/compare/PREVIOUS_TAG...CURRENT_TAG)
 ```
