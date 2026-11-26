@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a problem with the Instagram Reels Progress Bar extension.
+body:
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser and version
+      placeholder: e.g. Firefox 152.0
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension version
+      description: Check the extension's details in your browser's extensions manager.
+      placeholder: e.g. 1.1.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: instagram-page
+    attributes:
+      label: Instagram page type
+      description: Select all views where you can reproduce the issue.
+      multiple: true
+      options:
+        - Reels
+        - Home feed
+        - Post opened in a popup (lightbox)
+        - Standalone post page
+        - Explore
+        - Other or not applicable
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps, what you expected, and what happened instead. If you selected Other, describe where it happened.
+      placeholder: |
+        1. Open a carousel post in the home feed.
+        2. Switch from a video slide to a photo slide.
+
+        Expected behavior:
+        Actual behavior:
+    validations:
+      required: true
