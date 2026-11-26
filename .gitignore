@@ -2,6 +2,7 @@ node_modules/
 .output/
 .wxt/
 stats.html
+/.claude/scheduled_tasks.lock
 
 # Submission notes: a trademark risk assessment and field-by-field crib sheet. Local only.
 docs/store/STORE.md
