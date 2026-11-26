@@ -56,3 +56,27 @@ behavior changed by the release and record the browser and page tested.
 
 If a submitted package needs a code change, prepare a new version through
 the same PR and verification steps. Keep the existing tag on the original commit.
+
+## GitHub Release notes
+
+Use the release tag as the title. Summarize user-visible changes in the body
+and link the relevant PRs. Put the tag comparison on the final line for the
+full commit history. Replace `PREVIOUS_TAG` and `CURRENT_TAG` with the exact
+tags, including the `v` prefix. List only the stores receiving this update
+and fill in their links once the version is live.
+
+```markdown
+## What's changed
+
+- Describe the change users will notice. (PR #NUMBER)
+
+Thanks to @USERNAME for contributing the fix.
+
+## Get the update
+
+- [Chrome Web Store](CHROME_LISTING_URL)
+- [Microsoft Edge Add-ons](EDGE_LISTING_URL)
+- [Firefox Add-ons](FIREFOX_LISTING_URL)
+
+**Full changelog:** [PREVIOUS_TAG...CURRENT_TAG](https://github.com/TSinChen/instagram-reels-progress-bar/compare/PREVIOUS_TAG...CURRENT_TAG)
+```
